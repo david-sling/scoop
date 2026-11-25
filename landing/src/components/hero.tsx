@@ -213,13 +213,13 @@ export function Hero() {
   );
 }
 
-/** The rotating word sits in a long pink hexagon, cut at the same angle as the honeycomb. */
+/** The rotating word is set bold, with no background, and slides in from the side. */
 function Word({ word }: { word: string }) {
   return (
     <motion.span
       layout
       transition={{ duration: 0.5, ease: EASE }}
-      className="relative inline-flex overflow-hidden bg-pink px-[0.5em] pb-[0.1em] pt-[0.02em] [clip-path:polygon(0.32em_0,calc(100%-0.32em)_0,100%_50%,calc(100%-0.32em)_100%,0.32em_100%,0_50%)]"
+      className="relative inline-flex overflow-hidden px-[0.04em] pb-[0.1em] pt-[0.02em] font-semibold"
     >
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
