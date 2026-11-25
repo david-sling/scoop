@@ -293,26 +293,23 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
           <circle ref={spotRef} r="150" fill="url(#spot-falloff)" opacity="0" />
         </mask>
 
-        {/* Three quiet tones for the resting honeycomb. Each cell carries its own gradient. */}
-        <linearGradient id="tone-0" x1="0" y1="0" x2="1" y2="1">
+        {/* One light for the whole honeycomb: a single gradient laid across the full scene. */}
+        <linearGradient id="field" x1="0" y1="0" x2="0" y2={H} gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#fffaf5" />
-          <stop offset="1" stopColor="#ffeef3" />
+          <stop offset="1" stopColor="#f8e5d4" />
         </linearGradient>
-        <linearGradient id="tone-1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fff3ea" />
-          <stop offset="1" stopColor="#fde9ee" />
-        </linearGradient>
-        <linearGradient id="tone-2" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fff7f1" />
-          <stop offset="1" stopColor="#fff1e6" />
+        {/* The same sheen on every cell, from the same side. Only its strength differs. */}
+        <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.9" />
+          <stop offset="0.6" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="cell-fill" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0.95" />
-          <stop offset="1" stopColor="#ffe6f3" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#ffead8" stopOpacity="0.55" />
         </linearGradient>
         <linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#fff" />
-          <stop offset="1" stopColor="#fff0f7" />
+          <stop offset="1" stopColor="#fff1e4" />
         </linearGradient>
         <linearGradient id="logo-edge" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#f3e3ea" />
@@ -320,11 +317,19 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         </linearGradient>
       </defs>
 
-      {/* Always there, very quietly: neighbouring cells differ only by tint, with no outlines. */}
+      {/* Always there, very quietly: every cell sits in the same light and has no outline.
+          Cells differ only in how much of that light their surface gives back. */}
       <g>
-        {cells.map((c, i) => (
-          <polygon key={`${c.x}-${c.y}`} points={hex(c.x, c.y, A)} fill={`url(#tone-${(i * 7 + (c.x > W / 2 ? 1 : 0)) % 3})`} />
-        ))}
+        {cells.map((c, i) => {
+          const finish = (i * 7 + (c.x > W / 2 ? 1 : 0)) % 3
+          const points = hex(c.x, c.y, A)
+          return (
+            <g key={`${c.x}-${c.y}`}>
+              <polygon points={points} fill="url(#field)" fillOpacity={[0.55, 0.78, 1][finish]} />
+              <polygon points={points} fill="url(#sheen)" fillOpacity={[0.25, 0.6, 0.4][finish]} />
+            </g>
+          )
+        })}
       </g>
 
       <g mask="url(#spot-mask)">
@@ -348,10 +353,8 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
               wireRefs.current[n.id] = el
             }}
             d={d}
-            stroke="#9f527c"
-            strokeOpacity="0.3"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
+            // Not drawn. The path only gives the light its route.
+            stroke="none"
           />
         ))}
         {moving && (
