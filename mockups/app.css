@@ -292,12 +292,38 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .su details[open] summary { color: var(--ink); font-weight: 500; }
 .su .todo summary { color: var(--ink); font-weight: 500; }
 .su .todo .tk { background: none; border: 1.5px solid var(--ink-3); }
-.su .more { padding: 2px 0 14px 32px; }
+.su .more { padding: 0 0 14px 32px; }
 .su .more p { margin: 0; color: var(--ink-2); }
 .su .more .mono { font: 500 13px var(--mono); color: var(--ink); }
-.su .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
-.su .btn.sm { min-height: 40px; padding: 0 14px; font-size: 13px; gap: 6px; }
+.su .acts { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; margin-top: 10px; white-space: nowrap; }
+.su .btn.sm { min-height: 34px; padding: 0 11px; font-size: 12.5px; }
+.right > * { min-width: 0; }
 .su .btn.sm svg.i { width: 14px; height: 14px; }
-.su .btn.text.sm { padding: 0 6px; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
+.su .btn.text.sm { padding: 0 4px; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
 .su .btn.text.sm:hover { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .su .chev { transition: none; } }
+
+/* Side pane: the main navigation sits at the left on wide screens. Below 1101px it falls back to the top bar. */
+/* Side pane */
+.copy .lbl { display: none; }
+.nav a svg.i { display: none; }
+@media (min-width: 1101px) {
+  body { padding-left: 232px; }
+  .topbar { position: fixed; inset: 0 auto 0 0; width: 232px; border-bottom: 0; border-right: 1px solid var(--rule); background: var(--white); overflow-y: auto; z-index: 4; }
+  .topbar .wrap { flex-direction: column; align-items: stretch; gap: 0; height: 100%; min-height: 100%; max-width: none; padding: 22px 14px 14px; }
+  .topbar .logo { padding: 0 10px; }
+  .nav { flex-direction: column; gap: 2px; margin: 26px 0 0; }
+  .nav a { gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 14px; transition: background-color 120ms var(--ease), color 120ms var(--ease); }
+  .nav a svg.i { display: block; width: 18px; height: 18px; }
+  .nav a::after, .nav a[aria-current]::before { display: none; }
+  .nav a:hover { background: var(--cream); }
+  .nav a:active { background: #F6E9DC; }
+  .nav a[aria-current] { background: var(--pink-wash); color: var(--ink); }
+  .nav a[aria-current] svg.i { color: var(--mauve-deep); }
+  .nav .n { margin-left: auto; }
+  .copy { position: relative; display: block; margin-top: auto; padding: 12px 14px; border-radius: 18px; text-align: left; min-height: 0; }
+  .copy .lbl { display: block; font: 400 12px var(--sans); color: var(--ink-3); }
+  .copy .ad { display: block; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .copy svg { position: absolute; right: 14px; top: 14px; }
+  .wrap { padding: 0 28px; }
+}
