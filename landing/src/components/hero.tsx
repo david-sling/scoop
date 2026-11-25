@@ -230,7 +230,7 @@ const TRAIL_S = 10
 /** How strong a fresh trail is. */
 const TRAIL_OPACITY = 0.5
 /** How long the glow around a logo takes to fade after its signal leaves, in seconds. */
-const GLOW_S = 7
+const GLOW_S = 3
 /** How strong that glow is at its peak. */
 const GLOW_OPACITY = 0.55
 
