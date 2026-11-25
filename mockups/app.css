@@ -243,3 +243,8 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 @media (max-width: 1100px) { .stick { position: static; } }
 @media (max-width: 1100px) { .saves { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 720px) { .saves { grid-template-columns: minmax(0, 1fr); } .find { flex-direction: column; } }
+
+/* Project rows that link somewhere */
+.pulls li > a { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; margin: -6px -10px; padding: 6px 10px; border-radius: 14px; transition: background-color 120ms var(--ease); }
+.pulls li > a:hover { background: rgba(159, 82, 124, 0.08); }
+.pulls li > a > div { flex: 1; min-width: 0; }

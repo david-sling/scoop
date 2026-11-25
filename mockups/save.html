@@ -64,6 +64,13 @@
 .btn.del:hover { color: #A3261F; background: #FDECEA; }
 @media (max-width: 1100px) { .detail { grid-template-columns: minmax(0, 1fr); } .side { position: static; } }
 @media (max-width: 720px) { .detail h1 { font-size: 32px; } .open { flex-wrap: wrap; } .note p { font-size: 24px; } }
+.inproj { list-style: none; margin: 14px 0 0; padding: 0; }
+.inproj li { padding: 13px 0; border-top: 1px solid #F0E0D2; }
+.inproj .pname { font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 150ms var(--ease); }
+.inproj .pname:hover { border-bottom-color: var(--ink); }
+.inproj .who { margin-left: 8px; font-size: 13px; color: var(--ink-3); }
+.usedhow { display: flex; gap: 8px; margin: 6px 0 0; color: var(--ink-2); }
+.usedhow img.b { width: 16px; height: 16px; margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -99,8 +106,8 @@
   <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
   <nav class="nav" aria-label="Main">
     <a href="dashboard.html" aria-current="page">Library</a>
+    <a href="project.html">Projects</a>
     <a href="#">Tags</a>
-    <a href="#">Newsletters</a>
     <a href="#">Agents</a>
     <a href="#">Sources</a>
     <a href="#">Quarantine <span class="n">3</span></a>
@@ -161,11 +168,14 @@
       </section>
 
       <section class="tile cream">
-        <div class="hd"><h2>Used in projects</h2></div>
-        <ul class="pulls">
-          <li><img class="b" src="icons/claude.svg" alt=""><div><div class="s-top"><span>davidsling.in redesign</span><time>Today</time></div><p>Pulled by Claude Code</p></div></li>
-          <li><img class="b" src="icons/gemini.svg" alt=""><div><div class="s-top"><span>Scoop landing page</span><time>20 Nov</time></div><p>Pulled by Gemini CLI</p></div></li>
+        <div class="hd"><h2>Projects</h2></div>
+        <ul class="inproj">
+          <li><a class="pname" href="project.html">davidsling.in redesign</a><span class="who">added by you</span>
+            <p class="usedhow"><img class="b" src="icons/claude.svg" alt="">Claude Code, today: Used the ease-out curve for the navigation hover and the page transitions.</p></li>
+          <li><a class="pname" href="#">Scoop landing page</a><span class="who">added by Gemini CLI</span>
+            <p class="usedhow"><img class="b" src="icons/gemini.svg" alt="">Gemini CLI, 20 Nov: Compared two curves for the hero card. Chose the slower one.</p></li>
         </ul>
+        <button class="newtag" type="button" style="margin:10px 0 0 -12px"><svg class="i"><use href="#i-plus"/></svg>Add to a project</button>
       </section>
 
       <section class="tile">

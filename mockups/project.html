@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>davidsling.in redesign · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real mail or real activity. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+.back { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; margin: -8px 0 14px; color: var(--ink-2); transition: color 120ms var(--ease); }
+.back:hover { color: var(--ink); }
+.back svg { transform: scaleX(-1); }
+.phead { position: relative; overflow: hidden; background: var(--pink); border-color: transparent; padding: 34px 30px 30px; }
+.phead h1 { margin: 0; font-size: 52px; line-height: 1.02; font-weight: 300; letter-spacing: -0.035em; text-wrap: balance; }
+.phead .brief { margin: 12px 0 0; font-size: 16px; color: #5A2A45; max-width: 52ch; }
+.phead .meta { margin: 14px 0 22px; font: 400 12px var(--mono); color: #5A2A45; }
+.phead .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.phead .btn { min-height: 44px; padding: 0 22px; }
+.phead .btn.white { background: #fff; }
+.phead .btn.white:hover { background: var(--cream); }
+.inby { margin-top: auto; padding-top: 14px; font-size: 12px; color: var(--ink-3); }
+.used { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); }
+.used .chip { font: 500 12px/22px var(--sans); letter-spacing: 0; text-transform: none; padding: 0 10px; }
+.log { list-style: none; margin: 14px 0 0; padding: 0; }
+.log li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px solid #F0E0D2; }
+.log img.b { width: 22px; height: 22px; margin-top: 2px; }
+.log .t { font-weight: 500; }
+.log p { margin: 2px 0 0; color: var(--ink-2); }
+.log time { display: block; margin-top: 4px; font: 400 12px var(--mono); color: var(--ink-3); }
+.facts { margin: 14px 0 0; }
+.facts div { display: flex; justify-content: space-between; gap: 16px; min-height: 40px; align-items: center; border-top: 1px solid var(--rule); }
+.facts dt { color: var(--ink-2); }
+.facts dd { margin: 0; text-align: right; }
+.agentsrow { display: flex; align-items: center; gap: 8px; }
+.agentsrow img.b { width: 18px; height: 18px; }
+@media (max-width: 720px) { .phead h1 { font-size: 36px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="dashboard.html">Library</a>
+    <a href="project.html" aria-current="page">Projects</a>
+    <a href="#">Tags</a>
+    <a href="#">Agents</a>
+    <a href="#">Sources</a>
+    <a href="#">Quarantine <span class="n">3</span></a>
+    <a href="#">Settings</a>
+  </nav>
+  <button class="copy" type="button">david@scoop.davidsling.in<svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+</div></header>
+
+<main><div class="wrap">
+  <a class="back" href="#"><svg class="i"><use href="#i-chev"/></svg>Projects</a>
+  <div class="tiles">
+    <div class="left">
+      <header class="tile phead">
+        <h1>davidsling.in redesign</h1>
+        <p class="brief">Portfolio rebuild. Calm and confident, with one playful moment per page.</p>
+        <div class="meta">14 saves · 6 used · created by you on 18 Nov</div>
+        <div class="acts">
+          <button class="btn solid" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy project prompt</button>
+          <button class="btn white" type="button"><svg class="i"><use href="#i-plus"/></svg>Add saves</button>
+        </div>
+      </header>
+
+      <div class="rowhd"><h2>Saves in this project</h2></div>
+      <ul class="tags">
+        <li><a href="#" aria-current="true">All <span>14</span></a></li>
+        <li><a href="#">Used <span>6</span></a></li>
+        <li><a href="#">Not used yet <span>8</span></a></li>
+        <li><a href="#">Added by you <span>10</span></a></li>
+        <li><a href="#">Added by agents <span>4</span></a></li>
+      </ul>
+      <ul class="saves">
+        <li class="save"><a href="save.html"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Tue</time></div><h3>A small easing playground</h3><p class="">Your note: Good for picking curves.</p><div class="inby">Added by you</div><div class="used"><span class="chip">Used</span>Claude Code: Used the ease-out curve for the navigation hover and the page transitions.</div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><text x="34" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="300" fill="#FFABDA" letter-spacing="-5">Aa</text><text x="176" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="700" fill="#fff" letter-spacing="-5">Aa</text><circle cx="270" cy="160" r="18" fill="#fff"/><path d="m265 151 14 9-14 9z" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/youtube.svg" alt="">Video · 18 min<time>Wed</time></div><h3>Designing with variable fonts</h3><p class="">Your note: Watch the part on optical sizes.</p><div class="inby">Added by you</div><div class="used"><span class="chip">Used</span>Claude Code: Chose a variable font for headings after the section on optical sizes.</div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF6EE"/><rect x="40" y="32" width="110" height="136" rx="14" fill="#FFABDA"/><rect x="160" y="32" width="120" height="62" rx="14" fill="#9F527C"/><rect x="160" y="106" width="54" height="62" rx="14" fill="#F4D9B5"/><rect x="226" y="106" width="54" height="62" rx="14" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Mon</time></div><h3>A collection of bento grid layouts</h3><p class="">Your note: The uneven tile sizes work.</p><div class="inby">Added by Claude Code</div><div class="used"><span class="chip">Used</span>Claude Code: Based the projects grid on the uneven tile sizes.</div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="60" y="58" width="120" height="84" rx="18" fill="#fff"/><rect x="150" y="76" width="120" height="84" rx="18" fill="#B7A4EC"/><path d="M92 160c30 18 70 18 104-6" fill="none" stroke="#6E55C4" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 9"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/x.svg" alt="">X<time>Today</time></div><h3>A drag gesture with spring snap-back in 12 lines</h3><p class="">Your note: The snap-back feels right. Try it on cards.</p><div class="inby">Added by you</div><div class="used none"><span class="chip none">Not used yet</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><circle cx="90" cy="100" r="44" fill="#FFABDA"/><circle cx="160" cy="100" r="44" fill="#9F527C"/><circle cx="230" cy="100" r="44" fill="#F4D9B5"/><circle cx="286" cy="164" r="18" fill="#fff"/><path d="m281 155 14 9-14 9z" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/youtube.svg" alt="">Video · 24 min<time>23 Nov</time></div><h3>Colour systems in OKLCH</h3><p class="">Your note: Use for the Scoop palette.</p><div class="inby">Added by you</div><div class="used"><span class="chip">Used</span>Codex: Took the OKLCH approach for the colour tokens.</div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><path d="M60 70c30-14 50 12 84 0s56-10 116 2M60 104c40-10 70 10 110 0s50-6 90 0M60 138c30-10 60 8 96 0" fill="none" stroke="#2B1721" stroke-width="5" stroke-linecap="round"/><text x="226" y="150" font-family="DM Sans, sans-serif" font-size="34" font-weight="700" fill="#4F7F5E">42</text></svg></span><div class="txt"><div class="src"><img class="b" src="icons/instagram.svg" alt="">Image<time>22 Nov</time></div><h3>A menu with handwritten prices</h3><p class="">Your note: Warm and human.</p><div class="inby">Added by Claude Code</div><div class="used none"><span class="chip none">Not used yet</span></div></div></a></li>
+      </ul>
+      <nav class="pager" aria-label="Pages">
+        <span class="range">1 to 6 of 14</span>
+        <a class="pg off" aria-disabled="true"><svg class="i flip"><use href="#i-chev"/></svg><span class="sr">Previous page</span></a>
+        <a class="pg" href="#" aria-current="page">1</a>
+        <a class="pg" href="#">2</a>
+        <a class="pg" href="#">3</a>
+        <a class="pg" href="#"><svg class="i"><use href="#i-chev"/></svg><span class="sr">Next page</span></a>
+      </nav>
+    </div>
+
+    <aside class="right">
+      <div class="stick" style="grid-row: 1 / -1">
+      <section class="tile cream">
+        <div class="hd"><h2>How saves were used</h2></div>
+        <ul class="log">
+          <li><img class="b" src="icons/claude.svg" alt=""><div><div class="t">A small easing playground</div><p>Used the ease-out curve for the navigation hover and the page transitions.</p><time>Claude Code · today 10:14</time></div></li>
+          <li><img class="b" src="icons/claude.svg" alt=""><div><div class="t">A collection of bento grid layouts</div><p>Based the projects grid on the uneven tile sizes.</p><time>Claude Code · today 09:50</time></div></li>
+          <li><img class="b" src="icons/openai.svg" alt=""><div><div class="t">Colour systems in OKLCH</div><p>Took the OKLCH approach for the colour tokens.</p><time>Codex · Wed 18:31</time></div></li>
+        </ul>
+        <a class="more" href="#" style="display:inline-flex;align-items:center;gap:4px;min-height:36px;margin-top:6px;font-weight:500">All 6 reports<svg class="i"><use href="#i-chev"/></svg></a>
+      </section>
+
+      <section class="tile">
+        <div class="hd"><h2>Details</h2></div>
+        <dl class="facts">
+          <div><dt>Agents</dt><dd class="agentsrow"><img class="b" src="icons/claude.svg" alt="">Claude Code<img class="b" src="icons/openai.svg" alt="">Codex</dd></div>
+          <div><dt>Created</dt><dd>18 Nov, by you</dd></div>
+          <div><dt>Last report</dt><dd>Today 10:14</dd></div>
+        </dl>
+        <div style="display:flex;gap:4px;margin:6px 0 0 -12px"><button class="btn text" type="button">Rename</button><button class="btn text" type="button">Merge</button><button class="btn text" type="button">Archive</button></div>
+      </section>
+      </div>
+    </aside>
+  </div>
+</div></main>
+</body>
+</html>
