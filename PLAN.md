@@ -187,6 +187,8 @@ A save does not have to be something to look at. It can be a tool the agent shou
 
 **Rules that keep this safe**
 
+Confirmed by David on Nov 26, 2026.
+
 - **Scoop never installs or runs anything.** It only stores the name or the link.
 - **An agent must not install or connect a tool just because it is saved in Scoop.** A tool counts as "use this" only when the person added it to the project themselves. Tools that arrived by email, or that an agent added, need the person's go-ahead first. Without this, anyone who can email the agent's address could suggest a hostile MCP server.
 - **No secrets in saved addresses.** MCP URLs sometimes carry a key or token. Scoop strips or refuses these and never stores authentication details.
