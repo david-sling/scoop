@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, animate, motion, useReducedMotion } from 'motion/react'
 
 /** Where the product lives. The landing page only links to it. */
 export const APP_URL = 'https://app.scoop.davidsling.in'
@@ -185,20 +185,19 @@ function hex(cx: number, cy: number, r: number) {
 
 /**
  * A wire from a logo to the centre. It leaves from the point of the logo's hexagon that faces
- * the centre and then only ever runs in the channels between cells: a short level run, then a
+ * the centre and then only ever runs along the edges between cells: a short level run, then a
  * 60 degree slant to the next column, each time stepping towards the middle line. Wires that
- * meet share a channel, so they gather into one trunk before they reach the headline.
+ * meet share an edge, so they gather into one trunk before they reach the headline.
  */
 function wire(n: Node) {
   const mid = H / 2
   const dir = n.left ? 1 : -1
   const fx = (x: number) => (n.left ? x : W - x).toFixed(1)
   const start = cell(n.col, n.row)
-  const first = start.y <= mid ? 1 : -1
   let x = start.x + A
   let y = start.y
-  let d = `M${fx(start.x + A - 8)} ${y.toFixed(1)}`
-  let flip = first
+  let d = `M${fx(x)} ${y.toFixed(1)}`
+  let flip = start.y <= mid ? 1 : -1
   for (let col = n.col; col < COLS - 1; col++) {
     const away = Math.abs(y - mid) < 1
     const step = away ? -flip : y < mid ? 1 : -1
@@ -216,16 +215,51 @@ function wire(n: Node) {
   return `${d} H${W / 2 - dir * 60}`
 }
 
-/** Wide screens: logos in hexagons on both sides, wired to the centre behind the headline. */
+/** How long one pulse of light takes to travel its wire, in seconds. */
+const PULSE_S = 1.4
+/** The lit part of the wire, as a share of its length. */
+const DASH = 0.26
+
+/**
+ * Wide screens: logos in hexagons on both sides, wired to the centre behind the headline.
+ * The cells of the honeycomb touch, so the wires run along the lines where cells meet.
+ * At rest only the logo cells and the wires show. The rest of the honeycomb appears faintly
+ * in a soft circle around the light as it travels, and fades again behind it.
+ */
 function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run: number }) {
   const wires = ALL.map((n) => ({ n, d: wire(n) }))
-  const taken = new Set(ALL.map((n) => `${n.left}-${n.col}-${n.row}`))
-  const ghosts = [true, false].flatMap((left) =>
-    CELLS.filter((c) => !taken.has(`${left}-${c.col}-${c.row}`)).map((c) => {
+  const cells = [true, false].flatMap((left) =>
+    CELLS.map((c) => {
       const p = cell(c.col, c.row)
-      return { x: left ? p.x : W - p.x, y: p.y, far: c.col >= COLS - 2 }
+      return { x: left ? p.x : W - p.x, y: p.y }
     }),
   )
+
+  const wireRefs = useRef<Record<string, SVGPathElement | null>>({})
+  const pulseRef = useRef<SVGPathElement>(null)
+  const spotRef = useRef<SVGCircleElement>(null)
+
+  useEffect(() => {
+    const path = wireRefs.current[active.id]
+    const pulse = pulseRef.current
+    const spot = spotRef.current
+    if (!moving || !path || !pulse || !spot) return
+    const length = path.getTotalLength()
+    const controls = animate(0, 1, {
+      duration: PULSE_S,
+      ease: [0.45, 0, 0.2, 1],
+      onUpdate: (p) => {
+        pulse.setAttribute('stroke-dashoffset', String(DASH - (1 + DASH) * p))
+        // The circle follows the middle of the lit part, and eases in and out at the two ends.
+        const at = Math.min(1, Math.max(0, (1 + DASH) * p - DASH / 2))
+        const point = path.getPointAtLength(at * length)
+        spot.setAttribute('cx', String(point.x))
+        spot.setAttribute('cy', String(point.y))
+        spot.setAttribute('opacity', String(Math.min(1, p / 0.18, (1 - p) / 0.3)))
+      },
+    })
+    return () => controls.stop()
+  }, [run, moving, active.id])
 
   return (
     <svg
@@ -248,42 +282,92 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         <mask id="fade-mask" maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
           <rect width={W} height={H} fill="url(#fade)" />
         </mask>
+
+        {/* The soft circle that travels with the light and uncovers the cells near it. */}
+        <radialGradient id="spot-falloff">
+          <stop offset="0" stopColor="#fff" />
+          <stop offset="0.45" stopColor="#fff" stopOpacity="0.7" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <mask id="spot-mask" maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
+          <circle ref={spotRef} r="150" fill="url(#spot-falloff)" opacity="0" />
+        </mask>
+
+        {/* Three quiet tones for the resting honeycomb. Each cell carries its own gradient. */}
+        <linearGradient id="tone-0" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fffaf5" />
+          <stop offset="1" stopColor="#ffeef3" />
+        </linearGradient>
+        <linearGradient id="tone-1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fff3ea" />
+          <stop offset="1" stopColor="#fde9ee" />
+        </linearGradient>
+        <linearGradient id="tone-2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fff7f1" />
+          <stop offset="1" stopColor="#fff1e6" />
+        </linearGradient>
+        <linearGradient id="cell-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#ffe6f3" stopOpacity="0.55" />
+        </linearGradient>
+        <linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fff" />
+          <stop offset="1" stopColor="#fff0f7" />
+        </linearGradient>
+        <linearGradient id="logo-edge" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#f3e3ea" />
+          <stop offset="1" stopColor="#e7c3d6" />
+        </linearGradient>
       </defs>
 
-      {ghosts.map((g) => (
-        <polygon
-          key={`${g.x}-${g.y}`}
-          points={hex(g.x, g.y, A - 7)}
-          stroke="#eadfe4"
-          strokeOpacity={g.far ? 0.55 : 1}
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-      ))}
+      {/* Always there, very quietly: neighbouring cells differ only by tint, with no outlines. */}
+      <g>
+        {cells.map((c, i) => (
+          <polygon key={`${c.x}-${c.y}`} points={hex(c.x, c.y, A)} fill={`url(#tone-${(i * 7 + (c.x > W / 2 ? 1 : 0)) % 3})`} />
+        ))}
+      </g>
+
+      <g mask="url(#spot-mask)">
+        {cells.map((c) => (
+          <polygon
+            key={`${c.x}-${c.y}`}
+            points={hex(c.x, c.y, A)}
+            fill="url(#cell-fill)"
+            stroke="#e3bfd2"
+            strokeWidth="1"
+            strokeLinejoin="round"
+          />
+        ))}
+      </g>
 
       <g mask="url(#fade-mask)">
         {wires.map(({ n, d }) => (
-          <path key={n.id} d={d} stroke="#9f527c" strokeOpacity="0.38" strokeWidth="1.5" strokeLinejoin="miter" />
+          <path
+            key={n.id}
+            ref={(el) => {
+              wireRefs.current[n.id] = el
+            }}
+            d={d}
+            stroke="#9f527c"
+            strokeOpacity="0.3"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
         ))}
-        {moving &&
-          wires
-            .filter(({ n }) => n.id === active.id)
-            .map(({ n, d }) => (
-              <motion.path
-                key={`${run}-${n.id}`}
-                d={d}
-                pathLength={1}
-                stroke="#f0489f"
-                strokeWidth="3"
-                strokeLinecap="butt"
-                strokeLinejoin="miter"
-                strokeDasharray="0.28 1"
-                initial={{ strokeDashoffset: 0.28 }}
-                animate={{ strokeDashoffset: -1 }}
-                transition={{ duration: 1.3, ease: [0.45, 0, 0.2, 1] }}
-                style={{ filter: 'drop-shadow(0 0 4px #ffabda) drop-shadow(0 0 10px #ffabda)' }}
-              />
-            ))}
+        {moving && (
+          <path
+            ref={pulseRef}
+            d={wire(active)}
+            pathLength={1}
+            stroke="#f0489f"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray={`${DASH} 1`}
+            strokeDashoffset={DASH}
+            style={{ filter: 'drop-shadow(0 0 4px #ffabda) drop-shadow(0 0 10px #ffabda)' }}
+          />
+        )}
       </g>
 
       {ALL.map((n) => {
@@ -294,19 +378,19 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
             style={{
               transformBox: 'fill-box',
               transformOrigin: 'center',
-              transform: on ? 'scale(1.06)' : 'scale(1)',
+              transform: on ? 'scale(1.05)' : 'scale(1)',
               transition: 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
             <polygon
-              points={hex(n.x, n.y, A - 12)}
-              stroke={on ? '#ffabda' : '#eadfe4'}
-              strokeWidth={on ? 12 : 10}
+              points={hex(n.x, n.y, A)}
+              fill="url(#logo-fill)"
+              stroke={on ? '#ffabda' : 'url(#logo-edge)'}
+              strokeWidth={on ? 3 : 1.5}
               strokeLinejoin="round"
-              style={{ transition: 'stroke 300ms cubic-bezier(0.16, 1, 0.3, 1)' }}
+              style={{ transition: 'stroke-width 300ms cubic-bezier(0.16, 1, 0.3, 1)' }}
             />
-            <polygon points={hex(n.x, n.y, A - 12)} fill="#fff" stroke="#fff" strokeWidth="7" strokeLinejoin="round" />
-            <image href={`/icons/${n.id}.svg`} x={n.x - 17} y={n.y - 17} width="34" height="34" />
+            <image href={`/icons/${n.id}.svg`} x={n.x - 18} y={n.y - 18} width="36" height="36" />
           </g>
         )
       })}
