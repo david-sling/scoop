@@ -74,6 +74,11 @@ half = 1000
 icon = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{cx-half} {cy-half} {2*half} {2*half}" fill="none"><rect x="{cx-half}" y="{cy-half}" width="{2*half}" height="{2*half}" rx="440" fill="{PINK}"/>{mark()}</svg>\n'
 out['icon'] = icon
 
+# Transparent copies: the pink versions without the background
+for k in [k for k in out if not k.endswith('-on-cream') and k != 'icon']:
+    out[k + '-transparent'] = re.sub(r'<rect[^>]*/>', '', out[k], count=1)
+out['mark-transparent'] = svg(mark(), [MARK], 60, None)
+
 for k, v in out.items():
     open(os.path.join(here, f'scoop-lockup-{k}.svg'), 'w').write(v)
 
