@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real mail or real activity. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+.phd { margin: 6px 4px 26px; }
+.phd h1 { margin: 0; font-size: 56px; line-height: 1; font-weight: 300; letter-spacing: -0.035em; }
+.set { display: grid; grid-template-columns: 220px minmax(0, 760px); gap: 40px; align-items: start; }
+.toc { position: sticky; top: 14px; display: grid; gap: 2px; }
+.toc a { display: flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; color: var(--ink-2); transition: background-color 120ms var(--ease), color 120ms var(--ease); }
+.toc a:hover { background: var(--cream); color: var(--ink); }
+.toc a[aria-current] { background: var(--pink-wash); color: var(--mauve-deep); font-weight: 500; }
+.secs { display: grid; gap: 14px; }
+.secs h2 { font-size: 24px; }
+.lead { margin: 6px 0 0; color: var(--ink-2); max-width: 60ch; }
+.opts { margin: 16px 0 0; }
+.opt { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 0; border-top: 1px solid var(--rule); }
+.opt:last-child { padding-bottom: 0; }
+.opt .l { min-width: 0; }
+.opt .t { font-weight: 500; }
+.opt .d { margin-top: 2px; color: var(--ink-2); max-width: 54ch; }
+.opt .v { color: var(--ink-2); white-space: nowrap; }
+.opt .r { display: flex; align-items: center; gap: 12px; flex: none; }
+.sw { position: relative; display: inline-block; width: 46px; height: 28px; flex: none; }
+.sw input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.sw span { position: absolute; inset: 0; border-radius: 999px; background: #D9CBD2; transition: background-color 200ms var(--ease); pointer-events: none; }
+.sw span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform 200ms var(--ease); }
+.sw input:checked + span { background: var(--mauve); }
+.sw input:checked + span::after { transform: translateX(18px); }
+.sw input:focus-visible + span { outline: 2px solid var(--mauve); outline-offset: 2px; }
+.sel { height: 38px; padding: 0 14px; font: inherit; color: var(--ink); background: #fff; border: 1px solid var(--rule); border-radius: 999px; transition: border-color 120ms var(--ease); }
+.sel:hover { border-color: var(--ink); }
+.cream { background: var(--cream); border-color: transparent; }
+.cream .opt { border-top-color: #F0E0D2; }
+.danger { border-color: #F2C9C4; }
+.btn.red { color: #A3261F; border: 1px solid #F2C9C4; }
+.btn.red:hover { background: #FDECEA; border-color: #A3261F; }
+@media (max-width: 900px) { .set { grid-template-columns: minmax(0, 1fr); gap: 16px; } .toc { position: static; display: flex; flex-wrap: wrap; } .phd h1 { font-size: 40px; } .opt { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="dashboard.html">Library</a>
+    <a href="projects.html">Projects</a>
+    <a href="tags.html">Tags</a>
+    <a href="agents.html">Agents</a>
+    <a href="sources.html">Sources</a>
+    <a href="sources.html#quarantine">Quarantine <span class="n">3</span></a>
+    <a href="settings.html" aria-current="page">Settings</a>
+  </nav>
+  <button class="copy" type="button">david@scoop.davidsling.in<svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+</div></header>
+
+<main><div class="wrap">
+  <div class="phd"><h1>Settings</h1></div>
+
+  <div class="set">
+    <nav class="toc" aria-label="Settings sections">
+      <a href="#account" aria-current="true">Account</a>
+      <a href="#agents">Agent rules</a>
+      <a href="#trash">Trash and undo</a>
+      <a href="#data">Your data</a>
+    </nav>
+
+    <div class="secs">
+      <section class="tile" id="account">
+        <h2>Account</h2>
+        <div class="opts">
+          <div class="opt"><div class="l"><div class="t">Name</div></div><div class="r"><span class="v">David</span><button class="btn text" type="button">Change</button></div></div>
+          <div class="opt"><div class="l"><div class="t">Sign-in email</div><div class="d">Used to sign in and to tell you about your account. It is not your agent's address.</div></div><div class="r"><span class="v">you@example.com</span><button class="btn text" type="button">Change</button></div></div>
+          <div class="opt"><div class="l"><div class="t">Your agent's address</div><div class="d">Changing it stops mail sent to the old one.</div></div><div class="r"><span class="v" style="font:400 13px var(--mono)">david@scoop.davidsling.in</span><button class="btn text" type="button">Change</button></div></div>
+        </div>
+      </section>
+
+      <section class="tile cream" id="agents">
+        <h2>Agent rules</h2>
+        <p class="lead">Agents can organise anything in your library. These rules are sent to every agent as instructions.</p>
+        <div class="opts">
+          <div class="opt"><div class="l"><div class="t">Ask before changing or removing</div><div class="d">Agents are told to get your go-ahead before they rename, merge, reorder, archive or delete. Scoop cannot check that they asked, which is why undo exists.</div></div><label class="sw"><input type="checkbox" checked><span></span><span class="sr">Ask before changing or removing</span></label></div>
+          <div class="opt"><div class="l"><div class="t">Use my tags before making new ones</div><div class="d">Agents are told to read your tag list first.</div></div><label class="sw"><input type="checkbox" checked><span></span><span class="sr">Use my tags before making new ones</span></label></div>
+          <div class="opt"><div class="l"><div class="t">Tools need my approval</div><div class="d">An agent uses a saved skill or MCP server only after you allow it. This one cannot be turned off.</div></div><label class="sw"><input type="checkbox" checked disabled><span style="opacity:.55"></span><span class="sr">Tools need my approval, always on</span></label></div>
+        </div>
+      </section>
+
+      <section class="tile" id="trash">
+        <h2>Trash and undo</h2>
+        <p class="lead">Anything you or an agent deletes goes to the trash first. Every change an agent makes can be undone until its history runs out.</p>
+        <div class="opts">
+          <div class="opt"><div class="l"><div class="t">Keep deleted things for</div></div><select class="sel" aria-label="Keep deleted things for"><option>30 days</option><option>90 days</option><option>Until I empty the trash</option></select></div>
+          <div class="opt"><div class="l"><div class="t">Keep undo history for</div></div><select class="sel" aria-label="Keep undo history for"><option>90 days</option><option>1 year</option><option>Always</option></select></div>
+          <div class="opt"><div class="l"><div class="t">Trash</div><div class="d">7 saves and 1 tag. Emptying it cannot be undone, so only you can do it.</div></div><div class="r"><button class="btn text" type="button">Open</button><button class="btn outline" type="button">Empty trash</button></div></div>
+        </div>
+      </section>
+
+      <section class="tile" id="data">
+        <h2>Your data</h2>
+        <div class="opts">
+          <div class="opt"><div class="l"><div class="t">Export your library</div><div class="d">Every save, note, tag, project and use report, as files you can open elsewhere.</div></div><button class="btn outline" type="button">Export</button></div>
+        </div>
+      </section>
+
+      <section class="tile danger">
+        <h2>Delete your account</h2>
+        <p class="lead">Removes your library, your agent's address and every connection for good. This cannot be undone.</p>
+        <div style="margin-top:16px"><button class="btn red" type="button">Delete account</button></div>
+      </section>
+    </div>
+  </div>
+</div></main>
+</body>
+</html>
