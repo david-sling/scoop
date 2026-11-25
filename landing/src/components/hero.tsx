@@ -220,6 +220,8 @@ const SHEEN = [0.25, 0.6, 0.4]
 const finishOf = (i: number, x: number) => (i * 7 + (x > W / 2 ? 1 : 0)) % 3
 /** How far the cursor's light reaches, in scene units. */
 const CURSOR_REACH = 260
+/** The steepest a tile leans towards the cursor, in radians (about 32 degrees). */
+const TILT_MAX = 0.56
 
 /** How long one pulse of light takes to travel its wire, in seconds. */
 const PULSE_S = 1.4
@@ -256,6 +258,9 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
   const glowRefs = useRef<Record<string, SVGPolygonElement | null>>({})
   const svgRef = useRef<SVGSVGElement>(null)
   const sheenRefs = useRef<(SVGPolygonElement | null)[]>([])
+  const cellRefs = useRef<(SVGGElement | null)[]>([])
+  const litRefs = useRef<(SVGPolygonElement | null)[]>([])
+  const logoRefs = useRef<Record<string, SVGGElement | null>>({})
 
   // The cursor is a second, small light. Cells near it catch more of the sheen, and the
   // light eases after the cursor rather than snapping to it.
@@ -270,13 +275,39 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
       now.x += (target.x - now.x) * 0.16
       now.y += (target.y - now.y) * 0.16
       now.on += (target.on - now.on) * 0.1
+      // A tile that leans towards the cursor looks shorter along that direction when seen
+      // from straight above. That squeeze, about the tile's own centre, is the tilt.
+      const tilt = (el: SVGElement | null, x: number, y: number) => {
+        if (!el) return
+        const dx = now.x - x
+        const dy = now.y - y
+        const far = Math.hypot(dx, dy)
+        const near = Math.max(0, 1 - far / CURSOR_REACH)
+        // Flat directly under the cursor, steepest a little way out, flat again at the edge.
+        const lean = 1 - Math.cos(TILT_MAX * near * Math.min(1, far / 60) * now.on)
+        if (lean < 0.0005 || far < 0.01) {
+          el.removeAttribute('transform')
+          return
+        }
+        const ux = dx / far
+        const uy = dy / far
+        const a = 1 - lean * ux * ux
+        const b = -lean * ux * uy
+        const d = 1 - lean * uy * uy
+        const e = x - a * x - b * y
+        const f = y - b * x - d * y
+        el.setAttribute('transform', `matrix(${a} ${b} ${b} ${d} ${e} ${f})`)
+      }
       cells.forEach((c, i) => {
+        tilt(cellRefs.current[i], c.x, c.y)
+        tilt(litRefs.current[i], c.x, c.y)
         const el = sheenRefs.current[i]
         if (!el) return
         const near = Math.max(0, 1 - Math.hypot(c.x - now.x, c.y - now.y) / CURSOR_REACH)
         const base = SHEEN[finishOf(i, c.x)]
         el.setAttribute('fill-opacity', String(base + (1 - base) * near * near * now.on))
       })
+      ALL.forEach((n) => tilt(logoRefs.current[n.id], n.x, n.y))
       const settled =
         Math.abs(target.x - now.x) < 0.5 && Math.abs(target.y - now.y) < 0.5 && Math.abs(target.on - now.on) < 0.01
       if (!settled) frame = requestAnimationFrame(paint)
@@ -435,7 +466,12 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
           const finish = finishOf(i, c.x)
           const points = hex(c.x, c.y, A)
           return (
-            <g key={`${c.x}-${c.y}`}>
+            <g
+              key={`${c.x}-${c.y}`}
+              ref={(el) => {
+                cellRefs.current[i] = el
+              }}
+            >
               <polygon points={points} fill="url(#field)" fillOpacity={[0.55, 0.78, 1][finish]} />
               <polygon
                 ref={(el) => {
@@ -451,9 +487,12 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
       </g>
 
       <g mask="url(#spot-mask)">
-        {cells.map((c) => (
+        {cells.map((c, i) => (
           <polygon
             key={`${c.x}-${c.y}`}
+            ref={(el) => {
+              litRefs.current[i] = el
+            }}
             points={hex(c.x, c.y, A)}
             fill="url(#cell-fill)"
           />
@@ -510,7 +549,12 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
       ))}
 
       {ALL.map((n) => (
-        <g key={n.id}>
+        <g
+          key={n.id}
+          ref={(el) => {
+            logoRefs.current[n.id] = el
+          }}
+        >
           <polygon points={hex(n.x, n.y, A)} fill="url(#logo-fill)" />
           <image href={`/icons/${n.id}.svg`} x={n.x - 18} y={n.y - 18} width="36" height="36" />
         </g>
