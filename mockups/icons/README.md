@@ -1,4 +1,5 @@
 # Connector logos
 
-Slack, GitHub, Gmail and Google Chrome marks from the Simple Icons package (version 9.21.0, CC0 licence for the files).
+Full-colour Slack, Gmail, Google Chrome and GitHub logos from the gilbarbara/logos collection on GitHub (CC0 licence for the files). GitHub has no colour version, so its mark is black.
+
 The logos themselves are trademarks of their owners. Check each brand's usage guidelines before the product ships.
