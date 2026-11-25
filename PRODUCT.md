@@ -35,7 +35,9 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 ## Capabilities and Constraints
 
 - Every source produces one item shape: source, sender, time, original content, state, labels, priority.
-- Originals never change. Transcripts, article text and summaries are layers added beside the original.
+- Scoop runs no AI of its own. It does not classify, summarise, transcribe or search by meaning. Confirmed by David on Nov 26, 2026.
+- Every save arrives unsorted. It stays that way until an agent sets its topics, kind and description over MCP. Scoop records which agent did it.
+- Originals never change. Extracted text, existing captions and agent-written fields are added beside the original.
 - Each agent has a cursor that records where it stopped reading. This matters less for a library than it did for an inbox.
 - Labels, priorities and notes written by the agent persist between sessions.
 - Each item carries a trust level. The person's own capture note is trusted. All other content is untrusted data.
@@ -60,6 +62,7 @@ Full detail is in `PLAN.md`.
 ## Product Principles
 
 - A library, not a to-do list. Nothing in Scoop asks the person to act.
+- Scoop stores, the agent thinks. Anything that needs judgement is done by the person's agent, not by Scoop.
 - Saving takes one click. Anything slower and the person will not do it mid-scroll.
 - The agent is the main reader, and it comes with a question.
 - The person's own note and choices are the signal. They show taste better than any page content.

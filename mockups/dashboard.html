@@ -226,6 +226,16 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .feeds li { display: flex; align-items: center; gap: 10px; min-height: 44px; border-top: 1px solid var(--rule); }
 .feeds img.b, .feeds svg.i { width: 18px; height: 18px; }
 .feeds .t { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); }
+
+.save .txt { display: flex; flex-direction: column; }
+.save a { display: flex; flex-direction: column; }
+.save .txt { flex: 1; }
+.sorted { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 14px; }
+.sorted .by { font-size: 12px; color: var(--ink-3); }
+.chip.none { background: transparent; color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--ink-3); }
+.topics a.unsorted { border-style: dashed; border-color: var(--ink-3); }
+.btn.onmauve { width: 100%; min-height: 44px; margin-top: 6px; color: #fff; font-weight: 400; }
+.btn.onmauve:hover { background: var(--mauve-deep); }
 @media (max-width: 1100px) { .saves { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 720px) { .saves { grid-template-columns: minmax(0, 1fr); } .find { flex-direction: column; } }
 </style>
@@ -275,10 +285,10 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
       <header class="tile hero lib">
         <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-transparent.svg" alt="">
         <h1>What do you need?</h1>
-        <p class="count">312 things saved. 18 this week.</p>
+        <p class="count">312 things saved. 18 are waiting for your agent to sort.</p>
         <form class="find" onsubmit="return false">
           <label class="sr" for="q">Search your library</label>
-          <input id="q" type="search" placeholder="Describe it, like playful hover animations">
+          <input id="q" type="search" placeholder="Search titles, notes and topics">
           <button class="btn solid" type="submit">Search</button>
         </form>
       </header>
@@ -286,6 +296,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
       <div class="rowhd"><h2>Recently saved</h2><a href="#">All 312<svg class="i"><use href="#i-chev"/></svg></a></div>
       <ul class="topics">
         <li><a href="#" aria-current="true">Everything</a></li>
+        <li><a class="unsorted" href="#">Unsorted <span>18</span></a></li>
         <li><a href="#">Animation <span>41</span></a></li>
         <li><a href="#">Components <span>28</span></a></li>
         <li><a href="#">Typography <span>19</span></a></li>
@@ -294,21 +305,22 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
         <li><a href="#">Colour <span>12</span></a></li>
       </ul>
       <ul class="saves">
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="60" y="58" width="120" height="84" rx="18" fill="#fff"/><rect x="150" y="76" width="120" height="84" rx="18" fill="#B7A4EC"/><path d="M92 160c30 18 70 18 104-6" fill="none" stroke="#6E55C4" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 9"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/x.svg" alt="">X<time>Today</time></div><h3>A drag gesture with spring snap-back in 12 lines</h3><p class="">Your note: The snap-back feels right. Try it on cards.</p></div></a></li>
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF0C2"/><rect x="40" y="36" width="240" height="128" rx="14" fill="#fff"/><rect x="56" y="54" width="70" height="12" rx="6" fill="#2B1721"/><rect x="56" y="80" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="102" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="124" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="214" y="52" width="50" height="16" rx="8" fill="#E0A800"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Today</time></div><h3>Orbit UI, a component library</h3><p class="">Your note: Clean tables and date pickers.</p></div></a></li>
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><text x="34" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="300" fill="#FFABDA" letter-spacing="-5">Aa</text><text x="176" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="700" fill="#fff" letter-spacing="-5">Aa</text><circle cx="270" cy="160" r="18" fill="#fff"/><path d="m265 151 14 9-14 9z" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/youtube.svg" alt="">Video · 18 min<time>Wed</time></div><h3>Designing with variable fonts</h3><p class="">Your note: Watch the part on optical sizes.</p></div></a></li>
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><rect x="52" y="34" width="216" height="132" rx="10" fill="#fff"/><rect x="72" y="56" width="110" height="14" rx="4" fill="#2B1721"/><rect x="72" y="84" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="100" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="116" width="120" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="138" width="64" height="12" rx="6" fill="#4F7F5E"/></svg></span><div class="txt"><div class="src"><svg class="i"><use href="#i-mail"/></svg>Newsletter<time>Wed</time></div><h3>The Agent Weekly, issue 48</h3><p class="auto">Memory that survives the session, and 3 links.</p></div></a></li>
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFE6F3"/><text x="24" y="150" font-family="DM Sans, sans-serif" font-size="150" font-weight="700" fill="#9F527C" letter-spacing="-10">48</text><rect x="212" y="52" width="80" height="6" rx="3" fill="#9F527C"/><rect x="212" y="68" width="56" height="6" rx="3" fill="#9F527C"/><rect x="212" y="84" width="68" height="6" rx="3" fill="#9F527C"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/instagram.svg" alt="">Image<time>Tue</time></div><h3>Poster with oversized numerals</h3><p class="">Your note: Big numbers, tiny labels.</p></div></a></li>
-        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Tue</time></div><h3>A small easing playground</h3><p class="">Your note: Good for picking curves.</p></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="60" y="58" width="120" height="84" rx="18" fill="#fff"/><rect x="150" y="76" width="120" height="84" rx="18" fill="#B7A4EC"/><path d="M92 160c30 18 70 18 104-6" fill="none" stroke="#6E55C4" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 9"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/x.svg" alt="">X<time>Today</time></div><h3>A drag gesture with spring snap-back in 12 lines</h3><p class="">Your note: The snap-back feels right. Try it on cards.</p><div class="sorted"><span class="chip none">Unsorted</span><span class="by">waiting for an agent</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF0C2"/><rect x="40" y="36" width="240" height="128" rx="14" fill="#fff"/><rect x="56" y="54" width="70" height="12" rx="6" fill="#2B1721"/><rect x="56" y="80" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="102" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="124" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="214" y="52" width="50" height="16" rx="8" fill="#E0A800"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Today</time></div><h3>Orbit UI, a component library</h3><p class="">Your note: Clean tables and date pickers.</p><div class="sorted"><span class="chip none">Unsorted</span><span class="by">waiting for an agent</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><text x="34" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="300" fill="#FFABDA" letter-spacing="-5">Aa</text><text x="176" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="700" fill="#fff" letter-spacing="-5">Aa</text><circle cx="270" cy="160" r="18" fill="#fff"/><path d="m265 151 14 9-14 9z" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/youtube.svg" alt="">Video · 18 min<time>Wed</time></div><h3>Designing with variable fonts</h3><p class="">Your note: Watch the part on optical sizes.</p><div class="sorted"><span class="chip">Typography</span><span class="by">sorted by Claude Code</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><rect x="52" y="34" width="216" height="132" rx="10" fill="#fff"/><rect x="72" y="56" width="110" height="14" rx="4" fill="#2B1721"/><rect x="72" y="84" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="100" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="116" width="120" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="138" width="64" height="12" rx="6" fill="#4F7F5E"/></svg></span><div class="txt"><div class="src"><svg class="i"><use href="#i-mail"/></svg>Newsletter<time>Wed</time></div><h3>The Agent Weekly, issue 48</h3><p class="auto">Claude Code: Memory that survives the session, and 3 links worth keeping.</p><div class="sorted"><span class="chip">AI news</span><span class="by">sorted by Claude Code</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFE6F3"/><text x="24" y="150" font-family="DM Sans, sans-serif" font-size="150" font-weight="700" fill="#9F527C" letter-spacing="-10">48</text><rect x="212" y="52" width="80" height="6" rx="3" fill="#9F527C"/><rect x="212" y="68" width="56" height="6" rx="3" fill="#9F527C"/><rect x="212" y="84" width="68" height="6" rx="3" fill="#9F527C"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/instagram.svg" alt="">Image<time>Tue</time></div><h3>Poster with oversized numerals</h3><p class="">Your note: Big numbers, tiny labels.</p><div class="sorted"><span class="chip">Typography</span><span class="by">sorted by Codex</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Tue</time></div><h3>A small easing playground</h3><p class="">Your note: Good for picking curves.</p><div class="sorted"><span class="chip">Animation</span><span class="by">sorted by Claude Code</span></div></div></a></li>
       </ul>
     </div>
 
     <aside class="right">
       <section class="tile agent">
         <div class="who"><img src="../brand/lockup-v2/scoop-lockup-mark-pink-transparent.svg" alt=""><span class="chip">For your agent</span></div>
-        <p class="big">Starting a project?</p>
-        <p class="say">Give your agent this prompt. It will go through your library and pick what fits.</p>
-        <button class="btn pink" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy project prompt</button>
+        <p class="big">18 saves are unsorted.</p>
+        <p class="say">Scoop does not sort anything itself. Give your agent this prompt and it will read the new saves and put them into topics.</p>
+        <button class="btn pink" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy sorting prompt</button>
+        <button class="btn onmauve" type="button">Starting a project? Copy project prompt</button>
       </section>
 
       <section class="tile cream">

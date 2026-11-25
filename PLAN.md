@@ -8,7 +8,8 @@ Scoop is a personal library for your AI agent. You fill it with things you like 
 
 - **Who it is for:** one person who makes things with agents every day, starting with designers and developers. It is not a team tool and it is not a task manager.
 - **What goes in:** posts, pages, videos and images saved with one click from a Chrome extension, and newsletters sent to the agent's own address.
-- **What the agent does:** searches the library for what fits the project in front of it, reads those items, and learns your taste from what you chose to save.
+- **What the agent does:** sorts new saves into topics, searches the library for what fits the project in front of it, reads those items, and learns your taste from what you chose to save.
+- **No AI inside Scoop.** Scoop stores and serves. It does not classify, summarise or transcribe, because your agent does that better. A new save stays unsorted until an agent sorts it over MCP.
 - **What it never does:** send, post or pay. Project decisions do not live in Scoop either. They go in the project's own report.
 - **First version:** the Chrome extension, the email address for newsletters, and the MCP.
 
@@ -18,7 +19,7 @@ The logo is David's scoop character with the name "scoop" tucked into its notch,
 
 Type: Rubik for headlines, DM Sans for body text and DM Mono for addresses and code. All three are free on Google Fonts.
 
-> **Direction changed on Nov 26, 2026.** David described the real use: saving inspiration and resources now, and having an agent pull from them when a project starts. The summary, the positioning, the MCP section and the build order are updated for that. The sections on how it works, getting things in, processors and security were written for the earlier inbox framing. Their mechanics still apply, but they have not been rewritten.
+> **Direction changed on Nov 26, 2026.** David described the real use: saving inspiration and resources now, and having an agent pull from them when a project starts. The summary, the positioning, the MCP section, the processors section and the build order are updated for that, and for the rule that Scoop runs no AI of its own. The sections on how it works, getting things in and security were written for the earlier inbox framing. Their mechanics still apply, but they have not been rewritten.
 
 ## How someone uses it
 
@@ -101,17 +102,19 @@ Four routes feed the inbox, and all four end at the same add-item endpoint.
 
 ## The MCP
 
-The MCP lets the agent search, read and organise the library, and nothing else. It has no tool that sends, posts or pays.
+The MCP lets the agent sort, search and read the library, and nothing else. It has no tool that sends, posts or pays.
+
+All the thinking happens in the agent. Scoop only stores what the agent writes back.
 
 | The agent can | Why |
 | --- | --- |
-| Search by meaning, kind, topic, source and date | The main call: "what do I have on playful hover animations?" |
-| Read one item with its derived layers | Original, extracted text, transcript and summary, each marked with where it came from. |
-| Read the person's own note on an item | The note says why it was saved, which is the best signal of taste. |
-| Ask for a taste summary on a subject | A model-written description of what the person tends to save, marked as model-written. |
-| Add topics and a note to an item | The next session finds it faster. |
-| Record which items it used for a project | The person can see what was pulled, and the item gains context. |
-| List what is new since it last looked | Useful for newsletters, but no longer the main call. |
+| List unsorted saves | Everything arrives unsorted. This is how an agent finds what still needs sorting. |
+| Set topics, a kind and a short description on a save | This is the classification. Scoop records which agent wrote it and when. |
+| Search by text, topic, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
+| Read one save with everything attached | The original, extracted text, your note, and agent-written fields, each marked with where it came from. |
+| Add a note to a save | The next session, or another agent, inherits the thinking. |
+| Record which saves it used for a project | You can see what was pulled, and the save gains context. |
+| List what is new since it last looked | Useful for newsletters. |
 
 **What it deliberately cannot do**
 
@@ -120,6 +123,10 @@ The MCP lets the agent search, read and organise the library, and nothing else. 
 - Delete an original. It can only archive.
 - Store project decisions. Those belong in the project's own files.
 
+**What Scoop does not do for the agent**
+
+- It does not suggest topics, write summaries, transcribe or search by meaning. If an agent wants a summary or a view of your taste, it reads the saves and works it out itself.
+
 ## Processors and the marketplace
 
 Build the contract first and the marketplace last. A marketplace has a cold-start problem on both sides, so the first ten connectors and processors are written in-house against the same contract third parties will later use.
@@ -127,14 +134,14 @@ Build the contract first and the marketplace last. A marketplace has a cold-star
 **Two kinds of extension**
 
 - **Connectors** bring items in from one app.
-- **Processors** take an item and add a derived layer: a transcript, extracted article text, OCR, a summary, a duplicate check.
+- **Processors** take an item and add a derived layer by fixed rules: extracted article text, captions that already exist, link and image metadata, a duplicate check. Scoop's own processors use no AI.
 
 **The contract**
 
 - **A manifest.** It declares what the extension reads, which scopes it needs, what it emits, and which hosts it may contact.
 - **A sandbox.** A processor gets one item in and returns one layer out. It has no network access beyond what the manifest declares, and no access to other items.
 - **Deterministic routing.** Rules decide which processors run on which items. A model reading the content never decides.
-- **Per-use pricing for add-ons.** Transcription, OCR and summaries have real costs, so they are metered.
+- **No AI add-ons from Scoop.** Transcription, summaries and classification are the agent's job, done over MCP. Whether third-party processors may use AI is an open decision.
 
 **First set to build in-house**
 
@@ -142,8 +149,8 @@ Build the contract first and the marketplace last. A marketplace has a cold-star
 | --- | --- | --- |
 | Processor | Article text extraction | Runs on saved pages and newsletter emails |
 | Processor | Duplicate detection | Same link saved twice, same newsletter issue |
-| Processor | Transcription | Paid add-on. Captions first where they exist |
-| Processor | Summary | Paid add-on. Output is marked as model-written |
+| Processor | Existing captions | Fetches captions a video already has. No transcription |
+| Processor | Link and media metadata | Title, author, preview image, linked site |
 | Connector | Slack | Mentions and saved messages only, to start |
 | Connector | GitHub | Notifications |
 
@@ -157,7 +164,7 @@ The main risk is prompt injection. Everything in the inbox is written by strange
 | --- | --- |
 | An item tells the agent to do something | The MCP is read and organise only. Every item is returned as untrusted data with its source. |
 | A stranger floods or targets the address | Sender trust levels. Unknown senders go to quarantine. Rate limits apply per sender and per alias. |
-| A model-written summary relays an injection | Summaries carry the same untrusted label as the content they came from. |
+| An agent-written description relays an injection | Fields written by an agent carry the same untrusted label as the content they came from. |
 | One person's items reach another person | Every request is checked on the backend against the signed-in user and the item's owner. Nothing relies on the client. |
 | A connector token leaks | Tokens are encrypted at rest, scoped to the minimum, and never returned through the MCP. |
 | The extension is compromised | Its token can only add items. It cannot read. |
@@ -179,17 +186,17 @@ Five phases, each usable on its own. No dates are set yet.
 1. **Core: capture, store and MCP.**
    - The item store, the Chrome extension (save page, selection, post, image or video link, with a note), the email address for newsletters with quarantine, and the MCP's search and read tools.
    - Done when: something saved on Monday can be found by an agent on Friday from a plain description of it.
-2. **Processors for recall.**
-   - Text and media extraction for posts and pages, video transcripts, search by meaning, and automatic topics.
-   - Done when: a search for an idea finds items that never use those words.
-3. **Taste.**
-   - The taste summary, and the record of which items were used for which project.
-   - Done when: an agent starting a new project can describe the person's preferences from the library alone.
+2. **Sorting by the agent.**
+   - The MCP tools to list unsorted saves and write topics, kind and description back, plus rule-based extraction of text, captions and metadata so the agent has something to read.
+   - Done when: a week of unsorted saves can be sorted by an agent in one session, and the dashboard shows who sorted what.
+3. **Use in projects.**
+   - Search over everything the agent wrote, and the record of which saves were used for which project.
+   - Done when: an agent starting a new project finds fitting references from a plain description.
 4. **Connectors.**
    - The connector contract, then sources beyond the extension and email.
    - Done when: each is built on the public contract with no private shortcuts.
 5. **Marketplace.**
-   - Third-party submission, review and listing, plus metered billing for add-ons.
+   - Third-party submission, review and listing.
    - Done when: one outside developer ships an extension without help.
 
 ## Risks and open decisions
@@ -208,6 +215,7 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Hosted only, or a self-hosted option for people who will not send personal mail to a third party.
 - [ ] Pricing: free core with paid add-ons, or a flat subscription.
 - [ ] Which connectors still matter for a library. Slack and GitHub notifications were planned for the inbox framing.
-- [ ] Whether the taste summary is on by default or opt-in.
+- [ ] Whether third-party processors may use AI, given that Scoop's own do not.
+- [ ] Whether an agent can store a note about the person's taste as a whole, not only notes on single saves.
 - [ ] Default retention period per source.
 - [ ] Whether one person can have several agents with separate cursors from day one.
