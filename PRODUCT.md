@@ -34,12 +34,12 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 
 ## Capabilities and Constraints
 
-- Every source produces one item shape: source, sender, time, original content, state, labels, priority.
-- Scoop runs no AI of its own. It does not classify, summarise, transcribe or search by meaning. Confirmed by David on Nov 26, 2026.
-- Every save arrives unsorted. It stays that way until an agent sets its topics, kind and description over MCP. Scoop records which agent did it.
+- Every source produces one item shape: source, sender, time, original content, tags and notes.
+- Scoop runs no AI of its own. It does not tag, summarise, transcribe or search by meaning. Confirmed by David on Nov 26, 2026.
+- Every save arrives untagged. It stays that way until an agent or the person tags it. A save can carry several tags. Agents and the person can both create tags, and the person can rename, merge, reorder and delete them in the dashboard. Scoop records who added each tag. The word is "tags", never "categories" or "classes". Confirmed by David on Nov 26, 2026.
 - Originals never change. Extracted text, existing captions and agent-written fields are added beside the original.
 - Each agent has a cursor that records where it stopped reading. This matters less for a library than it did for an inbox.
-- Labels, priorities and notes written by the agent persist between sessions.
+- Tags and notes written by an agent or the person persist between sessions.
 - Each item carries a trust level. The person's own capture note is trusted. All other content is untrusted data.
 - Mail from unknown senders goes to quarantine.
 - The MCP cannot send, post, pay, change connector settings or delete an original.

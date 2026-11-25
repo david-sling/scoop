@@ -8,8 +8,8 @@ Scoop is a personal library for your AI agent. You fill it with things you like 
 
 - **Who it is for:** one person who makes things with agents every day, starting with designers and developers. It is not a team tool and it is not a task manager.
 - **What goes in:** posts, pages, videos and images saved with one click from a Chrome extension, and newsletters sent to the agent's own address.
-- **What the agent does:** sorts new saves into topics, searches the library for what fits the project in front of it, reads those items, and learns your taste from what you chose to save.
-- **No AI inside Scoop.** Scoop stores and serves. It does not classify, summarise or transcribe, because your agent does that better. A new save stays unsorted until an agent sorts it over MCP.
+- **What the agent does:** tags new saves, searches the library for what fits the project in front of it, reads those items, and learns your taste from what you chose to save.
+- **No AI inside Scoop.** Scoop stores and serves. It does not tag, summarise or transcribe, because your agent does that better. A new save stays untagged until an agent, or you, tags it.
 - **What it never does:** send, post or pay. Project decisions do not live in Scoop either. They go in the project's own report.
 - **First version:** the Chrome extension, the email address for newsletters, and the MCP.
 
@@ -58,7 +58,7 @@ flowchart LR
   subgraph inbox[Inbox]
     original[Original item: stored as received, never changed]
     layers[Derived layers: transcript, text, summary]
-    state[Triage state: labels, priority, notes, cursor]
+    state[Organising state: tags, notes, cursor]
   end
   inbox <-->|item in, layer out| proc[Processors: sandboxed, one item at a time]
   inbox <--> mcp[MCP: read and organise only]
@@ -67,10 +67,10 @@ flowchart LR
 
 Four sources add items. Processors add layers beside the original. The agent reaches the inbox only through the MCP. All content is marked untrusted.
 
-- **One item shape.** A Slack message, a newsletter, a saved page and an email become the same record: source, sender, time, original content, state, labels and priority.
+- **One item shape.** A Slack message, a newsletter, a saved page and an email become the same record: source, sender, time, original content, tags and notes.
 - **Originals never change.** A transcript or summary is a layer added beside the original, so a processor can be re-run or removed without loss.
 - **A cursor per agent.** The inbox remembers where each agent stopped reading, so "what's new" is one call.
-- **Notes that persist.** Labels, priorities and notes written by the agent stay on the item for the next session.
+- **Tags and notes that persist.** Tags and notes written by an agent or by the person stay on the item for the next session.
 - **Trust is recorded, not guessed.** Each item carries its source and a trust level. The person's own capture note is trusted. Everything else is untrusted data.
 
 ## Getting things in
@@ -102,15 +102,17 @@ Four routes feed the inbox, and all four end at the same add-item endpoint.
 
 ## The MCP
 
-The MCP lets the agent sort, search and read the library, and nothing else. It has no tool that sends, posts or pays.
+The MCP lets the agent tag, search and read the library, and nothing else. It has no tool that sends, posts or pays.
 
 All the thinking happens in the agent. Scoop only stores what the agent writes back.
 
 | The agent can | Why |
 | --- | --- |
-| List unsorted saves | Everything arrives unsorted. This is how an agent finds what still needs sorting. |
-| Set topics, a kind and a short description on a save | This is the classification. Scoop records which agent wrote it and when. |
-| Search by text, topic, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
+| List untagged saves | Everything arrives untagged. This is how an agent finds what still needs tagging. |
+| List the existing tags | So it reuses your tags before inventing new ones. |
+| Add or remove tags on a save, and create a new tag | A save can carry several tags. Scoop records who added each one and when. |
+| Set a kind and a short description on a save | Scoop records which agent wrote them. |
+| Search by text, tag, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
 | Read one save with everything attached | The original, extracted text, your note, and agent-written fields, each marked with where it came from. |
 | Add a note to a save | The next session, or another agent, inherits the thinking. |
 | Record which saves it used for a project | You can see what was pulled, and the save gains context. |
@@ -125,7 +127,18 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 
 **What Scoop does not do for the agent**
 
-- It does not suggest topics, write summaries, transcribe or search by meaning. If an agent wants a summary or a view of your taste, it reads the saves and works it out itself.
+- It does not suggest tags, write summaries, transcribe or search by meaning. If an agent wants a summary or a view of your taste, it reads the saves and works it out itself.
+
+## Tags
+
+Tags are how the library is organised. They are called tags, not categories, because a save is never in only one place.
+
+- **Many tags per save.** A post about a drag animation in a component library can be tagged both "animation" and "components".
+- **Anyone can create a tag.** An agent creates one over MCP when no existing tag fits. The person creates one in the dashboard at any time, including before anything uses it.
+- **The person can tag by hand.** They can add or remove tags on any save without an agent.
+- **The person arranges the tags.** They can rename, merge, reorder and delete tags in the dashboard. An agent can add and remove tags on saves, but it cannot rename, merge or delete a tag.
+- **Every tag on a save shows who added it:** the person, or a named agent.
+- **Scoop never tags anything itself.** A save stays untagged until an agent or the person tags it.
 
 ## Processors and the marketplace
 
@@ -141,7 +154,7 @@ Build the contract first and the marketplace last. A marketplace has a cold-star
 - **A manifest.** It declares what the extension reads, which scopes it needs, what it emits, and which hosts it may contact.
 - **A sandbox.** A processor gets one item in and returns one layer out. It has no network access beyond what the manifest declares, and no access to other items.
 - **Deterministic routing.** Rules decide which processors run on which items. A model reading the content never decides.
-- **No AI add-ons from Scoop.** Transcription, summaries and classification are the agent's job, done over MCP. Whether third-party processors may use AI is an open decision.
+- **No AI add-ons from Scoop.** Transcription, summaries and tagging are the agent's job, done over MCP. Whether third-party processors may use AI is an open decision.
 
 **First set to build in-house**
 
@@ -186,9 +199,9 @@ Five phases, each usable on its own. No dates are set yet.
 1. **Core: capture, store and MCP.**
    - The item store, the Chrome extension (save page, selection, post, image or video link, with a note), the email address for newsletters with quarantine, and the MCP's search and read tools.
    - Done when: something saved on Monday can be found by an agent on Friday from a plain description of it.
-2. **Sorting by the agent.**
-   - The MCP tools to list unsorted saves and write topics, kind and description back, plus rule-based extraction of text, captions and metadata so the agent has something to read.
-   - Done when: a week of unsorted saves can be sorted by an agent in one session, and the dashboard shows who sorted what.
+2. **Tagging.**
+   - The MCP tools to list untagged saves, create tags and add them to saves, plus tag management in the dashboard for the person. Rule-based extraction of text, captions and metadata gives the agent something to read.
+   - Done when: a week of untagged saves can be tagged by an agent in one session, and the dashboard shows who added each tag.
 3. **Use in projects.**
    - Search over everything the agent wrote, and the record of which saves were used for which project.
    - Done when: an agent starting a new project finds fitting references from a plain description.
@@ -215,6 +228,8 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Hosted only, or a self-hosted option for people who will not send personal mail to a third party.
 - [ ] Pricing: free core with paid add-ons, or a flat subscription.
 - [ ] Which connectors still matter for a library. Slack and GitHub notifications were planned for the inbox framing.
+- [ ] Whether tags can be nested, or stay as one flat list.
+- [ ] Whether a person can lock a tag on a save so agents cannot remove it.
 - [ ] Whether third-party processors may use AI, given that Scoop's own do not.
 - [ ] Whether an agent can store a note about the person's taste as a whole, not only notes on single saves.
 - [ ] Default retention period per source.
