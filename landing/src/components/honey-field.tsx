@@ -75,13 +75,14 @@ void main() {
   float h2 = hash(id + 19.7);
   float h3 = hash(id + 41.3);
 
-  // The plate's own lean, then the extra lean towards the cursor and the signal.
+  // The plate's own lean, then the extra lean towards the signal. The cursor does not
+  // change how plates are lit. It only shrinks them, further down.
   vec3 N = normalize(vec3((vec2(h2, h3) - 0.5) * 0.2, 1.0));
   vec2 hv = (centre - uHover.xy) / 230.0;
   float hw = exp(-dot(hv, hv)) * uHover.z;
   vec2 sv = (centre - uSignal.xy) / 130.0;
   float sw = exp(-dot(sv, sv)) * uSignal.z;
-  N = normalize(N + vec3(-hv * hw * 1.1 - sv * sw * 0.9, 0.0));
+  N = normalize(N + vec3(-sv * sw * 0.9, 0.0));
 
   vec2 s = (px - 0.5 * uRes) / uRes.y;
   vec3 V = normalize(vec3(-s.x, s.y, 1.15));
@@ -94,12 +95,21 @@ void main() {
   vec3 bright = vec3(1.0, 0.988, 0.972);
   vec3 col = mix(shade, bright, smoothstep(0.93, 1.0, ndh));
 
-  // One hue only. Near the cursor and the signal the plates swing further between shade
+  // One hue only. Near the signal the plates swing further between shade
   // and bright, so the light is easier to see there, but the colour never changes.
   float swing = dot(Hv.xy - N.xy, vec2(0.8, 0.6));
-  col = mix(col, mix(shade, bright, 0.5 + 0.5 * sin(swing * 9.0 + h1 * 2.0)), 0.5 * hw + 0.4 * sw);
+  col = mix(col, mix(shade, bright, 0.5 + 0.5 * sin(swing * 9.0 + h1 * 2.0)), 0.4 * sw);
   // A small glint where a plate faces the light head on.
   col += pow(ndh, 220.0) * 0.05;
+
+  // Plates near the cursor shrink about their own centres, the closest ones the most. The
+  // gaps that open between them show a slightly deeper cream, like the board underneath.
+  vec2 v = abs(p - centre);
+  float reach = max(v.y, 0.5 * v.y + 0.8660254 * v.x) / HH;
+  float size = 1.0 - 0.2 * hw * hw;
+  float edge = 1.5 / (uScale * HH);
+  float plate = 1.0 - smoothstep(size - edge, size + edge, reach);
+  col = mix(col, shade * vec3(0.975, 0.965, 0.955), (1.0 - plate) * smoothstep(0.03, 0.25, hw));
 
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`;
