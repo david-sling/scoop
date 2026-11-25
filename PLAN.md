@@ -25,8 +25,8 @@ Type: Rubik for headlines, DM Sans for body text and DM Mono for addresses and c
 
 1. **Subscribe.** Newsletters about new AI tools, animation libraries and component libraries go to the agent's address, so they arrive in Scoop and not in a personal mailbox.
 2. **Save while browsing.** A post, video, site or image looks good. One click on the Chrome extension saves it, with an optional line on why. Then the person carries on with their day.
-3. **Start a project.** In the design phase, the person asks their agent to go through the library and pick what fits this product.
-4. **Decide elsewhere.** The agent's choices and the reasons go in the project report. Scoop only supplied the material.
+3. **Start a project.** The person creates a project in Scoop and adds the saves they want used. In the design phase they point their agent at it, and can also ask the agent to go through the whole library and add what fits.
+4. **Decide elsewhere.** The agent's decisions and the reasons go in the project report. Scoop keeps only which saves were used and a short note on how.
 
 Over time the library also shows the agent what the person's taste is, because every item in it was chosen by them.
 
@@ -115,7 +115,9 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 | Search by text, tag, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
 | Read one save with everything attached | The original, extracted text, your note, and agent-written fields, each marked with where it came from. |
 | Add a note to a save | The next session, or another agent, inherits the thinking. |
-| Record which saves it used for a project | You can see what was pulled, and the save gains context. |
+| List projects, and read one with its saves | So it knows what the person picked for this work, and reports against the right project. |
+| Add a save to a project | When the person asks it to find more that fits. Scoop records that the agent added it. |
+| Report that it used a save for a project, with a short description | Says how, where and why the save was used. Creates the project if it does not exist yet. |
 | List what is new since it last looked | Useful for newsletters. |
 
 **What it deliberately cannot do**
@@ -123,7 +125,8 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 - Reply to an email, post anywhere or call a webhook.
 - Change connector settings or tokens.
 - Delete an original. It can only archive.
-- Store project decisions. Those belong in the project's own files.
+- Store project decisions. Those belong in the project's own files. A use report is a short note on one save, not a decision log.
+- Rename, merge or delete a project. Only the person can.
 
 **What Scoop does not do for the agent**
 
@@ -139,6 +142,29 @@ Tags are how the library is organised. They are called tags, not categories, bec
 - **The person arranges the tags.** They can rename, merge, reorder and delete tags in the dashboard. An agent can add and remove tags on saves, but it cannot rename, merge or delete a tag.
 - **Every tag on a save shows who added it:** the person, or a named agent.
 - **Scoop never tags anything itself.** A save stays untagged until an agent or the person tags it.
+
+## Projects
+
+A project is a named space in Scoop that holds the saves meant for one piece of work.
+
+**How the person uses it**
+
+- **Create a project and fill it.** Starting something new, the person creates a project and adds the saves they think are relevant.
+- **Point the agent at it.** "Here is what I want used in this project." The agent reads the project's saves first.
+- **It is a signal, not a fence.** The agent can still search the whole library. The project says what the person wants, not what the agent is limited to.
+- **Ask the agent to add more.** "Look through my library and add what fits." The agent adds saves to the project, and each one shows that the agent added it.
+- **A save can be in many projects.**
+
+**How agents report use**
+
+- **Every report names a project, a save and a short description** of how the save was used: what for, where and why. Later agents read these to learn what a resource was good for.
+- **Scoop creates the project if it does not exist.** If an agent reports a use for a project Scoop has never seen, the project is created automatically and the save is put in it.
+- **Agents pick from the list.** An agent lists the existing projects first and reports against one of them, so the same project is not recorded twice under different spellings. Several agents can then work from the same project.
+- **Scoop does not guess at near matches.** It has no AI, so it only treats names as the same when they match after ignoring capitals and spacing. The person can rename and merge projects in the dashboard to fix the rest.
+
+**What stays out**
+
+Project decisions, plans and reports still live in the project's own files. Scoop holds only which saves belong to a project and how each was used.
 
 ## Processors and the marketplace
 
@@ -202,9 +228,9 @@ Five phases, each usable on its own. No dates are set yet.
 2. **Tagging.**
    - The MCP tools to list untagged saves, create tags and add them to saves, plus tag management in the dashboard for the person. Rule-based extraction of text, captions and metadata gives the agent something to read.
    - Done when: a week of untagged saves can be tagged by an agent in one session, and the dashboard shows who added each tag.
-3. **Use in projects.**
-   - Search over everything the agent wrote, and the record of which saves were used for which project.
-   - Done when: an agent starting a new project finds fitting references from a plain description.
+3. **Projects.**
+   - Projects in the dashboard and over MCP, adding saves by hand or by agent, and use reports with descriptions. Search over everything the agent wrote.
+   - Done when: two different agents report against the same project without creating a duplicate, and a third can read how each save was used.
 4. **Connectors.**
    - The connector contract, then sources beyond the extension and email.
    - Done when: each is built on the public contract with no private shortcuts.
@@ -228,6 +254,8 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Hosted only, or a self-hosted option for people who will not send personal mail to a third party.
 - [ ] Pricing: free core with paid add-ons, or a flat subscription.
 - [ ] Which connectors still matter for a library. Slack and GitHub notifications were planned for the inbox framing.
+- [ ] Whether an agent may remove a save from a project that the person added.
+- [ ] Whether finished projects are archived or kept in the main list.
 - [ ] Whether tags can be nested, or stay as one flat list.
 - [ ] Whether a person can lock a tag on a save so agents cannot remove it.
 - [ ] Whether third-party processors may use AI, given that Scoop's own do not.

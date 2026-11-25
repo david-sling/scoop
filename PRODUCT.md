@@ -28,7 +28,7 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 
 - The person saves things with one click from a Chrome extension while browsing, often on X, and adds a short note on why.
 - Newsletters about AI, animation libraries and component libraries arrive at the agent's address (`username@scoop.davidsling.in`).
-- Later, at the start of a project's design phase, the person asks their agent to go through the library and choose what fits.
+- At the start of a piece of work, the person creates a project in Scoop, adds the saves they want used, and points their agent at it. They can also ask the agent to go through the whole library and add what fits.
 - The agent reaches the library only through an MCP that searches, reads and organises.
 - The web dashboard is where the person browses and searches the library themselves, and sees what their agents pulled. Its home screen is the library, not a list of things to act on.
 
@@ -40,6 +40,7 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 - Originals never change. Extracted text, existing captions and agent-written fields are added beside the original.
 - Each agent has a cursor that records where it stopped reading. This matters less for a library than it did for an inbox.
 - Tags and notes written by an agent or the person persist between sessions.
+- Projects: the person creates a project and adds the saves they want used for it. It guides the agent and does not restrict it, and the agent can add more saves when asked. When an agent reports using a save, it names the project and gives a short description of how it was used. If the project does not exist, Scoop creates it. Agents choose from the existing project list so one project is not recorded under two spellings. Confirmed by David on Nov 26, 2026.
 - Each item carries a trust level. The person's own capture note is trusted. All other content is untrusted data.
 - Mail from unknown senders goes to quarantine.
 - The MCP cannot send, post, pay, change connector settings or delete an original.
@@ -66,5 +67,5 @@ Full detail is in `PLAN.md`.
 - Saving takes one click. Anything slower and the person will not do it mid-scroll.
 - The agent is the main reader, and it comes with a question.
 - The person's own note and choices are the signal. They show taste better than any page content.
-- Scoop is a source. Decisions belong to the project.
+- Scoop is a source. Decisions belong to the project's own files. Scoop keeps only which saves a project holds and how each was used.
 - Everything from outside is untrusted, and originals are kept as received.
