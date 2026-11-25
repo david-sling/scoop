@@ -189,7 +189,17 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .find input:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
 .find .btn { min-height: 48px; padding: 0 26px; }
 .left { display: grid; gap: 14px; align-content: start; min-width: 0; }
-.right { display: grid; gap: 14px; align-content: start; }
+.right { display: grid; gap: 14px; align-content: start; align-self: stretch; grid-template-rows: auto 1fr; }
+.stick { position: sticky; top: 14px; display: grid; gap: 14px; align-self: start; }
+.pager { display: flex; align-items: center; gap: 6px; margin: 14px 4px 0; }
+.pager .range { margin-right: auto; color: var(--ink-2); }
+.pager .gap { color: var(--ink-3); padding: 0 4px; }
+.pg { display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 999px; font: 500 13px var(--mono); transition: border-color 120ms var(--ease), background-color 120ms var(--ease); }
+.pg:hover { border-color: var(--ink); }
+.pg:active { background: var(--cream); }
+.pg[aria-current] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.pg.off { color: #C9B9C1; pointer-events: none; }
+.pg .flip { transform: scaleX(-1); }
 .rowhd { display: flex; align-items: center; gap: 10px; margin: 22px 4px 2px; }
 .rowhd a { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; border-bottom: 1px solid transparent; transition: border-color 150ms var(--ease); }
 .rowhd a:hover { border-bottom-color: var(--ink); }
@@ -240,6 +250,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .tags a.untagged { border-style: dashed; border-color: var(--ink-3); }
 .btn.onmauve { width: 100%; min-height: 44px; margin-top: 6px; color: #fff; font-weight: 400; }
 .btn.onmauve:hover { background: var(--mauve-deep); }
+@media (max-width: 1100px) { .stick { position: static; } }
 @media (max-width: 1100px) { .saves { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 720px) { .saves { grid-template-columns: minmax(0, 1fr); } .find { flex-direction: column; } }
 </style>
@@ -298,7 +309,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
         </form>
       </header>
 
-      <div class="rowhd"><h2>Recently saved</h2><a href="#">Arrange tags<svg class="i"><use href="#i-chev"/></svg></a></div>
+      <div class="rowhd"><h2>Your library</h2><a href="#">Arrange tags<svg class="i"><use href="#i-chev"/></svg></a></div>
       <ul class="tags">
         <li><a href="#" aria-current="true">Everything</a></li>
         <li><a class="untagged" href="#">Untagged <span>18</span></a></li>
@@ -317,7 +328,23 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
         <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><rect x="52" y="34" width="216" height="132" rx="10" fill="#fff"/><rect x="72" y="56" width="110" height="14" rx="4" fill="#2B1721"/><rect x="72" y="84" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="100" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="116" width="120" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="138" width="64" height="12" rx="6" fill="#4F7F5E"/></svg></span><div class="txt"><div class="src"><svg class="i"><use href="#i-mail"/></svg>Newsletter<time>Wed</time></div><h3>The Agent Weekly, issue 48</h3><p class="auto">Claude Code: Memory that survives the session, and 3 links worth keeping.</p><div class="tagged"><span class="chip">AI news</span><span class="chip">Agents</span><span class="by">by Claude Code</span></div></div></a></li>
         <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFE6F3"/><text x="24" y="150" font-family="DM Sans, sans-serif" font-size="150" font-weight="700" fill="#9F527C" letter-spacing="-10">48</text><rect x="212" y="52" width="80" height="6" rx="3" fill="#9F527C"/><rect x="212" y="68" width="56" height="6" rx="3" fill="#9F527C"/><rect x="212" y="84" width="68" height="6" rx="3" fill="#9F527C"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/instagram.svg" alt="">Image<time>Tue</time></div><h3>Poster with oversized numerals</h3><p class="">Your note: Big numbers, tiny labels.</p><div class="tagged"><span class="chip">Typography</span><span class="chip">Posters</span><span class="chip">Layout</span><span class="by">by you</span></div></div></a></li>
         <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Tue</time></div><h3>A small easing playground</h3><p class="">Your note: Good for picking curves.</p><div class="tagged"><span class="chip">Animation</span><span class="chip">Tools</span><span class="by">by Claude Code and you</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF6EE"/><rect x="40" y="32" width="110" height="136" rx="14" fill="#FFABDA"/><rect x="160" y="32" width="120" height="62" rx="14" fill="#9F527C"/><rect x="160" y="106" width="54" height="62" rx="14" fill="#F4D9B5"/><rect x="226" y="106" width="54" height="62" rx="14" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Mon</time></div><h3>A collection of bento grid layouts</h3><p class="">Your note: The uneven tile sizes work.</p><div class="tagged"><span class="chip">Layout</span><span class="chip">Landing pages</span><span class="by">by Claude Code</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><rect x="50" y="30" width="220" height="150" rx="12" fill="#fff"/><rect x="50" y="30" width="220" height="34" rx="12" fill="#2F6FD0"/><rect x="66" y="80" width="150" height="8" rx="4" fill="#C9DAF2"/><rect x="66" y="98" width="188" height="8" rx="4" fill="#C9DAF2"/><rect x="66" y="116" width="120" height="8" rx="4" fill="#C9DAF2"/><path d="M288 60v60m-7-9 7 9 7-9" fill="none" stroke="#2F6FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/x.svg" alt="">X<time>Mon</time></div><h3>A header that shrinks as you scroll</h3><p class="">Your note: Subtle. Check the easing.</p><div class="tagged"><span class="chip">Animation</span><span class="by">by Codex</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF0C2"/><text x="28" y="140" font-family="DM Sans, sans-serif" font-size="120" font-weight="700" fill="#2B1721" letter-spacing="-8">12</text><rect x="196" y="60" width="92" height="30" rx="15" fill="#fff"/><rect x="196" y="100" width="92" height="30" rx="15" fill="#E0A800"/></svg></span><div class="txt"><div class="src"><svg class="i"><use href="#i-mail"/></svg>Newsletter<time>Mon</time></div><h3>Component Weekly, issue 12</h3><p class="auto">Claude Code: Two new table libraries and a date picker.</p><div class="tagged"><span class="chip">Components</span><span class="by">by Claude Code</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><circle cx="90" cy="100" r="44" fill="#FFABDA"/><circle cx="160" cy="100" r="44" fill="#9F527C"/><circle cx="230" cy="100" r="44" fill="#F4D9B5"/><circle cx="286" cy="164" r="18" fill="#fff"/><path d="m281 155 14 9-14 9z" fill="#2B1721"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/youtube.svg" alt="">Video · 24 min<time>23 Nov</time></div><h3>Colour systems in OKLCH</h3><p class="">Your note: Use for the Scoop palette.</p><div class="tagged"><span class="chip">Colour</span><span class="by">by you</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><path d="M60 70c30-14 50 12 84 0s56-10 116 2M60 104c40-10 70 10 110 0s50-6 90 0M60 138c30-10 60 8 96 0" fill="none" stroke="#2B1721" stroke-width="5" stroke-linecap="round"/><text x="226" y="150" font-family="DM Sans, sans-serif" font-size="34" font-weight="700" fill="#4F7F5E">42</text></svg></span><div class="txt"><div class="src"><img class="b" src="icons/instagram.svg" alt="">Image<time>22 Nov</time></div><h3>A menu with handwritten prices</h3><p class="">Your note: Warm and human.</p><div class="tagged"><span class="chip">Typography</span><span class="chip">Layout</span><span class="by">by Claude Code</span></div></div></a></li>
+        <li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="56" y="44" width="208" height="32" rx="16" fill="#fff"/><rect x="56" y="86" width="208" height="32" rx="16" fill="#fff" stroke="#6E55C4" stroke-width="3"/><rect x="56" y="128" width="96" height="32" rx="16" fill="#6E55C4"/><rect x="72" y="98" width="70" height="8" rx="4" fill="#B7A4EC"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>22 Nov</time></div><h3>Unstyled form primitives</h3><p class="">Your note: Good base for settings pages.</p><div class="tagged"><span class="chip">Components</span><span class="chip">Tools</span><span class="by">by Claude Code and you</span></div></div></a></li>
       </ul>
+      <nav class="pager" id="pager" aria-label="Pages">
+        <span class="range">1 to 12 of 312</span>
+        <a class="pg off" aria-disabled="true"><svg class="i flip"><use href="#i-chev"/></svg><span class="sr">Previous page</span></a>
+        <a class="pg" href="#" aria-current="page">1</a>
+        <a class="pg" href="#">2</a>
+        <a class="pg" href="#">3</a>
+        <span class="gap">…</span>
+        <a class="pg" href="#">26</a>
+        <a class="pg" href="#"><svg class="i"><use href="#i-chev"/></svg><span class="sr">Next page</span></a>
+      </nav>
     </div>
 
     <aside class="right">
@@ -329,6 +356,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
         <button class="btn onmauve" type="button">Starting a project? Copy project prompt</button>
       </section>
 
+      <div class="stick">
       <section class="tile cream">
         <div class="hd"><h2>Pulled by your agents</h2></div>
         <ul class="pulls">
@@ -347,6 +375,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
           <li><img class="b" src="icons/youtube.svg" alt="">YouTube saves<span class="t">2 this week</span></li>
         </ul>
       </section>
+      </div>
     </aside>
   </div>
 </div></main>
