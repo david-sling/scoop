@@ -219,6 +219,10 @@ function wire(n: Node) {
 const PULSE_S = 1.4
 /** The lit part of the wire, as a share of its length. */
 const DASH = 0.26
+/** How long the trail a pulse leaves behind takes to fade, in seconds. */
+const TRAIL_S = 10
+/** How strong a fresh trail is. */
+const TRAIL_OPACITY = 0.5
 
 /**
  * Wide screens: logos in hexagons on both sides, wired to the centre behind the headline.
@@ -238,6 +242,12 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
   const wireRefs = useRef<Record<string, SVGPathElement | null>>({})
   const pulseRef = useRef<SVGPathElement>(null)
   const spotRef = useRef<SVGCircleElement>(null)
+  const fades = useRef<Record<string, { stop: () => void } | undefined>>({})
+
+  useEffect(() => {
+    const running = fades.current
+    return () => Object.values(running).forEach((f) => f?.stop())
+  }, [])
 
   useEffect(() => {
     const path = wireRefs.current[active.id]
@@ -245,11 +255,27 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
     const spot = spotRef.current
     if (!moving || !path || !pulse || !spot) return
     const length = path.getTotalLength()
+    const id = active.id
+    // The route itself is the trail: it is uncovered behind the light, then fades slowly.
+    fades.current[id]?.stop()
+    path.setAttribute('stroke-dashoffset', '1')
+    path.setAttribute('opacity', String(TRAIL_OPACITY))
+    let fading = false
+    const fade = () => {
+      if (fading) return
+      fading = true
+      fades.current[id] = animate(TRAIL_OPACITY, 0, {
+        duration: TRAIL_S,
+        ease: 'linear',
+        onUpdate: (o) => path.setAttribute('opacity', String(o)),
+      })
+    }
     const controls = animate(0, 1, {
       duration: PULSE_S,
       ease: [0.45, 0, 0.2, 1],
       onUpdate: (p) => {
         pulse.setAttribute('stroke-dashoffset', String(DASH - (1 + DASH) * p))
+        path.setAttribute('stroke-dashoffset', String(1 - Math.min(1, (1 + DASH) * p)))
         // The circle follows the middle of the lit part, and eases in and out at the two ends.
         const at = Math.min(1, Math.max(0, (1 + DASH) * p - DASH / 2))
         const point = path.getPointAtLength(at * length)
@@ -257,8 +283,12 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         spot.setAttribute('cy', String(point.y))
         spot.setAttribute('opacity', String(Math.min(1, p / 0.18, (1 - p) / 0.3)))
       },
+      onComplete: fade,
     })
-    return () => controls.stop()
+    return () => {
+      controls.stop()
+      fade()
+    }
   }, [run, moving, active.id])
 
   return (
@@ -353,8 +383,15 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
               wireRefs.current[n.id] = el
             }}
             d={d}
-            // Not drawn. The path only gives the light its route.
-            stroke="none"
+            // Hidden at rest. It gives the light its route and shows as the trail behind it.
+            pathLength={1}
+            stroke="#f0489f"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="1 1"
+            strokeDashoffset={1}
+            opacity={0}
           />
         ))}
         {moving && (
