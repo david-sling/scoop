@@ -185,7 +185,13 @@ export function Hero() {
               aria-hidden
               className="mt-[0.1em] flex items-baseline justify-center"
             >
-              <span className="mr-[0.22em]">your</span>
+              <motion.span
+                layout="position"
+                transition={{ duration: 0.5, ease: EASE }}
+                className="mr-[0.22em]"
+              >
+                your
+              </motion.span>
               <Word word={moving ? active.word : "taste"} />
               <motion.span
                 layout="position"
