@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 
 export default defineConfig({
-  resolve: { tsconfigPaths: true },
+  resolve: { tsconfigPaths: true, dedupe: ['react', 'react-dom'] },
+  optimizeDeps: { include: ['motion/react'] },
   plugins: [nitro(), tailwindcss(), tanstackStart(), viteReact()],
 })
