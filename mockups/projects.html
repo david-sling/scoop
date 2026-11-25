@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real mail or real activity. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+.phd { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 6px 4px 22px; }
+.phd h1 { margin: 0; font-size: 56px; line-height: 1; font-weight: 300; letter-spacing: -0.035em; }
+.phd p { margin: 10px 0 0; color: var(--ink-2); max-width: 60ch; }
+.phd .btn { min-height: 44px; padding: 0 22px; }
+.projs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; list-style: none; margin: 14px 0 0; padding: 0; }
+.proj a { display: grid; grid-template-columns: 200px minmax(0, 1fr); height: 100%; border: 1px solid var(--rule); border-radius: var(--r-tile); overflow: hidden; transition: border-color 150ms var(--ease); }
+.proj a:hover { border-color: var(--ink); }
+.mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.4fr 1fr; gap: 3px; background: #fff; min-height: 210px; }
+.mosaic span { display: block; overflow: hidden; }
+.mosaic .m0 { grid-column: 1 / -1; }
+.mosaic svg { display: block; width: 100%; height: 100%; transition: transform 300ms var(--ease); }
+.proj a:hover .mosaic .m0 svg { transform: scale(1.04); }
+.ptxt { display: flex; flex-direction: column; padding: 24px 24px 22px; min-width: 0; }
+.proj h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; font-size: 26px; line-height: 1.12; font-weight: 400; letter-spacing: -0.02em; }
+.proj .chip.auto { font: 500 12px/22px var(--sans); letter-spacing: 0; text-transform: none; padding: 0 10px; background: var(--cream); box-shadow: inset 0 0 0 1px #F0DCC8; }
+.proj .brief { margin: 8px 0 0; color: var(--ink-2); }
+.pmeta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-top: auto; padding-top: 22px; }
+.pmeta .cnt { font-weight: 500; }
+.pmeta .ags { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.pmeta img.b { width: 18px; height: 18px; }
+.pmeta img.b:last-of-type { margin-right: 4px; }
+.made { margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3); }
+.newproj button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; min-height: 210px; border: 1px dashed var(--ink-3); border-radius: var(--r-tile); color: var(--ink-2); transition: border-color 150ms var(--ease), color 150ms var(--ease), background-color 150ms var(--ease); }
+.newproj button:hover { border-style: solid; border-color: var(--ink); color: var(--ink); background: var(--cream); }
+.newproj button:active { transform: scale(0.995); }
+.newproj b { font-size: 17px; font-weight: 500; color: var(--ink); }
+.newproj svg { width: 22px; height: 22px; }
+.hint { margin: 22px 4px 0; color: var(--ink-3); max-width: 76ch; }
+@media (max-width: 1100px) { .projs { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) { .phd { flex-direction: column; align-items: flex-start; } .phd h1 { font-size: 40px; } .proj a { grid-template-columns: minmax(0, 1fr); } .mosaic { min-height: 170px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="dashboard.html">Library</a>
+    <a href="projects.html" aria-current="page">Projects</a>
+    <a href="#">Tags</a>
+    <a href="#">Agents</a>
+    <a href="#">Sources</a>
+    <a href="#">Quarantine <span class="n">3</span></a>
+    <a href="#">Settings</a>
+  </nav>
+  <button class="copy" type="button">david@scoop.davidsling.in<svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+</div></header>
+
+<main><div class="wrap">
+  <div class="phd">
+    <div>
+      <h1>Projects</h1>
+      <p>A project holds the saves you want used for one piece of work. Your agents read it first, and report back how they used each save.</p>
+    </div>
+    <button class="btn solid" type="button"><svg class="i"><use href="#i-plus"/></svg>New project</button>
+  </div>
+
+  <ul class="tags">
+    <li><a href="#" aria-current="true">All <span>5</span></a></li>
+    <li><a href="#">Made by you <span>4</span></a></li>
+    <li><a href="#">Made by an agent <span>1</span></a></li>
+    <li><a href="#">Archived <span>2</span></a></li>
+  </ul>
+
+  <ul class="projs">
+      <li class="proj"><a href="project.html">
+        <span class="mosaic"><span class="m0"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><span class="m1"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><text x="34" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="300" fill="#FFABDA" letter-spacing="-5">Aa</text><text x="176" y="128" font-family="DM Sans, sans-serif" font-size="92" font-weight="700" fill="#fff" letter-spacing="-5">Aa</text><circle cx="270" cy="160" r="18" fill="#fff"/><path d="m265 151 14 9-14 9z" fill="#2B1721"/></svg></span><span class="m2"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF6EE"/><rect x="40" y="32" width="110" height="136" rx="14" fill="#FFABDA"/><rect x="160" y="32" width="120" height="62" rx="14" fill="#9F527C"/><rect x="160" y="106" width="54" height="62" rx="14" fill="#F4D9B5"/><rect x="226" y="106" width="54" height="62" rx="14" fill="#2B1721"/></svg></span></span>
+        <div class="ptxt">
+          <h2>davidsling.in redesign</h2>
+          <p class="brief">Portfolio rebuild. Calm and confident, with one playful moment per page.</p>
+          <div class="pmeta"><span class="cnt">14 saves · 6 used</span><span class="ags"><img class="b" src="icons/claude.svg" alt=""><img class="b" src="icons/openai.svg" alt="">Last used today</span></div>
+          <div class="made">Created by you</div>
+        </div>
+      </a></li>
+      <li class="proj"><a href="#">
+        <span class="mosaic"><span class="m0"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="60" y="58" width="120" height="84" rx="18" fill="#fff"/><rect x="150" y="76" width="120" height="84" rx="18" fill="#B7A4EC"/><path d="M92 160c30 18 70 18 104-6" fill="none" stroke="#6E55C4" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 9"/></svg></span><span class="m1"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><circle cx="90" cy="100" r="44" fill="#FFABDA"/><circle cx="160" cy="100" r="44" fill="#9F527C"/><circle cx="230" cy="100" r="44" fill="#F4D9B5"/><circle cx="286" cy="164" r="18" fill="#fff"/><path d="m281 155 14 9-14 9z" fill="#2B1721"/></svg></span><span class="m2"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><rect x="50" y="30" width="220" height="150" rx="12" fill="#fff"/><rect x="50" y="30" width="220" height="34" rx="12" fill="#2F6FD0"/><rect x="66" y="80" width="150" height="8" rx="4" fill="#C9DAF2"/><rect x="66" y="98" width="188" height="8" rx="4" fill="#C9DAF2"/><rect x="66" y="116" width="120" height="8" rx="4" fill="#C9DAF2"/><path d="M288 60v60m-7-9 7 9 7-9" fill="none" stroke="#2F6FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+        <div class="ptxt">
+          <h2>offlyn.love onboarding</h2>
+          <p class="brief">First-run screens for the web app.</p>
+          <div class="pmeta"><span class="cnt">9 saves · 4 used</span><span class="ags"><img class="b" src="icons/openai.svg" alt="">Last used Wed</span></div>
+          <div class="made">Created by you</div>
+        </div>
+      </a></li>
+      <li class="proj"><a href="#">
+        <span class="mosaic"><span class="m0"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF6EE"/><rect x="40" y="32" width="110" height="136" rx="14" fill="#FFABDA"/><rect x="160" y="32" width="120" height="62" rx="14" fill="#9F527C"/><rect x="160" y="106" width="54" height="62" rx="14" fill="#F4D9B5"/><rect x="226" y="106" width="54" height="62" rx="14" fill="#2B1721"/></svg></span><span class="m1"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFE6F3"/><text x="24" y="150" font-family="DM Sans, sans-serif" font-size="150" font-weight="700" fill="#9F527C" letter-spacing="-10">48</text><rect x="212" y="52" width="80" height="6" rx="3" fill="#9F527C"/><rect x="212" y="68" width="56" height="6" rx="3" fill="#9F527C"/><rect x="212" y="84" width="68" height="6" rx="3" fill="#9F527C"/></svg></span><span class="m2"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="56" y="44" width="208" height="32" rx="16" fill="#fff"/><rect x="56" y="86" width="208" height="32" rx="16" fill="#fff" stroke="#6E55C4" stroke-width="3"/><rect x="56" y="128" width="96" height="32" rx="16" fill="#6E55C4"/><rect x="72" y="98" width="70" height="8" rx="4" fill="#B7A4EC"/></svg></span></span>
+        <div class="ptxt">
+          <h2>Scoop landing page<span class="chip auto">Made by an agent</span></h2>
+          
+          <div class="pmeta"><span class="cnt">11 saves · 9 used</span><span class="ags"><img class="b" src="icons/gemini.svg" alt=""><img class="b" src="icons/claude.svg" alt="">Last used 20 Nov</span></div>
+          <div class="made">Created when Gemini CLI reported a use</div>
+        </div>
+      </a></li>
+      <li class="proj"><a href="#">
+        <span class="mosaic"><span class="m0"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E9E2FA"/><rect x="56" y="44" width="208" height="32" rx="16" fill="#fff"/><rect x="56" y="86" width="208" height="32" rx="16" fill="#fff" stroke="#6E55C4" stroke-width="3"/><rect x="56" y="128" width="96" height="32" rx="16" fill="#6E55C4"/><rect x="72" y="98" width="70" height="8" rx="4" fill="#B7A4EC"/></svg></span><span class="m1"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF0C2"/><rect x="40" y="36" width="240" height="128" rx="14" fill="#fff"/><rect x="56" y="54" width="70" height="12" rx="6" fill="#2B1721"/><rect x="56" y="80" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="102" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="56" y="124" width="208" height="14" rx="7" fill="#F4E3A1"/><rect x="214" y="52" width="50" height="16" rx="8" fill="#E0A800"/></svg></span><span class="m2"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#FFF0C2"/><text x="28" y="140" font-family="DM Sans, sans-serif" font-size="120" font-weight="700" fill="#2B1721" letter-spacing="-8">12</text><rect x="196" y="60" width="92" height="30" rx="15" fill="#fff"/><rect x="196" y="100" width="92" height="30" rx="15" fill="#E0A800"/></svg></span></span>
+        <div class="ptxt">
+          <h2>Wave settings page</h2>
+          <p class="brief">Forms and toggles that feel light.</p>
+          <div class="pmeta"><span class="cnt">5 saves · 3 used</span><span class="ags"><img class="b" src="icons/cursor.svg" alt="">Last used Mon</span></div>
+          <div class="made">Created by you</div>
+        </div>
+      </a></li>
+      <li class="proj"><a href="#">
+        <span class="mosaic"><span class="m0"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><rect x="52" y="34" width="216" height="132" rx="10" fill="#fff"/><rect x="72" y="56" width="110" height="14" rx="4" fill="#2B1721"/><rect x="72" y="84" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="100" width="176" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="116" width="120" height="7" rx="3.500" fill="#BFD9C5"/><rect x="72" y="138" width="64" height="12" rx="6" fill="#4F7F5E"/></svg></span><span class="m1"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3F2E6"/><path d="M60 70c30-14 50 12 84 0s56-10 116 2M60 104c40-10 70 10 110 0s50-6 90 0M60 138c30-10 60 8 96 0" fill="none" stroke="#2B1721" stroke-width="5" stroke-linecap="round"/><text x="226" y="150" font-family="DM Sans, sans-serif" font-size="34" font-weight="700" fill="#4F7F5E">42</text></svg></span><span class="m2"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#2B1721"/><circle cx="90" cy="100" r="44" fill="#FFABDA"/><circle cx="160" cy="100" r="44" fill="#9F527C"/><circle cx="230" cy="100" r="44" fill="#F4D9B5"/><circle cx="286" cy="164" r="18" fill="#fff"/><path d="m281 155 14 9-14 9z" fill="#2B1721"/></svg></span></span>
+        <div class="ptxt">
+          <h2>Equanim app icons</h2>
+          
+          <div class="pmeta"><span class="cnt">3 saves · none used yet</span><span class="ags"><span class="noagent"></span>No agent has used it</span></div>
+          <div class="made">Created by you today</div>
+        </div>
+      </a></li>
+      <li class="newproj"><button type="button"><svg class="i"><use href="#i-plus"/></svg><b>New project</b><span>Name it, then add saves from your library.</span></button></li>
+  </ul>
+  <p class="hint">When an agent reports using a save for a project Scoop has not seen, the project is created here automatically. Open it to rename it or merge it into another.</p>
+</div></main>
+</body>
+</html>
