@@ -106,7 +106,7 @@ void main() {
   // gaps that open between them show a slightly deeper cream, like the board underneath.
   vec2 v = abs(p - centre);
   float reach = max(v.y, 0.5 * v.y + 0.8660254 * v.x) / HH;
-  float size = 1.0 - 0.2 * hw * hw;
+  float size = 1.0 - 0.09 * hw * hw;
   float edge = 1.5 / (uScale * HH);
   float plate = 1.0 - smoothstep(size - edge, size + edge, reach);
   col = mix(col, shade * vec3(0.975, 0.965, 0.955), (1.0 - plate) * smoothstep(0.03, 0.25, hw));
