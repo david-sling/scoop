@@ -223,6 +223,10 @@ const DASH = 0.26
 const TRAIL_S = 10
 /** How strong a fresh trail is. */
 const TRAIL_OPACITY = 0.5
+/** How long the glow around a logo takes to fade after its signal leaves, in seconds. */
+const GLOW_S = 7
+/** How strong that glow is at its peak. */
+const GLOW_OPACITY = 0.55
 
 /**
  * Wide screens: logos in hexagons on both sides, wired to the centre behind the headline.
@@ -243,6 +247,7 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
   const pulseRef = useRef<SVGPathElement>(null)
   const spotRef = useRef<SVGCircleElement>(null)
   const fades = useRef<Record<string, { stop: () => void } | undefined>>({})
+  const glowRefs = useRef<Record<string, SVGPolygonElement | null>>({})
 
   useEffect(() => {
     const running = fades.current
@@ -268,6 +273,20 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         duration: TRAIL_S,
         ease: 'linear',
         onUpdate: (o) => path.setAttribute('opacity', String(o)),
+      })
+    }
+    // The logo glows as the signal leaves it, then the glow fades on its own slow clock.
+    const glow = glowRefs.current[id]
+    if (glow) {
+      fades.current[`glow-${id}`]?.stop()
+      fades.current[`glow-${id}`] = animate(0, 1, {
+        duration: GLOW_S,
+        ease: 'linear',
+        onUpdate: (t) => {
+          const rise = 0.04
+          const level = t < rise ? t / rise : 1 - (t - rise) / (1 - rise)
+          glow.setAttribute('opacity', String(GLOW_OPACITY * level))
+        },
       })
     }
     const controls = animate(0, 1, {
@@ -341,10 +360,9 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
           <stop offset="0" stopColor="#fff" />
           <stop offset="1" stopColor="#fff1e4" />
         </linearGradient>
-        <linearGradient id="logo-edge" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f3e3ea" />
-          <stop offset="1" stopColor="#e7c3d6" />
-        </linearGradient>
+        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="14" />
+        </filter>
       </defs>
 
       {/* Always there, very quietly: every cell sits in the same light and has no outline.
@@ -368,9 +386,6 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
             key={`${c.x}-${c.y}`}
             points={hex(c.x, c.y, A)}
             fill="url(#cell-fill)"
-            stroke="#e3bfd2"
-            strokeWidth="1"
-            strokeLinejoin="round"
           />
         ))}
       </g>
@@ -410,30 +425,26 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         )}
       </g>
 
-      {ALL.map((n) => {
-        const on = moving && n.id === active.id
-        return (
-          <g
-            key={n.id}
-            style={{
-              transformBox: 'fill-box',
-              transformOrigin: 'center',
-              transform: on ? 'scale(1.05)' : 'scale(1)',
-              transition: 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            <polygon
-              points={hex(n.x, n.y, A)}
-              fill="url(#logo-fill)"
-              stroke={on ? '#ffabda' : 'url(#logo-edge)'}
-              strokeWidth={on ? 3 : 1.5}
-              strokeLinejoin="round"
-              style={{ transition: 'stroke-width 300ms cubic-bezier(0.16, 1, 0.3, 1)' }}
-            />
-            <image href={`/icons/${n.id}.svg`} x={n.x - 18} y={n.y - 18} width="36" height="36" />
-          </g>
-        )
-      })}
+      {/* The glow a logo gives off when its signal leaves. Invisible until then. */}
+      {ALL.map((n) => (
+        <polygon
+          key={n.id}
+          ref={(el) => {
+            glowRefs.current[n.id] = el
+          }}
+          points={hex(n.x, n.y, A + 6)}
+          fill="#f66bb4"
+          filter="url(#glow)"
+          opacity={0}
+        />
+      ))}
+
+      {ALL.map((n) => (
+        <g key={n.id}>
+          <polygon points={hex(n.x, n.y, A)} fill="url(#logo-fill)" />
+          <image href={`/icons/${n.id}.svg`} x={n.x - 18} y={n.y - 18} width="36" height="36" />
+        </g>
+      ))}
     </svg>
   )
 }
