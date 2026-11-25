@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import {
   AnimatePresence,
   animate,
   motion,
   useReducedMotion,
 } from "motion/react";
+import { HoneyField, type Light } from "./honey-field";
 
 /** Where the product lives. The landing page only links to it. */
 export const APP_URL = "https://app.scoop.davidsling.in";
@@ -17,8 +18,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * They are examples, not partnerships. Each one carries a headline word.
  *
  * The logos sit in a honeycomb of flat-topped cells (points left and right) inside a
- * 1400 x 700 drawing. A is the cell size from centre to point, and the drawn hexagons are
- * a little smaller, which leaves an even channel between them for the wires to run in.
+ * 1400 x 700 drawing. A is the cell size from centre to point, and cells touch.
  * Cell (col, row) is centred at x = X0 + 1.5A * col, y = Y0 + 2HH * row, and odd columns
  * sit half a cell lower. The right side mirrors the left. X0 is chosen so that the mirrored
  * columns land on the same lattice (W - 2 * X0 is an even number of column steps), which lets
@@ -68,19 +68,9 @@ const RIGHT = [
   { id: "slack", name: "Slack", word: "tools", col: 1, row: 5 },
 ] as const;
 
-/**
- * Every cell of the honeycomb. It runs well past the drawing on all sides, so it still fills
- * the hero on wide and tall screens. Each cell gets one of three surface finishes, picked by
- * a fixed scramble of its position so that no stripes or patches show.
- */
-const CELLS = Array.from({ length: 37 }, (_, i) => i - 9).flatMap((col) =>
-  Array.from({ length: 19 }, (_, j) => j - 6).map((row) => ({
-    ...cell(col, row),
-    finish: (((col * 73856093) ^ (row * 19349663)) >>> 0) % 3,
-  })),
-);
-const inDrawing = (c: { x: number; y: number }) =>
-  c.x > -A && c.x < W + A && c.y > -A && c.y < H + A;
+/** What the honeycomb behind the hero needs to line up with this drawing. */
+const GEOMETRY = { w: W, h: H, a: A, x0: X0, y0: Y0 };
+const SCENE_ID = "hero-scene";
 
 /** The order the light travels in. It alternates sides and walks through the four words. */
 const ORDER = [
@@ -155,9 +145,12 @@ function useScene() {
 export function Hero() {
   const { seen, moving } = useScene();
   const active = byId(ORDER[seen % ORDER.length]);
+  // Where the travelling signal is right now. The honeycomb reads it every frame.
+  const signal = useRef<Light>({ x: 0, y: 0, on: 0 });
 
   return (
     <header className="relative isolate m-2 flex min-h-[calc(100svh-16px)] flex-col overflow-hidden rounded-[28px] bg-cream sm:m-3.5 sm:min-h-[calc(100svh-28px)] sm:rounded-[36px]">
+      <HoneyField sceneId={SCENE_ID} geometry={GEOMETRY} signal={signal} />
       <nav
         aria-label="Main"
         className="relative z-10 flex items-center justify-between px-5 pt-5 sm:px-9 sm:pt-7"
@@ -178,7 +171,7 @@ export function Hero() {
       </nav>
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-5 py-10 sm:px-9">
-        <Honeycomb active={active} moving={moving} run={seen} />
+        <Honeycomb active={active} moving={moving} run={seen} signal={signal} />
 
         <div className="relative z-10 flex max-w-[36rem] flex-col items-center text-center">
           <h1
@@ -291,33 +284,6 @@ function wire(n: Node) {
   return `${d} H${W / 2 - dir * 60}`;
 }
 
-/** How strongly each of the three surface finishes shows the shared sheen at rest. */
-const SHEEN = [0.25, 0.6, 0.4];
-/** How far the cursor's light reaches, in scene units. */
-const CURSOR_REACH = 260;
-/** The steepest a tile leans towards the cursor, in radians (about 26 degrees). */
-const TILT_MAX = 0.45;
-/** How far the viewer is from the honeycomb, in scene units. Smaller means more perspective. */
-const CAMERA = 420;
-
-/**
- * The corners of a cell at (x, y) after it has turned by `angle` towards the unit direction
- * (ux, uy), seen in perspective. The side nearest that direction drops away from the viewer.
- */
-function plate(x: number, y: number, ux: number, uy: number, angle: number) {
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  return Array.from({ length: 6 }, (_, k) => {
-    const vx = A * Math.cos((Math.PI / 3) * k);
-    const vy = A * Math.sin((Math.PI / 3) * k);
-    const along = vx * ux + vy * uy;
-    const scale = CAMERA / (CAMERA + along * sin);
-    const px = (vx + (cos - 1) * along * ux) * scale;
-    const py = (vy + (cos - 1) * along * uy) * scale;
-    return `${(x + px).toFixed(1)},${(y + py).toFixed(1)}`;
-  }).join(" ");
-}
-
 /** How long one pulse of light takes to travel its wire, in seconds. */
 const PULSE_S = 1.4;
 /** The lit part of the wire, as a share of its length. */
@@ -332,109 +298,26 @@ const GLOW_S = 3;
 const GLOW_OPACITY = 0.55;
 
 /**
- * Wide screens: logos in hexagons on both sides, wired to the centre behind the headline.
- * The cells of the honeycomb touch, so the wires run along the lines where cells meet.
- * At rest only the logo cells and the wires show. The rest of the honeycomb appears faintly
- * in a soft circle around the light as it travels, and fades again behind it.
+ * Wide screens: logos in hexagons on both sides, with a hidden route from each one to the
+ * centre behind the headline. A signal travels a route, leaves a slow-fading trail, and its
+ * position is shared with the honeycomb behind so the cells it passes answer it.
  */
 function Honeycomb({
   active,
   moving,
   run,
+  signal,
 }: {
   active: Node;
   moving: boolean;
   run: number;
+  signal: RefObject<Light>;
 }) {
   const wires = ALL.map((n) => ({ n, d: wire(n) }));
-  const cells = CELLS;
-
   const wireRefs = useRef<Record<string, SVGPathElement | null>>({});
   const pulseRef = useRef<SVGPathElement>(null);
-  const spotRef = useRef<SVGCircleElement>(null);
   const fades = useRef<Record<string, { stop: () => void } | undefined>>({});
   const glowRefs = useRef<Record<string, SVGPolygonElement | null>>({});
-  const svgRef = useRef<SVGSVGElement>(null);
-  const sheenRefs = useRef<(SVGPolygonElement | null)[]>([]);
-  const plateRefs = useRef<(SVGPolygonElement | null)[]>([]);
-  const litRefs = useRef<(SVGPolygonElement | null)[]>([]);
-
-  // The cursor is a second, small light. Cells near it catch more of the sheen, and the
-  // light eases after the cursor rather than snapping to it.
-  useEffect(() => {
-    const svg = svgRef.current;
-    if (!svg) return;
-    const target = { x: 0, y: 0, on: 0 };
-    const now = { x: 0, y: 0, on: 0 };
-    let frame = 0;
-    const tilted: boolean[] = [];
-    const paint = () => {
-      frame = 0;
-      now.x += (target.x - now.x) * 0.3;
-      now.y += (target.y - now.y) * 0.3;
-      now.on += (target.on - now.on) * 0.14;
-      // Each tile is a rigid plate that leans towards the cursor. Its six corners are turned
-      // in 3D about the plate's own centre and then drawn with perspective, so the near edge
-      // drops away and the far edge comes forward. Nothing stretches.
-      cells.forEach((c, i) => {
-        const dx = now.x - c.x;
-        const dy = now.y - c.y;
-        const far = Math.hypot(dx, dy);
-        const near = Math.max(0, 1 - far / CURSOR_REACH);
-        const sheen = sheenRefs.current[i];
-        const base = SHEEN[c.finish];
-        sheen?.setAttribute(
-          "fill-opacity",
-          String(base + (1 - base) * near * near * now.on),
-        );
-
-        // Flat directly under the cursor, steepest a little way out, flat again at the edge.
-        const angle = TILT_MAX * near * Math.min(1, far / 60) * now.on;
-        if (angle < 0.004 && !tilted[i]) return;
-        tilted[i] = angle >= 0.004;
-        const points = tilted[i]
-          ? plate(c.x, c.y, dx / far, dy / far, angle)
-          : hex(c.x, c.y, A);
-        plateRefs.current[i]?.setAttribute("points", points);
-        sheen?.setAttribute("points", points);
-        litRefs.current[i]?.setAttribute("points", points);
-      });
-      const settled =
-        Math.abs(target.x - now.x) < 0.5 &&
-        Math.abs(target.y - now.y) < 0.5 &&
-        Math.abs(target.on - now.on) < 0.01;
-      if (!settled) frame = requestAnimationFrame(paint);
-    };
-    const wake = () => {
-      if (!frame) frame = requestAnimationFrame(paint);
-    };
-    const move = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      const box = svg.getBoundingClientRect();
-      if (!box.width) return;
-      target.x = ((e.clientX - box.left) / box.width) * W;
-      target.y = ((e.clientY - box.top) / box.height) * H;
-      if (!target.on && now.on < 0.01) {
-        now.x = target.x;
-        now.y = target.y;
-      }
-      target.on = 1;
-      wake();
-    };
-    const leave = () => {
-      target.on = 0;
-      wake();
-    };
-    window.addEventListener("pointermove", move, { passive: true });
-    document.documentElement.addEventListener("pointerleave", leave);
-    return () => {
-      window.removeEventListener("pointermove", move);
-      document.documentElement.removeEventListener("pointerleave", leave);
-      cancelAnimationFrame(frame);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
     const running = fades.current;
     return () => Object.values(running).forEach((f) => f?.stop());
@@ -443,7 +326,7 @@ function Honeycomb({
   useEffect(() => {
     const path = wireRefs.current[active.id];
     const pulse = pulseRef.current;
-    const spot = spotRef.current;
+    const spot = signal.current;
     if (!moving || !path || !pulse || !spot) return;
     const length = path.getTotalLength();
     const id = active.id;
@@ -487,24 +370,22 @@ function Honeycomb({
         // The circle follows the middle of the lit part, and eases in and out at the two ends.
         const at = Math.min(1, Math.max(0, (1 + DASH) * p - DASH / 2));
         const point = path.getPointAtLength(at * length);
-        spot.setAttribute("cx", String(point.x));
-        spot.setAttribute("cy", String(point.y));
-        spot.setAttribute(
-          "opacity",
-          String(Math.min(1, p / 0.18, (1 - p) / 0.3)),
-        );
+        spot.x = point.x;
+        spot.y = point.y;
+        spot.on = Math.min(1, p / 0.18, (1 - p) / 0.3);
       },
       onComplete: fade,
     });
     return () => {
       controls.stop();
+      spot.on = 0;
       fade();
     };
-  }, [run, moving, active.id]);
+  }, [run, moving, active.id, signal]);
 
   return (
     <svg
-      ref={svgRef}
+      id={SCENE_ID}
       viewBox={`0 0 ${W} ${H}`}
       role="img"
       aria-label={`Logos of places you save from and tools you can save, including ${ALL.map((n) => n.name).join(", ")}. A line runs from each one to the centre of the page.`}
@@ -539,44 +420,6 @@ function Honeycomb({
           <rect width={W} height={H} fill="url(#fade)" />
         </mask>
 
-        {/* The soft circle that travels with the light and uncovers the cells near it. */}
-        <radialGradient id="spot-falloff">
-          <stop offset="0" stopColor="#fff" />
-          <stop offset="0.45" stopColor="#fff" stopOpacity="0.7" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </radialGradient>
-        <mask
-          id="spot-mask"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width={W}
-          height={H}
-        >
-          <circle ref={spotRef} r="150" fill="url(#spot-falloff)" opacity="0" />
-        </mask>
-
-        {/* One light for the whole honeycomb: a single gradient laid across the full scene. */}
-        <linearGradient
-          id="field"
-          x1="0"
-          y1="0"
-          x2="0"
-          y2={H}
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0" stopColor="#fffaf5" />
-          <stop offset="1" stopColor="#f8e5d4" />
-        </linearGradient>
-        {/* The same sheen on every cell, from the same side. Only its strength differs. */}
-        <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.9" />
-          <stop offset="0.6" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="cell-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.95" />
-          <stop offset="1" stopColor="#ffead8" stopOpacity="0.55" />
-        </linearGradient>
         <linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#fff" />
           <stop offset="1" stopColor="#fff1e4" />
@@ -585,51 +428,6 @@ function Honeycomb({
           <feGaussianBlur stdDeviation="14" />
         </filter>
       </defs>
-
-      {/* Always there, very quietly: every cell sits in the same light and has no outline.
-          Cells differ only in how much of that light their surface gives back. */}
-      <g>
-        {cells.map((c, i) => {
-          const finish = c.finish;
-          const points = hex(c.x, c.y, A);
-          return (
-            <g key={`${c.x}-${c.y}`}>
-              <polygon
-                ref={(el) => {
-                  plateRefs.current[i] = el;
-                }}
-                points={points}
-                fill="url(#field)"
-                fillOpacity={[0.55, 0.78, 1][finish]}
-              />
-              <polygon
-                ref={(el) => {
-                  sheenRefs.current[i] = el;
-                }}
-                points={points}
-                fill="url(#sheen)"
-                fillOpacity={SHEEN[finish]}
-              />
-            </g>
-          );
-        })}
-      </g>
-
-      <g mask="url(#spot-mask)">
-        {cells.map((c, i) =>
-          // The travelling light never leaves the drawing, so cells outside it are skipped.
-          !inDrawing(c) ? null : (
-            <polygon
-              key={`${c.x}-${c.y}`}
-              ref={(el) => {
-                litRefs.current[i] = el;
-              }}
-              points={hex(c.x, c.y, A)}
-              fill="url(#cell-fill)"
-            />
-          ),
-        )}
-      </g>
 
       <g mask="url(#fade-mask)">
         {wires.map(({ n, d }) => (
