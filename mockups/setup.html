@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="onboarding.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6.500h.01M15 6.500h.01M9 12h.01M15 12h.01M9 17.500h.01M15 17.500h.01" stroke-width="2.200"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><path d="m6.500 12.500 3.500 3.500 7.500-8" stroke-width="2.200"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="ob-top"><a class="logo" href="signup.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a><a class="skip" href="dashboard.html">Skip for now</a></header>
+  <div class="setup-hd">
+    <h1>Three steps, about three minutes.</h1>
+    <p>Each step ticks itself off when it happens. You can leave and come back, and skip any of it.</p>
+  </div>
+  <div class="setup">
+    <ol class="steps3">
+        <li class="step now"><div class="sh"><span class="no">1</span><h2>Make your first save</h2><span class="state">Step 1 of 3</span></div>
+          <div class="body">
+            <p>Add the Scoop button to Chrome. Then open any page you like, click the button, and add a line on why you are saving it.</p>
+            <a class="btn solid big" href="#"><img class="b" src="icons/googlechrome.svg" alt="">Add to Chrome</a><a class="alt" href="#">No extension? Paste a link instead</a>
+            <div class="promise"><svg class="i"><use href="#i-shield"/></svg><span>The button reads a page only when you click it. It can add to your library and can never read it.</span></div>
+            <div class="waiting"><span class="ring"></span>Waiting for your first save</div>
+          </div>
+        </li>
+        <li class="step"><div class="sh"><span class="no">2</span><h2>Connect your agent</h2></div></li>
+        <li class="step"><div class="sh"><span class="no">3</span><h2>Ask it to tag your save</h2></div></li>
+    </ol>
+    <aside class="live">
+      <h2>Your library</h2>
+      <p class="cap">This updates by itself. <a href="setup-2.html" style="border-bottom:1px solid currentColor">Mockup: show the next state</a></p>
+      <div class="ghost"><div><img src="../brand/lockup-v2/scoop-lockup-mark-small-transparent.svg" alt=""><div>Your first save will appear here the moment you make it.</div></div></div>
+      <div class="conn off">No agent connected yet</div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>
