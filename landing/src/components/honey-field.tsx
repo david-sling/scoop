@@ -25,7 +25,8 @@ void main() {
  * Every pixel finds the honeycomb cell it is in. Each cell is a flat plate with its own small
  * fixed lean, so it catches the one shared light a little differently from its neighbours.
  * The cursor and the travelling signal push the plates near them to lean further, which is
- * what makes the light sweep across them. Nothing is drawn as an outline: cells show only
+ * what makes the light sweep across them. Everything stays in the one cream hue of the page;
+ * only lightness changes. Nothing is drawn as an outline: cells show only
  * because their surfaces answer the light differently.
  */
 const FRAGMENT = `
@@ -93,14 +94,10 @@ void main() {
   vec3 bright = vec3(1.0, 0.988, 0.972);
   vec3 col = mix(shade, bright, smoothstep(0.93, 1.0, ndh));
 
-  // A faint spread of colour, the way a pearly surface splits light. Stronger near the cursor.
-  float phase = dot(Hv.xy, vec2(0.8, 0.6)) * 2.2 - dot(N.xy, vec2(0.8, 0.6)) * 1.4 + h1 * 0.06 + uTime * 0.015;
-  vec3 tint = 0.5 + 0.5 * cos(6.2831853 * (phase + vec3(0.0, 0.33, 0.67)));
-  float amount = 0.016 + 0.07 * hw + 0.05 * sw;
-  col *= 1.0 + (tint - 0.5) * amount * 1.3;
-
-  // The signal lends the plates it passes a little of its pink.
-  col = mix(col, vec3(1.0, 0.80, 0.90), sw * 0.3);
+  // One hue only. Near the cursor and the signal the plates swing further between shade
+  // and bright, so the light is easier to see there, but the colour never changes.
+  float swing = dot(Hv.xy - N.xy, vec2(0.8, 0.6));
+  col = mix(col, mix(shade, bright, 0.5 + 0.5 * sin(swing * 9.0 + h1 * 2.0)), 0.5 * hw + 0.4 * sw);
   // A small glint where a plate faces the light head on.
   col += pow(ndh, 220.0) * 0.05;
 
