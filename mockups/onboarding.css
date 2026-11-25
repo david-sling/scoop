@@ -106,3 +106,27 @@
 @media (max-width: 1000px) { .join { grid-template-columns: minmax(0, 1fr); } .join .art { min-height: 300px; } .join .art h1 { font-size: 44px; } .join .art .mark { width: 260px; top: 10px; right: -30px; } .setup { grid-template-columns: minmax(0, 1fr); } .live { position: static; } }
 @media (max-width: 720px) { .setup-hd h1, .fin h1 { font-size: 36px; } .step .body { margin-left: 0; } .alt { margin-left: 0; display: flex; } .code, .say { flex-direction: column; align-items: stretch; border-radius: 18px; padding: 14px; } }
 @media (prefers-reduced-motion: reduce) { .waiting .ring { animation: none; border-top-color: var(--pink); } }
+
+/* Clickthrough */
+[hidden] { display: none !important; }
+.step:not(.now) .body { display: none; }
+.field .err { font-size: 13px; color: var(--warn); }
+.field input[aria-invalid="true"] { border-color: var(--warn); }
+.pick.bad { border-color: var(--warn); }
+.check h2 { margin-bottom: 8px; }
+.check p { margin: 0 0 22px; color: var(--ink-2); max-width: 44ch; }
+.check .links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+.check .links a, .mock a, .live .cap a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.check .links a:hover, .mock a:hover { color: var(--ink); }
+.paste { display: flex; gap: 8px; margin: 14px 0 0; max-width: 640px; }
+.paste input { flex: 1; min-width: 0; height: 48px; padding: 0 18px; font: inherit; font-size: 15px; color: var(--ink); background: #fff; border: 1px solid var(--rule); border-radius: 999px; }
+.paste input:focus { outline: none; border-color: var(--ink); }
+.paste .btn { min-height: 48px; padding: 0 22px; flex: none; }
+.step h2:focus, .check h2:focus { outline: none; }
+.mock { position: fixed; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #fff; border: 1px solid var(--rule); border-radius: 999px; font-size: 13px; color: var(--ink-3); z-index: 5; }
+.enter { animation: enter 320ms var(--ease) both; }
+.pop { animation: pop 380ms var(--ease) both; }
+@keyframes enter { from { opacity: 0; transform: translateY(10px); } }
+@keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) { .enter, .pop { animation-duration: 120ms; } @keyframes enter { from { opacity: 0; } } @keyframes pop { from { opacity: 0; } } }
+@media (max-width: 720px) { .paste { flex-direction: column; } }

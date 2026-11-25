@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get started · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="onboarding.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6.500h.01M15 6.500h.01M9 12h.01M15 12h.01M9 17.500h.01M15 17.500h.01" stroke-width="2.200"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><path d="m6.500 12.500 3.500 3.500 7.500-8" stroke-width="2.200"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+
+<!-- One-file clickthrough of the onboarding flow. Nothing is sent anywhere: every step is simulated. -->
+<div class="join" id="join">
+  <div class="art">
+    <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-transparent.svg" alt="">
+    <span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span>
+    <h1>Save what you like. Your agent takes it from there.</h1>
+    <p>A library of the posts, pages and tools you collect, kept where your AI agent can search it when a project starts.</p>
+  </div>
+  <div class="form">
+    <form id="f" novalidate>
+      <h2>Create your library</h2>
+      <p class="lead">It takes about three minutes to save your first thing and connect an agent.</p>
+      <div class="field">
+        <label for="u">Pick a name</label>
+        <div class="pick" id="pick"><input id="u" type="text" value="david" autocomplete="off" spellcheck="false" aria-describedby="uh"><span>@scoop.davidsling.in</span></div>
+        <div class="okline" id="uh" aria-live="polite"><svg class="i"><use href="#i-tick"/></svg><span>Available. This becomes your agent's address, for newsletters.</span></div>
+      </div>
+      <div class="field">
+        <label for="e">Your email</label>
+        <input id="e" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="eh">
+        <div class="hint" id="eh">We send a link to sign in. There is no password.</div>
+      </div>
+      <button class="btn solid wide" type="submit">Send me a sign-in link</button>
+      <div class="or">or</div>
+      <button class="btn outline wide" type="button" id="gh"><img class="b" src="icons/github.svg" alt="">Continue with GitHub</button>
+      <p class="fine">Scoop stores what you save and nothing else. It runs no AI of its own, and it never sends, posts or pays for anything.</p>
+    </form>
+    <div class="check" id="check" hidden>
+      <h2 tabindex="-1" id="checkh">Check your email</h2>
+      <p>We sent a sign-in link to <strong id="sent"></strong>. It works once and lasts 15 minutes.</p>
+      <button class="btn solid wide" type="button" id="open">Mockup: open the link</button>
+      <div class="links"><a href="#" id="again">Send it again</a><a href="#" id="change">Use a different email</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="setup" hidden>
+  <header class="ob-top"><span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span><a class="skip" href="dashboard.html">Skip for now</a></header>
+  <div class="setup-hd">
+    <h1>Three steps, about three minutes.</h1>
+  </div>
+  <div class="setup">
+    <ol class="steps3">
+      <li class="step" data-i="0"><div class="sh"><span class="no"></span><h2 tabindex="-1">Make your first save</h2><span class="state"></span></div>
+        <div class="body">
+          <p>Add the Scoop button to Chrome. Then open any page you like, click the button, and add a line on why you are saving it.</p>
+          <button class="btn solid big" type="button" id="add"><img class="b" src="icons/googlechrome.svg" alt="">Add to Chrome</button><a class="alt" href="#" id="alt" aria-expanded="false" aria-controls="paste">No extension? Paste a link instead</a>
+          <form class="paste" id="paste" hidden><input id="url" type="url" aria-label="Link to save" placeholder="https://"><button class="btn outline" type="submit">Save it</button></form>
+          <div class="promise"><svg class="i"><use href="#i-shield"/></svg><span>The button reads a page only when you click it. It can add to your library and can never read it.</span></div>
+          <div class="waiting"><span class="ring"></span><span class="wt" aria-live="polite">Waiting for your first save</span></div>
+        </div>
+      </li>
+      <li class="step" data-i="1"><div class="sh"><span class="no"></span><h2 tabindex="-1">Connect your agent</h2><span class="state"></span></div>
+        <div class="body">
+          <p>Scoop does no thinking of its own. Your agent tags your saves and pulls from them, so connect the one you use.</p>
+          <ul class="agentpick" aria-label="Choose your agent">
+            <li><button type="button" data-a="claude"><img class="b" src="icons/claude.svg" alt="">Claude Code</button></li>
+            <li><button type="button" data-a="codex"><img class="b" src="icons/openai.svg" alt="">Codex</button></li>
+            <li><button type="button" data-a="cursor"><img class="b" src="icons/cursor.svg" alt="">Cursor</button></li>
+            <li><button type="button" data-a="gemini"><img class="b" src="icons/gemini.svg" alt="">Gemini CLI</button></li>
+            <li><button type="button" data-a="other">Another agent</button></li>
+          </ul>
+          <p style="margin-bottom:8px" id="lead"></p>
+          <div class="code"><code id="cmd"></code><button type="button" id="copy1"><svg class="i"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+          <p class="sub2">Your browser will open so you can sign in. Each agent gets its own access, and you can end it at any time.</p>
+          <div class="waiting"><span class="ring"></span><span class="wt" aria-live="polite"></span></div>
+        </div>
+      </li>
+      <li class="step" data-i="2"><div class="sh"><span class="no"></span><h2 tabindex="-1">Ask it to tag your save</h2><span class="state"></span></div>
+        <div class="body">
+          <p>Your save has no tags yet, because Scoop never tags anything itself. Say this to <span data-an></span>:</p>
+          <div class="say"><span id="say">Tag the untagged saves in my Scoop library.</span><button type="button" id="copy2"><svg class="i"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+          <p class="sub2">It will ask you before it changes anything else, and you can undo whatever it does.</p>
+          <div class="waiting"><span class="ring"></span><span class="wt" aria-live="polite">Waiting for the first tag</span></div>
+        </div>
+      </li>
+    </ol>
+    <aside class="live" id="live"></aside>
+  </div>
+</div>
+
+<div class="wrap" id="done" hidden>
+  <header class="ob-top"><span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span></header>
+  <div class="setup" style="margin-top:26px">
+    <div style="display:grid;gap:14px">
+      <section class="tile fin">
+        <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-transparent.svg" alt="">
+        <h1 tabindex="-1" id="doneh" style="outline:none"><span data-an></span> just tagged your save.</h1>
+        <p>That is the whole idea. You save what you like, and your agent keeps it organised and uses it when you start a project.</p>
+        <a class="btn solid" href="dashboard.html">Open your library</a>
+      </section>
+      <section class="tile">
+        <div class="hd"><h2>When you are ready</h2></div>
+        <ul class="next">
+          <li><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><div><div class="t">Subscribe to a newsletter</div><p>Use <span id="addr"></span> and every issue lands in your library.</p></div><button class="btn outline" type="button" id="copy3"><span>Copy address</span></button></li>
+          <li><span class="ic"><svg class="i"><use href="#i-page"/></svg></span><div><div class="t">Start a project</div><p>Put the saves you want used in one place, then point your agent at it.</p></div><a class="btn outline" href="projects.html">New project</a></li>
+          <li><span class="ic"><svg class="i"><use href="#i-agent"/></svg></span><div><div class="t">Connect another agent</div><p>They all work from the same library, tags and projects.</p></div><a class="btn outline" href="agents.html">Connect</a></li>
+        </ul>
+      </section>
+    </div>
+    <aside class="live" id="live2"></aside>
+  </div>
+</div>
+
+<div class="mock">Mockup, nothing is sent<a href="#" id="restart">Start again</a></div>
+
+<template id="t-card"><ul class="saves" style="grid-template-columns:1fr"><li class="save"><a href="#"><span class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#E3EEFB"/><path d="M48 150C110 150 120 50 272 50" fill="none" stroke="#2F6FD0" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="150" r="9" fill="#fff" stroke="#2F6FD0" stroke-width="4"/><circle cx="272" cy="50" r="9" fill="#2F6FD0"/><path d="M48 50v100h224" fill="none" stroke="#A9C6EE" stroke-width="2" stroke-dasharray="3 7"/></svg></span><div class="txt"><div class="src"><img class="b" src="icons/googlechrome.svg" alt="">Site<time>Just now</time></div><h3>A small easing playground</h3><p>Your note: Good for picking curves.</p><div class="tagged" id="tg"><span class="chip none">Untagged</span><span class="by">no tags yet</span></div></div></a></li></ul></template>
+<template id="t-ghost"><div class="ghost"><div><img src="../brand/lockup-v2/scoop-lockup-mark-small-transparent.svg" alt=""><div>Your first save will appear here the moment you make it.</div></div></div></template>
+
+<script>
+(function () {
+  var U = 'https://scoop.davidsling.in/mcp';
+  var AG = {
+    claude: { name: 'Claude Code', icon: 'icons/claude.svg', lead: 'Run this in your terminal:', cmd: 'claude mcp add --transport http scoop ' + U },
+    codex:  { name: 'Codex', icon: 'icons/openai.svg', lead: 'Run this in your terminal:', cmd: 'codex mcp add scoop --url ' + U },
+    cursor: { name: 'Cursor', icon: 'icons/cursor.svg', lead: 'Add this to ~/.cursor/mcp.json:', cmd: '{ "mcpServers": { "scoop": { "url": "' + U + '" } } }' },
+    gemini: { name: 'Gemini CLI', icon: 'icons/gemini.svg', lead: 'Run this in your terminal:', cmd: 'gemini mcp add --transport http scoop ' + U },
+    other:  { name: 'your agent', icon: '', lead: 'Add this address as a remote MCP server:', cmd: U }
+  };
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var fresh = function () { return { screen: 'join', agent: 'claude', saved: false, connected: false, tagged: false, pend: [false, false, false] }; };
+  var st = fresh(), timers = [], shown = '', lastStep = -1;
+  var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
+  var cap = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
+  var stepOf = function () { return !st.saved ? 0 : !st.connected ? 1 : !st.tagged ? 2 : 3; };
+  var DONE = function (i) { return ['Saved', cap(AG[st.agent].name) + ' connected', 'Tagged'][i]; };
+
+  function liveHTML(final) {
+    var a = AG[st.agent];
+    var h = '<h2>Your library</h2><p class="cap">' + (final ? '1 save, tagged a moment ago.' : 'In this mockup each step finishes a moment after you click.') + '</p>';
+    h += st.saved ? $('#t-card').innerHTML : $('#t-ghost').innerHTML;
+    h += st.connected
+      ? '<div class="conn">' + (a.icon ? '<img class="b" src="' + a.icon + '" alt="">' : '') + cap(a.name) + '<span class="chip plain ok">Connected</span></div>'
+      : '<div class="conn off">No agent connected yet</div>';
+    return h;
+  }
+  function paintLive(el, final, popSel) {
+    el.innerHTML = liveHTML(final);
+    var tg = el.querySelector('#tg');
+    if (tg && st.tagged) tg.innerHTML = '<span class="chip">Animation</span><span class="chip">Tools</span><span class="by">by ' + cap(AG[st.agent].name) + '</span>';
+    var p = popSel && el.querySelector(popSel);
+    if (p) p.classList.add('pop');
+  }
+
+  function render(popSel) {
+    var a = AG[st.agent], step = stepOf();
+    ['join', 'setup', 'done'].forEach(function (id) {
+      var el = $('#' + id); el.hidden = st.screen !== id;
+      if (st.screen === id && shown !== id) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); }
+    });
+    $$('[data-an]').forEach(function (n) { n.textContent = n.closest('h1') ? cap(a.name) : a.name; });
+    $$('.step').forEach(function (li) {
+      var i = +li.dataset.i;
+      li.classList.toggle('done', i < step); li.classList.toggle('now', i === step);
+      li.querySelector('.no').innerHTML = i < step ? '<svg class="i"><use href="#i-tick"/></svg>' : i + 1;
+      li.querySelector('.state').textContent = i < step ? DONE(i) : i === step ? 'Step ' + (i + 1) + ' of 3' : '';
+    });
+    $$('.agentpick button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.a === st.agent); });
+    $('#lead').textContent = a.lead; $('#cmd').textContent = a.cmd;
+    var w = $$('.step .wt');
+    w[0].textContent = st.pend[0] ? 'Button added. Waiting for your first save' : 'Waiting for your first save';
+    w[1].textContent = (st.pend[1] ? 'Copied. ' : '') + 'Waiting for ' + a.name + ' to connect';
+    w[2].textContent = st.pend[2] ? 'Copied. Waiting for the first tag' : 'Waiting for the first tag';
+    $('#add').disabled = st.pend[0];
+    $('#addr').textContent = name() + '@scoop.davidsling.in';
+    paintLive($('#live'), false, popSel); paintLive($('#live2'), true);
+    if (st.screen === 'setup' && step !== lastStep && step < 3) {
+      var h = $('.step.now h2'); if (h && shown === 'setup') h.focus({ preventScroll: true });
+    }
+    if (st.screen === 'done' && shown !== 'done') { window.scrollTo(0, 0); $('#doneh').focus({ preventScroll: true }); }
+    if (st.screen === 'setup' && shown !== 'setup') window.scrollTo(0, 0);
+    lastStep = step; shown = st.screen;
+  }
+
+  function name() { return $('#u').value.trim().toLowerCase() || 'you'; }
+  function copied(btn, text) {
+    try { if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {}); } catch (e) {}
+    var s = btn.querySelector('span'), was = s.textContent; s.textContent = 'Copied';
+    setTimeout(function () { s.textContent = was; }, 1600);
+  }
+  function saveArrives() { st.pend[0] = true; render(); later(function () { st.saved = true; render('.save'); }, 1500); }
+
+  // Sign up
+  $('#u').addEventListener('input', function () {
+    var v = this.value.trim(), ok = /^[a-z0-9][a-z0-9-]{1,29}$/.test(v);
+    $('#pick').classList.toggle('bad', !ok);
+    $('#uh').className = ok ? 'okline' : 'err';
+    $('#uh').innerHTML = ok ? '<svg class="i"><use href="#i-tick"/></svg><span>Available. This becomes your agent\'s address, for newsletters.</span>' : 'Use 2 to 30 lowercase letters, numbers or dashes.';
+  });
+  $('#f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if ($('#pick').classList.contains('bad')) { $('#u').focus(); return; }
+    var e = $('#e'), ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim());
+    e.setAttribute('aria-invalid', !ok);
+    $('#eh').className = ok ? 'hint' : 'err';
+    $('#eh').textContent = ok ? 'We send a link to sign in. There is no password.' : 'Enter your email address so we can send the link.';
+    if (!ok) { e.focus(); return; }
+    $('#sent').textContent = e.value.trim();
+    $('#f').hidden = true; $('#check').hidden = false; $('#check').classList.add('enter'); $('#checkh').focus();
+  });
+  $('#change').addEventListener('click', function (ev) { ev.preventDefault(); $('#check').hidden = true; $('#f').hidden = false; $('#e').focus(); });
+  $('#again').addEventListener('click', function (ev) { ev.preventDefault(); this.textContent = 'Sent again'; var t = this; setTimeout(function () { t.textContent = 'Send it again'; }, 1600); });
+  var enter = function () { if ($('#pick').classList.contains('bad')) { $('#u').focus(); return; } st.screen = 'setup'; render(); };
+  $('#open').addEventListener('click', enter);
+  $('#gh').addEventListener('click', enter);
+
+  // Step 1
+  $('#add').addEventListener('click', saveArrives);
+  $('#alt').addEventListener('click', function (ev) {
+    ev.preventDefault(); var p = $('#paste'); p.hidden = !p.hidden;
+    this.setAttribute('aria-expanded', !p.hidden); if (!p.hidden) $('#url').focus();
+  });
+  $('#paste').addEventListener('submit', function (ev) { ev.preventDefault(); if (!$('#url').value.trim()) { $('#url').focus(); return; } saveArrives(); });
+
+  // Step 2
+  $$('.agentpick button').forEach(function (b) { b.addEventListener('click', function () { st.agent = b.dataset.a; render(); }); });
+  $('#copy1').addEventListener('click', function () {
+    copied(this, AG[st.agent].cmd); if (st.pend[1]) return;
+    st.pend[1] = true; render(); later(function () { st.connected = true; render('.conn'); }, 1800);
+  });
+
+  // Step 3
+  $('#copy2').addEventListener('click', function () {
+    copied(this, $('#say').textContent); if (st.pend[2]) return;
+    st.pend[2] = true; render();
+    later(function () { st.tagged = true; render('#tg'); later(function () { st.screen = 'done'; render(); }, 1500); }, 1800);
+  });
+  $('#copy3').addEventListener('click', function () { copied(this, $('#addr').textContent); });
+
+  $('#restart').addEventListener('click', function (ev) {
+    ev.preventDefault(); timers.forEach(clearTimeout); timers = []; st = fresh();
+    $('#f').hidden = false; $('#check').hidden = true; $('#paste').hidden = true; $('#alt').setAttribute('aria-expanded', false);
+    render(); window.scrollTo(0, 0);
+  });
+
+  // Jump straight to a state with #at=check, 1, 2, 3 or done. #auto clicks the whole path (used to test it).
+  var m = /at=(\w+)/.exec(location.hash), at = m && m[1];
+  if (at === 'check') { $('#e').value = 'you@example.com'; $('#f').requestSubmit(); }
+  if (at && at !== 'check') { st.screen = at === 'done' ? 'done' : 'setup'; st.saved = at !== '1'; st.connected = at === '3' || at === 'done'; st.tagged = at === 'done'; }
+  render();
+  if (location.hash === '#auto') {
+    $('#e').value = 'you@example.com'; $('#f').requestSubmit(); $('#open').click();
+    setTimeout(function () { $('#add').click(); }, 300);
+    setTimeout(function () { document.querySelector('[data-a="codex"]').click(); $('#copy1').click(); }, 2200);
+    setTimeout(function () { $('#copy2').click(); }, 4500);
+  }
+})();
+</script>
+</body>
+</html>
