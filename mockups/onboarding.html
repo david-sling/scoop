@@ -76,11 +76,18 @@
 </div>
 
 <div class="wrap" id="setup" hidden>
-  <header class="ob-top"><span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span><a class="skip" href="dashboard.html">Skip for now</a></header>
-  <div class="setup-hd">
+  <header class="ob-top"><span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span><a class="skip" id="skip" href="dashboard.html">Skip for now</a></header>
+  <div class="setup-hd" id="hd">
     <h1>Three steps, about three minutes.</h1>
   </div>
-  <div class="setup">
+  <div class="setup" id="grid">
+    <div style="display:grid;gap:14px">
+    <section class="tile fin" id="fin" hidden>
+        <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-transparent.svg" alt="">
+        <h1 tabindex="-1" id="doneh" style="outline:none"><span data-an></span> just tagged your save.</h1>
+        <p>That is the whole idea. You save what you like, and your agent keeps it organised and uses it when you start a project.</p>
+        <a class="btn solid" href="dashboard.html">Open your library</a>
+      </section>
     <ol class="steps3">
       <li class="step" data-i="0"><div class="sh"><span class="no"></span><h2 tabindex="-1">Make your first save</h2><span class="state"></span></div>
         <div class="body">
@@ -116,21 +123,7 @@
         </div>
       </li>
     </ol>
-    <aside class="live" id="live"></aside>
-  </div>
-</div>
-
-<div class="wrap" id="done" hidden>
-  <header class="ob-top"><span class="logo"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></span></header>
-  <div class="setup" style="margin-top:26px">
-    <div style="display:grid;gap:14px">
-      <section class="tile fin">
-        <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-transparent.svg" alt="">
-        <h1 tabindex="-1" id="doneh" style="outline:none"><span data-an></span> just tagged your save.</h1>
-        <p>That is the whole idea. You save what you like, and your agent keeps it organised and uses it when you start a project.</p>
-        <a class="btn solid" href="dashboard.html">Open your library</a>
-      </section>
-      <section class="tile">
+    <section class="tile" id="ready" hidden>
         <div class="hd"><h2>When you are ready</h2></div>
         <ul class="next">
           <li id="inbox"></li>
@@ -139,7 +132,7 @@
         </ul>
       </section>
     </div>
-    <aside class="live" id="live2"></aside>
+    <aside class="live" id="live"></aside>
   </div>
 </div>
 
@@ -160,8 +153,8 @@
   };
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
-  var fresh = function () { return { screen: 'join', addr: '', agent: 'claude', saved: false, connected: false, tagged: false, pend: [false, false, false] }; };
-  var st = fresh(), timers = [], shown = '', lastStep = -1;
+  var fresh = function () { return { screen: 'join', fin: false, addr: '', agent: 'claude', saved: false, connected: false, tagged: false, pend: [false, false, false] }; };
+  var st = fresh(), timers = [], shown = '', lastStep = -1, finShown = false;
   var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
   var cap = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
   var stepOf = function () { return !st.saved ? 0 : !st.connected ? 1 : !st.tagged ? 2 : 3; };
@@ -186,7 +179,7 @@
 
   function render(popSel) {
     var a = AG[st.agent], step = stepOf();
-    ['join', 'setup', 'done'].forEach(function (id) {
+    ['join', 'setup'].forEach(function (id) {
       var el = $('#' + id); el.hidden = st.screen !== id;
       if (st.screen === id && shown !== id) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); }
     });
@@ -204,11 +197,14 @@
     w[1].textContent = (st.pend[1] ? 'Copied. ' : '') + 'Waiting for ' + a.name + ' to connect';
     w[2].textContent = st.pend[2] ? 'Copied. Waiting for the first tag' : 'Waiting for the first tag';
     $('#add').disabled = st.pend[0];
-    paintLive($('#live'), false, popSel); paintLive($('#live2'), true);
+    paintLive($('#live'), st.fin, popSel);
+    $('#hd').hidden = $('#skip').hidden = st.fin; $('#fin').hidden = $('#ready').hidden = !st.fin;
+    $('#grid').style.marginTop = st.fin ? '26px' : '';
+    if (st.fin && !finShown) { ['#fin', '#ready'].forEach(function (s) { $(s).classList.remove('enter'); void $(s).offsetWidth; $(s).classList.add('enter'); }); window.scrollTo(0, 0); $('#doneh').focus({ preventScroll: true }); }
+    finShown = st.fin;
     if (st.screen === 'setup' && step !== lastStep && step < 3) {
       var h = $('.step.now h2'); if (h && shown === 'setup') h.focus({ preventScroll: true });
     }
-    if (st.screen === 'done' && shown !== 'done') { window.scrollTo(0, 0); $('#doneh').focus({ preventScroll: true }); }
     if (st.screen === 'setup' && shown !== 'setup') window.scrollTo(0, 0);
     lastStep = step; shown = st.screen;
   }
@@ -256,7 +252,7 @@
   $('#copy2').addEventListener('click', function () {
     copied(this, $('#say').textContent); if (st.pend[2]) return;
     st.pend[2] = true; render();
-    later(function () { st.tagged = true; render('#tg'); later(function () { st.screen = 'done'; render(); }, 1500); }, 1800);
+    later(function () { st.tagged = true; render('#tg'); later(function () { st.fin = true; render(); }, 1500); }, 1800);
   });
 
   // The inbox address is optional: it is made here, after setup, not at sign-up.
@@ -296,7 +292,7 @@
   // Jump straight to a state with #at=check, 1, 2, 3 or done. #auto clicks the whole path (used to test it).
   var m = /at=(\w+)/.exec(location.hash), at = m && m[1];
   if (at === 'check') { $('#e').value = 'you@example.com'; $('#f').requestSubmit(); }
-  if (at && at !== 'check') { st.screen = at === 'done' ? 'done' : 'setup'; st.saved = at !== '1'; st.connected = at === '3' || at === 'done'; st.tagged = at === 'done'; }
+  if (at && at !== 'check') { st.screen = 'setup'; st.fin = at === 'done'; st.saved = at !== '1'; st.connected = at === '3' || at === 'done'; st.tagged = at === 'done'; }
   if (/addr/.test(location.hash)) st.addr = 'david';
   paintInbox(); render();
   if (location.hash === '#auto') {
