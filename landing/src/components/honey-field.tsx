@@ -118,7 +118,7 @@ void main() {
   vec3 soft = mix(shade, bright, smoothstep(0.93, 1.0, smoothLight) * 0.8 + 0.1);
   float away = length((p - uMid) / vec2(520.0, 330.0));
   float focus = smoothstep(0.0, 1.0, away);
-  col = mix(soft, col, focus * focus);
+  col = mix(soft, col, 0.3 + 0.7 * focus * focus);
 
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`;
