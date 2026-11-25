@@ -149,7 +149,7 @@ export function Hero() {
   const signal = useRef<Light>({ x: 0, y: 0, on: 0 });
 
   return (
-    <header className="relative isolate m-2 flex min-h-[calc(100svh-16px)] flex-col overflow-hidden rounded-[28px] bg-cream sm:m-3.5 sm:min-h-[calc(100svh-28px)] sm:rounded-[36px]">
+    <header className="relative isolate flex min-h-svh flex-col overflow-hidden rounded-b-[28px] bg-cream sm:rounded-b-[36px]">
       <HoneyField sceneId={SCENE_ID} geometry={GEOMETRY} signal={signal} />
       <nav
         aria-label="Main"
