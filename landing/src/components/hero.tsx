@@ -215,6 +215,12 @@ function wire(n: Node) {
   return `${d} H${W / 2 - dir * 60}`
 }
 
+/** How strongly each of the three surface finishes shows the shared sheen at rest. */
+const SHEEN = [0.25, 0.6, 0.4]
+const finishOf = (i: number, x: number) => (i * 7 + (x > W / 2 ? 1 : 0)) % 3
+/** How far the cursor's light reaches, in scene units. */
+const CURSOR_REACH = 260
+
 /** How long one pulse of light takes to travel its wire, in seconds. */
 const PULSE_S = 1.4
 /** The lit part of the wire, as a share of its length. */
@@ -248,6 +254,62 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
   const spotRef = useRef<SVGCircleElement>(null)
   const fades = useRef<Record<string, { stop: () => void } | undefined>>({})
   const glowRefs = useRef<Record<string, SVGPolygonElement | null>>({})
+  const svgRef = useRef<SVGSVGElement>(null)
+  const sheenRefs = useRef<(SVGPolygonElement | null)[]>([])
+
+  // The cursor is a second, small light. Cells near it catch more of the sheen, and the
+  // light eases after the cursor rather than snapping to it.
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!svg) return
+    const target = { x: 0, y: 0, on: 0 }
+    const now = { x: 0, y: 0, on: 0 }
+    let frame = 0
+    const paint = () => {
+      frame = 0
+      now.x += (target.x - now.x) * 0.16
+      now.y += (target.y - now.y) * 0.16
+      now.on += (target.on - now.on) * 0.1
+      cells.forEach((c, i) => {
+        const el = sheenRefs.current[i]
+        if (!el) return
+        const near = Math.max(0, 1 - Math.hypot(c.x - now.x, c.y - now.y) / CURSOR_REACH)
+        const base = SHEEN[finishOf(i, c.x)]
+        el.setAttribute('fill-opacity', String(base + (1 - base) * near * near * now.on))
+      })
+      const settled =
+        Math.abs(target.x - now.x) < 0.5 && Math.abs(target.y - now.y) < 0.5 && Math.abs(target.on - now.on) < 0.01
+      if (!settled) frame = requestAnimationFrame(paint)
+    }
+    const wake = () => {
+      if (!frame) frame = requestAnimationFrame(paint)
+    }
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const box = svg.getBoundingClientRect()
+      if (!box.width) return
+      target.x = ((e.clientX - box.left) / box.width) * W
+      target.y = ((e.clientY - box.top) / box.height) * H
+      if (!target.on && now.on < 0.01) {
+        now.x = target.x
+        now.y = target.y
+      }
+      target.on = 1
+      wake()
+    }
+    const leave = () => {
+      target.on = 0
+      wake()
+    }
+    window.addEventListener('pointermove', move, { passive: true })
+    document.documentElement.addEventListener('pointerleave', leave)
+    return () => {
+      window.removeEventListener('pointermove', move)
+      document.documentElement.removeEventListener('pointerleave', leave)
+      cancelAnimationFrame(frame)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const running = fades.current
@@ -312,6 +374,7 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
 
   return (
     <svg
+      ref={svgRef}
       viewBox={`0 0 ${W} ${H}`}
       role="img"
       aria-label={`Logos of places you save from and tools you can save, including ${ALL.map((n) => n.name).join(', ')}. A line runs from each one to the centre of the page.`}
@@ -369,12 +432,19 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
           Cells differ only in how much of that light their surface gives back. */}
       <g>
         {cells.map((c, i) => {
-          const finish = (i * 7 + (c.x > W / 2 ? 1 : 0)) % 3
+          const finish = finishOf(i, c.x)
           const points = hex(c.x, c.y, A)
           return (
             <g key={`${c.x}-${c.y}`}>
               <polygon points={points} fill="url(#field)" fillOpacity={[0.55, 0.78, 1][finish]} />
-              <polygon points={points} fill="url(#sheen)" fillOpacity={[0.25, 0.6, 0.4][finish]} />
+              <polygon
+                ref={(el) => {
+                  sheenRefs.current[i] = el
+                }}
+                points={points}
+                fill="url(#sheen)"
+                fillOpacity={SHEEN[finish]}
+              />
             </g>
           )
         })}
