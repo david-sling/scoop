@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>impeccable · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real mail or real activity. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+.back { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; margin: -8px 0 14px; color: var(--ink-2); transition: color 120ms var(--ease); }
+.back:hover { color: var(--ink); }
+.back svg { transform: scaleX(-1); transition: transform 150ms var(--ease); }
+.back:hover svg { transform: scaleX(-1) translateX(2px); }
+.crumb { display: flex; align-items: center; justify-content: space-between; }
+.step { display: flex; gap: 6px; margin: -8px 0 14px; }
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 14px; align-items: start; }
+.main { display: grid; gap: 14px; min-width: 0; }
+.preview { display: block; border-radius: var(--r-tile); overflow: hidden; aspect-ratio: 16 / 8; background: #E3EEFB; }
+.preview svg { display: block; width: 100%; height: 100%; }
+.titleblock { padding: 14px 4px 6px; }
+.srcline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 400 12px var(--mono); color: var(--ink-3); }
+.srcline img.b { width: 16px; height: 16px; }
+.detail h1 { margin: 10px 0 14px; font-size: 44px; line-height: 1.05; font-weight: 300; letter-spacing: -0.03em; text-wrap: balance; }
+.open { display: flex; align-items: center; gap: 12px; }
+.open .url { font: 400 13px var(--mono); color: var(--ink-2); }
+.tile.note { background: var(--pink-wash); border-color: transparent; }
+.tile h2 small { margin-left: 8px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--ink-3); }
+.note h2 small { color: #5A2A45; }
+.note h2 { font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--mauve-deep); }
+.note p { margin: 6px 0 0; font-size: 30px; line-height: 1.25; font-weight: 300; letter-spacing: -0.02em; max-width: 28ch; text-wrap: balance; }
+.hd .edit { margin-left: auto; }
+.prose { margin: 10px 0 0; max-width: 66ch; color: var(--ink-2); }
+.prose + .prose { margin-top: 10px; }
+.wrote { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+.wrote img.b { width: 16px; height: 16px; }
+.more { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; margin-top: 8px; font-weight: 500; border-bottom: 1px solid transparent; }
+.more:hover { border-bottom-color: var(--ink); }
+.side { position: sticky; top: 14px; display: grid; gap: 14px; }
+.ontags { list-style: none; margin: 14px 0 0; padding: 0; }
+.ontags li { display: flex; align-items: center; gap: 10px; min-height: 44px; border-top: 1px solid var(--rule); }
+.ontags .chip { font: 500 13px/26px var(--sans); letter-spacing: 0; text-transform: none; padding: 0 12px; }
+.ontags .who { font-size: 13px; color: var(--ink-3); }
+.ontags button { margin-left: auto; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--ink-3); transition: background-color 120ms var(--ease), color 120ms var(--ease); }
+.ontags button:hover { background: var(--pink-wash); color: var(--ink); }
+.ontags button:active { transform: scale(0.92); }
+.addtag { display: flex; gap: 8px; margin-top: 12px; }
+.addtag input { flex: 1; min-width: 0; height: 40px; padding: 0 16px; font: inherit; color: var(--ink); background: #fff; border: 1px solid var(--rule); border-radius: 999px; transition: border-color 150ms var(--ease); }
+.addtag input::placeholder { color: var(--ink-3); }
+.addtag input:hover { border-color: var(--ink-3); }
+.addtag input:focus { outline: none; border-color: var(--ink); }
+.suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; font-size: 13px; color: var(--ink-3); }
+.suggest button { display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 12px 0 8px; border: 1px dashed var(--ink-3); border-radius: 999px; color: var(--ink-2); font-size: 13px; transition: border-color 120ms var(--ease), color 120ms var(--ease), background-color 120ms var(--ease); }
+.suggest button:hover { border-style: solid; border-color: var(--ink); color: var(--ink); }
+.suggest button:active { background: var(--cream); }
+.suggest button svg { width: 14px; height: 14px; }
+.facts { margin: 14px 0 0; }
+.facts div { display: flex; justify-content: space-between; gap: 16px; min-height: 40px; align-items: center; border-top: 1px solid var(--rule); }
+.facts dt { color: var(--ink-2); }
+.facts dd { margin: 0; text-align: right; }
+.danger { display: flex; gap: 4px; margin: 4px 0 0 -12px; }
+.btn.del:hover { color: #A3261F; background: #FDECEA; }
+@media (max-width: 1100px) { .detail { grid-template-columns: minmax(0, 1fr); } .side { position: static; } }
+@media (max-width: 720px) { .detail h1 { font-size: 32px; } .open { flex-wrap: wrap; } .note p { font-size: 24px; } }
+.inproj { list-style: none; margin: 14px 0 0; padding: 0; }
+.inproj li { padding: 13px 0; border-top: 1px solid #F0E0D2; }
+.inproj .pname { font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 150ms var(--ease); }
+.inproj .pname:hover { border-bottom-color: var(--ink); }
+.inproj .who { margin-left: 8px; font-size: 13px; color: var(--ink-3); }
+.usedhow { display: flex; gap: 8px; margin: 6px 0 0; color: var(--ink-2); }
+.usedhow img.b { width: 16px; height: 16px; margin-top: 3px; }
+.toolhead { position: relative; overflow: hidden; background: var(--mauve); color: #fff; border-color: transparent; padding: 34px 30px 30px; }
+.toolhead .srcline { color: var(--on-mauve-2); }
+.toolhead h1 { margin: 12px 0 10px; font-size: 64px; line-height: 1; font-weight: 300; letter-spacing: -0.035em; }
+.toolhead p { margin: 0; max-width: 56ch; color: var(--on-mauve-2); font-size: 15px; }
+.toolhead .mark { position: absolute; right: -6px; bottom: -70px; width: 250px; pointer-events: none; }
+.has { list-style: none; margin: 14px 0 0; padding: 0; }
+.has li { display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule); }
+.has img.b { width: 20px; height: 20px; }
+.has .st { margin-left: auto; }
+.has .none { color: var(--ink-3); font-size: 13px; margin-left: auto; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="dashboard.html" aria-current="page">Library</a>
+    <a href="projects.html">Projects</a>
+    <a href="#">Tags</a>
+    <a href="#">Agents</a>
+    <a href="#">Sources</a>
+    <a href="#">Quarantine <span class="n">3</span></a>
+    <a href="#">Settings</a>
+  </nav>
+  <button class="copy" type="button">david@scoop.davidsling.in<svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+</div></header>
+
+<main><div class="wrap">
+  <div class="crumb">
+    <a class="back" href="dashboard.html"><svg class="i"><use href="#i-chev"/></svg>Library</a>
+    <div class="step"><a class="pg" href="#"><svg class="i flip"><use href="#i-chev"/></svg><span class="sr">Previous save</span></a><a class="pg" href="#"><svg class="i"><use href="#i-chev"/></svg><span class="sr">Next save</span></a></div>
+  </div>
+
+  <div class="detail">
+    <article class="main">
+      <header class="tile toolhead">
+        <img class="mark" src="../brand/lockup-v2/scoop-lockup-mark-pink-transparent.svg" alt="">
+        <div class="srcline"><svg class="i"><use href="#i-skill"/></svg>Skill · saved by name only · first reported Mon 23 Nov</div>
+        <h1>impeccable</h1>
+        <p>Scoop holds only the name. The skill itself lives in your agent, and Scoop has never seen what is inside it.</p>
+      </header>
+
+      <section class="tile note">
+        <div class="hd"><h2>Your note</h2><button class="btn text edit" type="button"><svg class="i"><use href="#i-pen"/></svg>Edit</button></div>
+        <p>Use it for every design task.</p>
+      </section>
+
+      <section class="tile">
+        <div class="hd"><h2>Which agents have it</h2></div>
+        <p class="prose">An agent that does not have this skill cannot use it from here. It would need to be set up in that agent first.</p>
+        <ul class="has">
+          <li><img class="b" src="icons/claude.svg" alt="">Claude Code<span class="chip plain ok st">Has it · reported Mon 23 Nov</span></li>
+          <li><img class="b" src="icons/openai.svg" alt="">Codex<span class="none">Has not reported it</span></li>
+          <li><img class="b" src="icons/cursor.svg" alt="">Cursor<span class="none">Has not reported it</span></li>
+          <li><img class="b" src="icons/gemini.svg" alt="">Gemini CLI<span class="none">Has not reported it</span></li>
+        </ul>
+      </section>
+
+      <section class="tile">
+        <div class="hd"><h2>Description</h2></div>
+        <p class="prose">A design skill for building and reviewing interfaces. It sets a quality bar, checks for common mistakes and has commands for critique and polish.</p>
+        <div class="wrote"><img class="b" src="icons/claude.svg" alt="">Written by Claude Code on Mon 23 Nov. Scoop did not write or check this.</div>
+      </section>
+    </article>
+
+    <aside class="side">
+      <section class="tile">
+        <div class="hd"><h2>Tags</h2><a href="#">Arrange tags<svg class="i"><use href="#i-chev"/></svg></a></div>
+        <ul class="ontags">
+          <li><span class="chip">Design</span><span class="who">by you</span><button type="button"><svg class="i"><use href="#i-x"/></svg><span class="sr">Remove Design</span></button></li>
+        </ul>
+        <form class="addtag" onsubmit="return false">
+          <label class="sr" for="t">Add a tag</label>
+          <input id="t" type="text" placeholder="Add a tag, or type a new one">
+          <button class="btn solid" type="submit">Add</button>
+        </form>
+      </section>
+
+      <section class="tile cream">
+        <div class="hd"><h2>Projects</h2></div>
+        <ul class="inproj">
+          <li><a class="pname" href="project.html">davidsling.in redesign</a><span class="who">added by you</span>
+            <p class="usedhow"><img class="b" src="icons/claude.svg" alt="">Claude Code, today: Ran its critique on the home page and fixed the spacing.</p></li>
+          <li><a class="pname" href="#">Scoop landing page</a><span class="who">added by you</span>
+            <p class="usedhow"><img class="b" src="icons/claude.svg" alt="">Claude Code, 20 Nov: Used it to shape the page before building.</p></li>
+        </ul>
+        <button class="newtag" type="button" style="margin:10px 0 0 -12px"><svg class="i"><use href="#i-plus"/></svg>Add to a project</button>
+      </section>
+
+      <section class="tile">
+        <div class="hd"><h2>Details</h2></div>
+        <dl class="facts">
+          <div><dt>Kind</dt><dd>Skill</dd></div>
+          <div><dt>Saved as</dt><dd>Name only</dd></div>
+          <div><dt>Created</dt><dd>When Claude Code reported a use</dd></div>
+        </dl>
+        <div class="danger"><button class="btn text" type="button">Add its address</button><button class="btn text del" type="button"><svg class="i"><use href="#i-trash"/></svg>Delete</button></div>
+      </section>
+    </aside>
+  </div>
+</div></main>
+</body>
+</html>

@@ -45,6 +45,7 @@
   <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
   <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
   <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
@@ -89,12 +90,26 @@
       <header class="tile phead">
         <h1>davidsling.in redesign</h1>
         <p class="brief">Portfolio rebuild. Calm and confident, with one playful moment per page.</p>
-        <div class="meta">14 saves · 6 used · created by you on 18 Nov</div>
+        <div class="meta">14 saves · 3 tools · 6 used · created by you on 18 Nov</div>
         <div class="acts">
           <button class="btn solid" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy project prompt</button>
           <button class="btn white" type="button"><svg class="i"><use href="#i-plus"/></svg>Add saves</button>
         </div>
       </header>
+
+      <section class="tile">
+        <div class="hd"><h2>Tools for this project</h2><a href="#">Add a tool<svg class="i"><use href="#i-chev"/></svg></a></div>
+        <p class="sub" style="margin-bottom:0">Skills and MCP servers your agents should use here. An agent uses a tool only when you added it yourself.</p>
+        <ul class="tools">
+          <li><span class="tic"><svg class="i"><use href="#i-skill"/></svg></span>
+            <div class="tb"><div class="tn"><a href="tool.html">impeccable</a><span class="tk">Skill · in Claude Code</span><span class="chip plain ok">Added by you</span></div><p>Claude Code, today: Ran its critique on the home page and fixed the spacing.</p></div></li>
+          <li><span class="tic mcp"><svg class="i"><use href="#i-plug"/></svg></span>
+            <div class="tb"><div class="tn">Component registry MCP<span class="tk">MCP · address saved</span><span class="chip plain ok">Added by you</span></div><p>Not used yet.</p></div></li>
+          <li><span class="tic"><svg class="i"><use href="#i-skill"/></svg></span>
+            <div class="tb"><div class="tn">Motion review<span class="tk">Skill · link to a hosted file</span><span class="chip plain wait">Waiting for you</span></div><p>Suggested by Codex on Wed. Agents will not use it until you allow it.</p></div>
+            <div class="td"><button class="btn text" type="button">Remove</button><button class="btn solid" type="button">Allow</button></div></li>
+        </ul>
+      </section>
 
       <div class="rowhd"><h2>Saves in this project</h2></div>
       <ul class="tags">
