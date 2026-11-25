@@ -39,6 +39,7 @@ uniform vec2 uLight;
 uniform vec3 uHover;
 uniform vec3 uSignal;
 uniform vec3 uCell;
+uniform vec2 uMid;
 
 float hash(vec2 p) {
   vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
@@ -111,6 +112,14 @@ void main() {
   float plate = 1.0 - smoothstep(size - edge, size + edge, reach);
   col = mix(col, shade * vec3(0.975, 0.965, 0.955), (1.0 - plate) * smoothstep(0.03, 0.25, hw));
 
+  // Behind the copy the honeycomb goes out of focus: the cells melt into the smooth light
+  // they would average to. The change is very gradual, so there is no edge to see.
+  float smoothLight = max(dot(vec3(0.0, 0.0, 1.0), Hv), 0.0);
+  vec3 soft = mix(shade, bright, smoothstep(0.93, 1.0, smoothLight) * 0.8 + 0.1);
+  float away = length((p - uMid) / vec2(520.0, 330.0));
+  float focus = smoothstep(0.0, 1.0, away);
+  col = mix(soft, col, focus * focus);
+
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`;
 
@@ -173,6 +182,7 @@ export function HoneyField({
     const uHover = u("uHover");
     const uSignal = u("uSignal");
     gl.uniform3f(u("uCell"), geometry.a, geometry.x0, geometry.y0);
+    gl.uniform2f(u("uMid"), geometry.w / 2, geometry.h / 2);
 
     // Where the scene sits inside the canvas, in canvas pixels.
     const view = { ox: 0, oy: 0, scale: 1, dpr: 1 };
