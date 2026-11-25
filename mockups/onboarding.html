@@ -174,7 +174,7 @@
 
   function liveHTML(final) {
     var a = AG[st.agent];
-    var h = '<h2>Your library</h2><p class="cap">' + (final ? '1 save, tagged a moment ago.' : 'In this mockup each step finishes a moment after you click.') + '</p>';
+    var h = '<h2>Your library</h2>' + (final ? '<p class="cap">1 save, tagged a moment ago.</p>' : '<p class="cap" style="margin-bottom:14px"></p>');
     h += st.saved ? $('#t-card').innerHTML : $('#t-ghost').innerHTML;
     h += st.connected
       ? '<div class="conn">' + (a.icon ? '<img class="b" src="' + a.icon + '" alt="">' : '') + cap(a.name) + '<span class="chip plain ok">Connected</span></div>'
