@@ -12,27 +12,31 @@ Static HTML and CSS for mockups, chosen by David on Nov 26, 2026. The stack for 
 
 ## Users
 
-One person who works with AI agents every day. They use Scoop alone, for their own mail, links and notifications. It is not a team tool.
+One person who makes things with AI agents every day, starting with designers and developers. They collect references while browsing and reading, and want their agent to use them when a project starts. They use Scoop alone. It is not a team tool.
 
 ## Product Purpose
 
-Scoop is a personal inbox for an AI agent. It collects things while the agent is not running, and the agent reads, searches and organises them over MCP when a session starts. Success is an agent that can ask "what's new since I last looked", triage it, and find the same labels and notes in the next session.
+Scoop is a personal library for an AI agent. The person saves posts, pages, videos and images they like, and subscribes to newsletters through the agent's own address. When a project needs ideas, the agent searches the library over MCP and picks what fits. Success is an agent that finds the right handful of references from hundreds, and that understands the person's taste from what they saved.
+
+Scoop is not a task manager. It holds no to-dos, deadlines or replies to send. Confirmed by David on Nov 26, 2026.
 
 ## Positioning
 
-Read-later apps are built for a person to read, and automation tools act the moment an event fires. In Scoop the reader is the agent, and nothing happens until the agent, with the person present, decides what matters. Among David's tools, Wave answers "another agent", Valet answers "a person with no agent", and Scoop answers "nobody yet".
+Bookmarking and read-later apps are built for a person to browse. In Scoop the main reader is the agent, and it arrives with a project in mind. Project decisions do not live in Scoop: they go in the project's own report, and Scoop is only the source. Among David's tools, Wave connects an agent to another agent, Valet connects it to a person with no agent, and Scoop gives it what its own person has collected.
 
 ## Operating Context
 
-- Items arrive by the agent's email address (`username@scoop.davidsling.in`, with per-source aliases), a webhook, a Chrome extension and, later, app connectors such as Slack and GitHub.
-- The agent reaches the inbox only through an MCP that reads and organises.
-- The person uses the web dashboard to see what the agent will see, manage quarantine and sources, and delete things. The dashboard's home screen is the inbox (confirmed by David on Nov 26, 2026).
+- The person saves things with one click from a Chrome extension while browsing, often on X, and adds a short note on why.
+- Newsletters about AI, animation libraries and component libraries arrive at the agent's address (`username@scoop.davidsling.in`).
+- Later, at the start of a project's design phase, the person asks their agent to go through the library and choose what fits.
+- The agent reaches the library only through an MCP that searches, reads and organises.
+- The web dashboard is where the person browses and searches the library themselves, and sees what their agents pulled. Its home screen is the library, not a list of things to act on.
 
 ## Capabilities and Constraints
 
 - Every source produces one item shape: source, sender, time, original content, state, labels, priority.
 - Originals never change. Transcripts, article text and summaries are layers added beside the original.
-- Each agent has a cursor that records where it stopped reading.
+- Each agent has a cursor that records where it stopped reading. This matters less for a library than it did for an inbox.
 - Labels, priorities and notes written by the agent persist between sessions.
 - Each item carries a trust level. The person's own capture note is trusted. All other content is untrusted data.
 - Mail from unknown senders goes to quarantine.
@@ -55,8 +59,9 @@ Full detail is in `PLAN.md`.
 
 ## Product Principles
 
-- The agent is the reader. The dashboard shows the person what the agent will see.
-- Read and organise only. Acting on an item is a separate, approved step.
-- Everything from outside is untrusted, and the interface says so plainly.
-- Rules decide, not models: routing, quarantine and first-pass priority are deterministic.
-- Nothing is lost: originals are kept as received, and deletion is real when the person asks for it.
+- A library, not a to-do list. Nothing in Scoop asks the person to act.
+- Saving takes one click. Anything slower and the person will not do it mid-scroll.
+- The agent is the main reader, and it comes with a question.
+- The person's own note and choices are the signal. They show taste better than any page content.
+- Scoop is a source. Decisions belong to the project.
+- Everything from outside is untrusted, and originals are kept as received.
