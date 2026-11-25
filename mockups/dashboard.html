@@ -34,7 +34,7 @@
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
   <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
-  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><path d="m6.500 12.500 3.500 3.500 7.500-8" stroke-width="2.200"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
 </svg>
 
 <header class="topbar"><div class="wrap">
@@ -64,6 +64,14 @@
           <button class="btn solid" type="submit">Search</button>
         </form>
       </header>
+
+      <section class="tile setupbar" aria-labelledby="su-h">
+        <div class="su-top"><h2 id="su-h">Setup</h2><span class="su-n">7 of 8 done</span><span class="su-bar" role="img" aria-label="7 of 8 done"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><button class="btn text" type="button">Hide</button></div>
+        <ul class="su-list">
+          <li class="ok"><svg class="i"><use href="#i-tick"/></svg>Chrome button added</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>First save</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>4 agents connected</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>Tagged by an agent</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>Inbox address</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>6 newsletters</li><li class="ok"><svg class="i"><use href="#i-tick"/></svg>4 projects</li>
+          <li class="todo"><a href="sources.html"><span class="o"></span>Webhook is off<span class="go">Turn on</span></a></li>
+        </ul>
+      </section>
 
       <div class="rowhd"><h2>Your library</h2><a href="tags.html">Arrange tags<svg class="i"><use href="#i-chev"/></svg></a></div>
       <ul class="tags">
