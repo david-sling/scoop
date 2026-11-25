@@ -179,7 +179,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .find input:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
 .find .btn { min-height: 48px; padding: 0 26px; }
 .left { display: grid; gap: 14px; align-content: start; min-width: 0; }
-.right { display: grid; gap: 14px; align-content: start; align-self: stretch; grid-template-rows: auto 1fr; }
+.right { display: grid; gap: 14px; align-content: start; align-self: stretch; grid-template-rows: auto auto 1fr; }
 .stick { position: sticky; top: 14px; display: grid; gap: 14px; align-self: start; }
 .pager { display: flex; align-items: center; gap: 6px; margin: 14px 4px 0; }
 .pager .range { margin-right: auto; color: var(--ink-2); }
@@ -271,20 +271,18 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .chip.ok { background: #DDEFE2; }
 
 /* Setup progress on the library home */
-.setupbar { padding: 18px 22px 20px; }
-.su-top { display: flex; align-items: center; gap: 14px; }
-.su-top h2 { font-size: 18px; }
-.su-n { color: var(--ink-2); }
-.su-bar { display: flex; gap: 4px; flex: 1; max-width: 260px; }
-.su-bar i { flex: 1; height: 6px; border-radius: 999px; background: var(--rule); }
-.su-bar i.on { background: var(--ok); }
-.su-top .btn { margin-left: auto; }
-.su-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 12px 0 0; padding: 0; }
-.su-list li { display: inline-flex; align-items: center; }
-.su-list li.ok { gap: 6px; min-height: 36px; padding: 0 14px 0 10px; border-radius: 999px; background: #EAF3EC; color: #2F5B3D; }
-.su-list li.ok svg.i { width: 15px; height: 15px; }
-.su-list li.todo a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: -4px 0; padding: 0 16px 0 12px; border: 1px dashed var(--ink-3); border-radius: 999px; transition: border-color 120ms var(--ease), background-color 120ms var(--ease); }
-.su-list li.todo a:hover { border-style: solid; border-color: var(--ink); }
-.su-list li.todo a:active { background: var(--cream); }
-.su-list .o { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--ink-3); }
-.su-list .go { font-weight: 500; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
+.su-hd { display: flex; align-items: center; gap: 14px; }
+.su-hd .ring { width: 44px; height: 44px; flex: none; }
+.su-hd .ring circle { fill: none; stroke: var(--pink-wash); stroke-width: 4; }
+.su-hd .ring .on { stroke: var(--mauve); stroke-linecap: round; }
+.su-hd p { margin: 0; color: var(--ink-2); }
+.su-hd .btn { margin-left: auto; }
+.su { list-style: none; margin: 16px 0 0; padding: 0; }
+.su li { display: flex; align-items: center; gap: 12px; min-height: 44px; border-top: 1px solid var(--rule); color: var(--ink-2); }
+.su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--mauve); color: #fff; flex: none; }
+.su .tk svg.i { width: 12px; height: 12px; }
+.su .t { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); }
+.su .todo { color: var(--ink); font-weight: 500; }
+.su .todo .tk { background: none; border: 1.5px dashed var(--ink-3); }
+.su .todo a { margin-left: auto; display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
+.su .todo a:hover { color: var(--ink); }
