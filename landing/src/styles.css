@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource/dm-mono/400.css";
+@import "@fontsource/dm-mono/500.css";
+
+/* Brand tokens, shared with the app mockups in ../mockups/app.css */
+@theme {
+  --color-white: #ffffff;
+  --color-cream: #fff6ee;
+  --color-pink: #ffabda;
+  --color-pink-wash: #ffe6f3;
+  --color-mauve: #9f527c;
+  --color-mauve-deep: #7e3d61;
+  --color-ink: #2b1721;
+  --color-ink-2: #6a525c;
+  --color-ink-3: #7c636d;
+  --color-rule: #eadfe4;
+  --color-ok: #1fa855;
+
+  --font-sans: "DM Sans Variable", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  --radius-tile: 28px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-rule) transparent;
+  }
+  body {
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    caret-color: var(--color-mauve);
+  }
+  ::selection {
+    background: var(--color-pink);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-mauve);
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+}
