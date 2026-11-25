@@ -44,7 +44,8 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 - Projects: the person creates a project and adds the saves they want used for it. It guides the agent and does not restrict it, and the agent can add more saves when asked. When an agent reports using a save, it names the project and gives a short description of how it was used. If the project does not exist, Scoop creates it. Agents choose from the existing project list so one project is not recorded under two spellings. Confirmed by David on Nov 26, 2026.
 - Each item carries a trust level. The person's own capture note is trusted. All other content is untrusted data.
 - Mail from unknown senders goes to quarantine.
-- The MCP cannot send, post, pay, change connector settings or delete an original.
+- Agents can organise anything: tag, rename, merge, reorder, archive and delete saves, tags and projects. They are instructed to ask the person first, and every change they make can be undone in the dashboard. A messy library is not treated as a risk. Decided by David on Nov 26, 2026.
+- What agents still cannot do (proposed, not yet confirmed): release quarantined senders, use a tool the person has not approved, edit the person's own note or change who something is credited to, change an original, erase anything for good, manage agents, sources or account settings, or send, post or pay.
 - Undecided: pricing, hosted or self-hosted, default retention, several agents per person from day one.
 
 Full detail is in `PLAN.md`.

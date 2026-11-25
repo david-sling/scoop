@@ -111,7 +111,7 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 | List untagged saves | Everything arrives untagged. This is how an agent finds what still needs tagging. |
 | List the existing tags | So it reuses your tags before inventing new ones. |
 | Add or remove tags on a save, and create a new tag | A save can carry several tags. Scoop records who added each one and when. |
-| Rename, merge, reorder or delete a tag | Only after asking the person. The tool's own description tells the agent to ask first, and Scoop records the change so it can be undone. |
+| Rename, merge, reorder, archive or delete tags, projects and saves | After asking the person. The tool's own description tells the agent to ask first, and Scoop records the change so it can be undone. |
 | Set a kind and a short description on a save | Scoop records which agent wrote them. |
 | Search by text, tag, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
 | Read one save with everything attached | The original, extracted text, your note, and agent-written fields, each marked with where it came from. |
@@ -121,13 +121,30 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 | Report that it used a save or a tool for a project, with a short description | Says how, where and why the save was used. Creates the project if it does not exist yet. |
 | List what is new since it last looked | Useful for newsletters. |
 
-**What it deliberately cannot do**
+**Agents can organise anything**
 
-- Reply to an email, post anywhere or call a webhook.
-- Change connector settings or tokens.
-- Delete an original. It can only archive.
-- Store project decisions. Those belong in the project's own files. A use report is a short note on one save, not a decision log.
-- Rename, merge or delete a project. Only the person can.
+Changed by David on Nov 26, 2026. An agent may do anything to the organisation of the library: tag, rename, merge, reorder, archive and delete, for saves, tags and projects alike.
+
+Two things keep that safe:
+
+- **The agent is told to ask first.** Every tool that changes or removes something says in its own description that the agent should get the person's permission before using it.
+- **Everything an agent does can be undone.** Scoop records each change with what was there before, and the person can reverse it in the dashboard. A delete by an agent moves the thing to the trash. It does not erase it.
+
+A messy library is not treated as a risk. It can always be put back.
+
+**The few things an agent cannot do**
+
+These are kept back because undo does not help with them, or because hostile content in a save could use them. This list is a proposal and is not yet confirmed.
+
+| An agent cannot | Why |
+| --- | --- |
+| Allow a sender out of quarantine, or see quarantined mail | An email could tell the agent to let its own sender in. Only the person decides who is trusted. |
+| Use a saved tool the person has not approved | A saved MCP server or skill runs code. Confirmed earlier. |
+| Edit or remove the person's own note, or change who a note or tag is credited to | The person's note is the one trusted field. If an agent could write there, hostile text could be passed off as the person's. |
+| Change an original | Originals are kept as received. |
+| Erase anything for good | Emptying the trash is the person's call, since it cannot be undone. |
+| Connect or remove agents, change sources or addresses, or touch account settings | These control who can reach the library. |
+| Send, post or pay | Scoop has no such tools at all. |
 
 **What Scoop does not do for the agent**
 
@@ -140,7 +157,7 @@ Tags are how the library is organised. They are called tags, not categories, bec
 - **Many tags per save.** A post about a drag animation in a component library can be tagged both "animation" and "components".
 - **Anyone can create a tag.** An agent creates one over MCP when no existing tag fits. The person creates one in the dashboard at any time, including before anything uses it.
 - **The person can tag by hand.** They can add or remove tags on any save without an agent.
-- **The person and their agents arrange the tags.** Both can rename, merge, reorder and delete tags. The person does it in the dashboard. An agent does it over MCP, and is instructed to ask the person for permission first. Changed by David on Nov 26, 2026.
+- **The person and their agents arrange the tags.** Both can rename, merge, reorder and delete tags. The person does it in the dashboard. An agent does it over MCP, and is instructed to ask the person for permission first.
 - **The instruction is not a lock.** Scoop cannot check that an agent really asked. So every tag change an agent makes is recorded with what it was before, and the person can undo it from the Tags page. Undo in the dashboard is the safeguard, and David confirmed it is enough on Nov 26, 2026.
 - **Every tag on a save shows who added it:** the person, or a named agent.
 - **Scoop never tags anything itself.** A save stays untagged until an agent or the person tags it.
@@ -162,7 +179,7 @@ A project is a named space in Scoop that holds the saves meant for one piece of 
 - **Every report names a project, a save and a short description** of how the save was used: what for, where and why. Later agents read these to learn what a resource was good for.
 - **Scoop creates the project if it does not exist.** If an agent reports a use for a project Scoop has never seen, the project is created automatically and the save is put in it.
 - **Agents pick from the list.** An agent lists the existing projects first and reports against one of them, so the same project is not recorded twice under different spellings. Several agents can then work from the same project.
-- **Scoop does not guess at near matches.** It has no AI, so it only treats names as the same when they match after ignoring capitals and spacing. The person can rename and merge projects in the dashboard to fix the rest.
+- **Scoop does not guess at near matches.** It has no AI, so it only treats names as the same when they match after ignoring capitals and spacing. The person or an agent can rename and merge projects to fix the rest.
 
 **What stays out**
 
@@ -286,11 +303,9 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Which connectors still matter for a library. Slack and GitHub notifications were planned for the inbox framing.
 - [ ] How a name-only tool is marked when an agent reports it can no longer find it.
 - [ ] Whether the person chooses the kind (reference, MCP or skill) when saving, or an agent sets it later.
-- [ ] Whether an agent may remove a save from a project that the person added.
 - [ ] Whether finished projects are archived or kept in the main list.
-- [ ] Whether agents may also rename and merge projects after asking, as they now can with tags.
+- [ ] How long the trash and the undo history are kept.
 - [ ] Whether tags can be nested, or stay as one flat list.
-- [ ] Whether a person can lock a tag on a save so agents cannot remove it.
 - [ ] Whether third-party processors may use AI, given that Scoop's own do not.
 - [ ] Whether an agent can store a note about the person's taste as a whole, not only notes on single saves.
 - [ ] Default retention period per source.

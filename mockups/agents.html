@@ -28,6 +28,8 @@
 .feed li { display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule); }
 .feed img.b { width: 20px; height: 20px; }
 .feed b { font-weight: 500; }
+.feed .undo { margin-left: auto; min-height: 32px; color: var(--mauve-deep); font-weight: 500; }
+.feed .undo + time { margin-left: 0; }
 .feed time { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); white-space: nowrap; }
 .connect { background: var(--mauve); color: #fff; border-color: transparent; }
 .connect h2 { font-size: 26px; font-weight: 300; }
@@ -143,9 +145,10 @@
           <li><img class="b" src="icons/openai.svg" alt=""><span><b>Codex</b> suggested the Motion review skill for davidsling.in redesign</span><time>Wed 18:40</time></li>
           <li><img class="b" src="icons/openai.svg" alt=""><span><b>Codex</b> reported 1 use on offlyn.love onboarding</span><time>Wed 18:31</time></li>
           <li><img class="b" src="icons/cursor.svg" alt=""><span><b>Cursor</b> added 2 saves to Wave settings page</span><time>Mon 16:45</time></li>
+          <li><img class="b" src="icons/openai.svg" alt=""><span><b>Codex</b> deleted 3 duplicate saves</span><button class="btn text undo" type="button">Undo</button><time>Mon 11:02</time></li>
           <li><img class="b" src="icons/gemini.svg" alt=""><span><b>Gemini CLI</b> created the project Scoop landing page</span><time>20 Nov</time></li>
         </ul>
-        <a class="more" href="#" style="display:inline-flex;align-items:center;gap:4px;min-height:36px;margin-top:8px;font-weight:500">Full history<svg class="i"><use href="#i-chev"/></svg></a>
+        <a class="more" href="#" style="display:inline-flex;align-items:center;gap:4px;min-height:36px;margin-top:8px;font-weight:500">Full history and undo<svg class="i"><use href="#i-chev"/></svg></a>
       </section>
     </div>
 
@@ -164,19 +167,20 @@
 
       <section class="tile cream">
         <div class="hd"><h2>What an agent can do</h2></div>
+        <p class="sub" style="margin:6px 0 0">Almost anything. Agents ask you first, and you can undo whatever they change.</p>
         <div class="split">
           <ul class="rules">
-            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Search and read your saves</li>
-            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Add and remove tags, and create new ones</li>
-            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Rename, merge, reorder or delete a tag, after asking you</li>
-            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Add saves to a project, and report how it used them</li>
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Search, read, tag and describe your saves</li>
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Rename, merge, reorder, archive and delete saves, tags and projects</li>
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Fill projects, and report how each save was used</li>
           </ul>
         </div>
         <div class="split">
           <ul class="rules">
-            <li class="no"><svg class="i"><use href="#i-x"/></svg>Delete a save, or rename and merge projects</li>
-            <li class="no"><svg class="i"><use href="#i-x"/></svg>Use a tool you did not add to the project yourself</li>
-            <li class="no"><svg class="i"><use href="#i-x"/></svg>Send, post or pay for anything</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Let a sender out of quarantine</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Use a tool you have not approved</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Edit your own notes, or erase anything for good</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Connect agents or change sources and settings</li>
           </ul>
         </div>
       </section>
