@@ -286,7 +286,8 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: var(--ok); color: #fff; flex: none; }
 .su .tk svg.i { width: 13px; height: 13px; }
 .su .t { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); }
-.su .chev { width: 14px; height: 14px; color: var(--ink-3); transition: transform 200ms var(--ease); }
+.su .lb { flex: 1; min-width: 0; }
+.su .chev { flex: none; width: 14px; height: 14px; color: var(--ink-3); transition: transform 200ms var(--ease); }
 .su details[open] .chev { transform: rotate(90deg); }
 .su details[open] summary { color: var(--ink); font-weight: 500; }
 .su .todo summary { color: var(--ink); font-weight: 500; }
