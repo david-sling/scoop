@@ -117,7 +117,7 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 | Add a note to a save | The next session, or another agent, inherits the thinking. |
 | List projects, and read one with its saves | So it knows what the person picked for this work, and reports against the right project. |
 | Add a save to a project | When the person asks it to find more that fits. Scoop records that the agent added it. |
-| Report that it used a save for a project, with a short description | Says how, where and why the save was used. Creates the project if it does not exist yet. |
+| Report that it used a save or a tool for a project, with a short description | Says how, where and why the save was used. Creates the project if it does not exist yet. |
 | List what is new since it last looked | Useful for newsletters. |
 
 **What it deliberately cannot do**
@@ -165,6 +165,32 @@ A project is a named space in Scoop that holds the saves meant for one piece of 
 **What stays out**
 
 Project decisions, plans and reports still live in the project's own files. Scoop holds only which saves belong to a project and how each was used.
+
+## Tools: MCP servers and skills
+
+A save does not have to be something to look at. It can be a tool the agent should use: an MCP server or a skill.
+
+**Three ways to save a tool**
+
+| How | What Scoop stores | Example |
+| --- | --- | --- |
+| The tool's own address | The MCP server URL, or the URL of a hosted skill file | A link to a `SKILL.md` |
+| Its landing page | The page, like any other saved site | The product page for an MCP |
+| By name only | The name and which agent already has it. No content. | "The impeccable skill, already in Claude" |
+
+**How it is used**
+
+- **An agent reports a tool the same way it reports a save.** "I used the skill called X on project Y", with a short description. Scoop does not need to know what the skill contains.
+- **Scoop creates a name-only save if the tool is not in the library yet,** the same way it creates a missing project.
+- **Next time, the person adds the tool to a project.** The agent reads the project, sees the tool, and uses it directly because it already has it.
+- **Each name-only tool records which agents have it.** A skill that lives in Claude is not in Codex, so another agent reading the project can tell it would have to be set up first.
+
+**Rules that keep this safe**
+
+- **Scoop never installs or runs anything.** It only stores the name or the link.
+- **An agent must not install or connect a tool just because it is saved in Scoop.** A tool counts as "use this" only when the person added it to the project themselves. Tools that arrived by email, or that an agent added, need the person's go-ahead first. Without this, anyone who can email the agent's address could suggest a hostile MCP server.
+- **No secrets in saved addresses.** MCP URLs sometimes carry a key or token. Scoop strips or refuses these and never stores authentication details.
+- **Names are matched exactly,** ignoring capitals and spacing, as with projects. Agents list the existing tools before reporting one, and the person merges duplicates by hand.
 
 ## Processors and the marketplace
 
@@ -254,6 +280,8 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Hosted only, or a self-hosted option for people who will not send personal mail to a third party.
 - [ ] Pricing: free core with paid add-ons, or a flat subscription.
 - [ ] Which connectors still matter for a library. Slack and GitHub notifications were planned for the inbox framing.
+- [ ] How a name-only tool is marked when an agent reports it can no longer find it.
+- [ ] Whether the person chooses the kind (reference, MCP or skill) when saving, or an agent sets it later.
 - [ ] Whether an agent may remove a save from a project that the person added.
 - [ ] Whether finished projects are archived or kept in the main list.
 - [ ] Whether tags can be nested, or stay as one flat list.
