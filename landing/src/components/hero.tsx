@@ -11,39 +11,49 @@ const EASE = [0.16, 1, 0.3, 1] as const
  * Every logo is a place a save can come from, or a tool that can be saved.
  * They are examples, not partnerships. Each one carries a headline word.
  *
- * Positions sit on a honeycomb lattice in a 1400 x 700 drawing:
- * even rows at x = 70 + 80c, odd rows at x = 110 + 80c, rows at y = 140 + 70r.
- * The right side mirrors the left.
+ * The logos sit in a honeycomb of flat-topped cells (points left and right) inside a
+ * 1400 x 700 drawing. A is the cell size from centre to point, and the drawn hexagons are
+ * a little smaller, which leaves an even channel between them for the wires to run in.
+ * Cell (col, row) is centred at x = X0 + 1.5A * col, y = Y0 + 2HH * row, and odd columns
+ * sit half a cell lower. The right side mirrors the left.
  */
 const W = 1400
 const H = 700
-const R = 34
+const A = 46
+const HH = (Math.sqrt(3) / 2) * A
+const X0 = 64
+const Y0 = H / 2 - 6 * HH
+const COLS = 5
+const cell = (col: number, row: number) => ({ x: X0 + 1.5 * A * col, y: Y0 + 2 * HH * row + (col % 2 ? HH : 0) })
 
 const LEFT = [
-  { id: 'instagram', name: 'Instagram', word: 'taste', x: 150, y: 140 },
-  { id: 'x', name: 'X', word: 'references', x: 110, y: 210 },
-  { id: 'youtube', name: 'YouTube', word: 'references', x: 230, y: 280 },
-  { id: 'googlechrome', name: 'any web page', word: 'references', x: 190, y: 350 },
-  { id: 'dribbble', name: 'Dribbble', word: 'taste', x: 70, y: 420 },
-  { id: 'gmail', name: 'email newsletters', word: 'references', x: 110, y: 490 },
-  { id: 'pinterest', name: 'Pinterest', word: 'taste', x: 150, y: 560 },
+  { id: 'instagram', name: 'Instagram', word: 'taste', col: 1, row: 0 },
+  { id: 'youtube', name: 'YouTube', word: 'references', col: 3, row: 1 },
+  { id: 'x', name: 'X', word: 'references', col: 0, row: 2 },
+  { id: 'googlechrome', name: 'any web page', word: 'references', col: 2, row: 3 },
+  { id: 'dribbble', name: 'Dribbble', word: 'taste', col: 0, row: 4 },
+  { id: 'gmail', name: 'email newsletters', word: 'references', col: 3, row: 4 },
+  { id: 'pinterest', name: 'Pinterest', word: 'taste', col: 1, row: 5 },
 ] as const
 
 const RIGHT = [
-  { id: 'figma', name: 'Figma', word: 'tools', x: W - 150, y: 140 },
-  { id: 'github', name: 'GitHub', word: 'tools', x: W - 110, y: 210 },
-  { id: 'claude', name: 'Claude skills', word: 'process', x: W - 230, y: 280 },
-  { id: 'notion', name: 'Notion', word: 'process', x: W - 190, y: 350 },
-  { id: 'linear', name: 'Linear', word: 'process', x: W - 70, y: 420 },
-  { id: 'supabase', name: 'Supabase', word: 'tools', x: W - 110, y: 490 },
-  { id: 'slack', name: 'Slack', word: 'tools', x: W - 150, y: 560 },
+  { id: 'figma', name: 'Figma', word: 'tools', col: 1, row: 0 },
+  { id: 'claude', name: 'Claude skills', word: 'process', col: 3, row: 1 },
+  { id: 'github', name: 'GitHub', word: 'tools', col: 0, row: 2 },
+  { id: 'notion', name: 'Notion', word: 'process', col: 2, row: 3 },
+  { id: 'linear', name: 'Linear', word: 'process', col: 0, row: 4 },
+  { id: 'supabase', name: 'Supabase', word: 'tools', col: 3, row: 4 },
+  { id: 'slack', name: 'Slack', word: 'tools', col: 1, row: 5 },
 ] as const
 
-/** Empty cells of the same lattice, drawn as faint outlines around the logos. */
-const GHOST_LEFT = [
-  [70, 140], [230, 140], [190, 210], [70, 280], [150, 280], [110, 350],
-  [270, 350], [150, 420], [230, 420], [190, 490], [70, 560], [230, 560],
-] as const
+/** Every cell of the honeycomb on one side. Cells without a logo are drawn as faint outlines. */
+const CELLS = Array.from({ length: COLS }, (_, col) =>
+  Array.from({ length: 7 }, (_, row) => ({ col, row })).filter(({ row }) => {
+    const y = cell(col, row).y
+    // The innermost column is shorter, so the honeycomb thins out towards the centre.
+    return y > 90 && y < H - 90 && (col < COLS - 1 || Math.abs(y - H / 2) < 100)
+  }),
+).flat()
 
 /** The order the light travels in. It alternates sides and walks through the four words. */
 const ORDER = [
@@ -51,8 +61,12 @@ const ORDER = [
   'notion', 'pinterest', 'googlechrome', 'supabase', 'linear', 'gmail', 'slack',
 ] as const
 
-const ALL = [...LEFT, ...RIGHT]
-type Node = (typeof ALL)[number]
+type Node = { id: string; name: string; word: string; col: number; row: number; x: number; y: number; left: boolean }
+const place = (n: (typeof LEFT)[number] | (typeof RIGHT)[number], left: boolean): Node => {
+  const p = cell(n.col, n.row)
+  return { ...n, left, x: left ? p.x : W - p.x, y: p.y }
+}
+const ALL: Node[] = [...LEFT.map((n) => place(n, true)), ...RIGHT.map((n) => place(n, false))]
 const byId = (id: string) => ALL.find((n) => n.id === id) as Node
 
 const STEP_MS = 1900
@@ -148,9 +162,9 @@ function Word({ word }: { word: string }) {
         <motion.span
           key={word}
           layout="position"
-          initial={{ y: '55%', opacity: 0, filter: 'blur(10px)' }}
-          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-          exit={{ y: '-55%', opacity: 0, filter: 'blur(10px)', transition: { duration: 0.22, ease: EASE } }}
+          initial={{ x: '35%', opacity: 0, filter: 'blur(8px)' }}
+          animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+          exit={{ x: '-35%', opacity: 0, filter: 'blur(8px)', transition: { duration: 0.22, ease: EASE } }}
           transition={{ duration: 0.5, ease: EASE }}
           className="inline-block whitespace-nowrap"
         >
@@ -161,30 +175,57 @@ function Word({ word }: { word: string }) {
   )
 }
 
-/** Pointy-top hexagon outline around a centre point. */
+/** Flat-topped hexagon outline around a centre point: points to the left and right. */
 function hex(cx: number, cy: number, r: number) {
   return Array.from({ length: 6 }, (_, k) => {
-    const a = (Math.PI / 180) * (60 * k - 90)
+    const a = (Math.PI / 180) * 60 * k
     return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`
   }).join(' ')
 }
 
-/** A wire from a logo to the centre. It leaves level, then bends in to the middle line. */
-function wire(n: { x: number; y: number }, i: number, count: number) {
-  const left = n.x < W / 2
-  const endX = left ? W / 2 - 60 : W / 2 + 60
-  const endY = H / 2 + (i - (count - 1) / 2) * 9
-  const mid = n.x + (endX - n.x) * 0.5
-  return `M${n.x} ${n.y} C ${mid} ${n.y} ${mid} ${endY} ${endX} ${endY}`
+/**
+ * A wire from a logo to the centre. It leaves from the point of the logo's hexagon that faces
+ * the centre and then only ever runs in the channels between cells: a short level run, then a
+ * 60 degree slant to the next column, each time stepping towards the middle line. Wires that
+ * meet share a channel, so they gather into one trunk before they reach the headline.
+ */
+function wire(n: Node) {
+  const mid = H / 2
+  const dir = n.left ? 1 : -1
+  const fx = (x: number) => (n.left ? x : W - x).toFixed(1)
+  const start = cell(n.col, n.row)
+  const first = start.y <= mid ? 1 : -1
+  let x = start.x + A
+  let y = start.y
+  let d = `M${fx(start.x + A - 8)} ${y.toFixed(1)}`
+  let flip = first
+  for (let col = n.col; col < COLS - 1; col++) {
+    const away = Math.abs(y - mid) < 1
+    const step = away ? -flip : y < mid ? 1 : -1
+    if (away) flip = -flip
+    x += A
+    d += ` H${fx(x)}`
+    x += A / 2
+    y += step * HH
+    d += ` L${fx(x)} ${y.toFixed(1)}`
+  }
+  if (Math.abs(y - mid) > 1) {
+    x += Math.abs(y - mid) / Math.sqrt(3)
+    d += ` L${fx(x)} ${mid}`
+  }
+  return `${d} H${W / 2 - dir * 60}`
 }
 
 /** Wide screens: logos in hexagons on both sides, wired to the centre behind the headline. */
 function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run: number }) {
-  const wires = [
-    ...LEFT.map((n, i) => ({ n, d: wire(n, i, LEFT.length) })),
-    ...RIGHT.map((n, i) => ({ n, d: wire(n, i, RIGHT.length) })),
-  ]
-  const ghosts = [...GHOST_LEFT.map(([x, y]) => [x, y]), ...GHOST_LEFT.map(([x, y]) => [W - x, y])]
+  const wires = ALL.map((n) => ({ n, d: wire(n) }))
+  const taken = new Set(ALL.map((n) => `${n.left}-${n.col}-${n.row}`))
+  const ghosts = [true, false].flatMap((left) =>
+    CELLS.filter((c) => !taken.has(`${left}-${c.col}-${c.row}`)).map((c) => {
+      const p = cell(c.col, c.row)
+      return { x: left ? p.x : W - p.x, y: p.y, far: c.col >= COLS - 2 }
+    }),
+  )
 
   return (
     <svg
@@ -198,10 +239,10 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         {/* Wires and their light fade out as they reach the headline. */}
         <linearGradient id="fade" x1="0" y1="0" x2={W} y2="0" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#fff" />
-          <stop offset="0.2" stopColor="#fff" />
-          <stop offset="0.37" stopColor="#fff" stopOpacity="0" />
-          <stop offset="0.63" stopColor="#fff" stopOpacity="0" />
-          <stop offset="0.8" stopColor="#fff" />
+          <stop offset="0.3" stopColor="#fff" />
+          <stop offset="0.43" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0.57" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0.7" stopColor="#fff" />
           <stop offset="1" stopColor="#fff" />
         </linearGradient>
         <mask id="fade-mask" maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
@@ -209,13 +250,20 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
         </mask>
       </defs>
 
-      {ghosts.map(([x, y]) => (
-        <polygon key={`${x}-${y}`} points={hex(x, y, R + 4)} stroke="#eadfe4" strokeWidth="1.5" strokeLinejoin="round" />
+      {ghosts.map((g) => (
+        <polygon
+          key={`${g.x}-${g.y}`}
+          points={hex(g.x, g.y, A - 7)}
+          stroke="#eadfe4"
+          strokeOpacity={g.far ? 0.55 : 1}
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
       ))}
 
       <g mask="url(#fade-mask)">
         {wires.map(({ n, d }) => (
-          <path key={n.id} d={d} stroke="#9f527c" strokeOpacity="0.38" strokeWidth="1.5" />
+          <path key={n.id} d={d} stroke="#9f527c" strokeOpacity="0.38" strokeWidth="1.5" strokeLinejoin="miter" />
         ))}
         {moving &&
           wires
@@ -227,7 +275,8 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
                 pathLength={1}
                 stroke="#f0489f"
                 strokeWidth="3"
-                strokeLinecap="round"
+                strokeLinecap="butt"
+                strokeLinejoin="miter"
                 strokeDasharray="0.28 1"
                 initial={{ strokeDashoffset: 0.28 }}
                 animate={{ strokeDashoffset: -1 }}
@@ -245,18 +294,18 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
             style={{
               transformBox: 'fill-box',
               transformOrigin: 'center',
-              transform: on ? 'scale(1.1)' : 'scale(1)',
+              transform: on ? 'scale(1.06)' : 'scale(1)',
               transition: 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
             <polygon
-              points={hex(n.x, n.y, R)}
+              points={hex(n.x, n.y, A - 12)}
               stroke={on ? '#ffabda' : '#eadfe4'}
-              strokeWidth={on ? 13 : 10}
+              strokeWidth={on ? 12 : 10}
               strokeLinejoin="round"
               style={{ transition: 'stroke 300ms cubic-bezier(0.16, 1, 0.3, 1)' }}
             />
-            <polygon points={hex(n.x, n.y, R)} fill="#fff" stroke="#fff" strokeWidth="7" strokeLinejoin="round" />
+            <polygon points={hex(n.x, n.y, A - 12)} fill="#fff" stroke="#fff" strokeWidth="7" strokeLinejoin="round" />
             <image href={`/icons/${n.id}.svg`} x={n.x - 17} y={n.y - 17} width="34" height="34" />
           </g>
         )
@@ -267,21 +316,23 @@ function Honeycomb({ active, moving, run }: { active: Node; moving: boolean; run
 
 /** Narrow screens: the same logos as a small honeycomb under the copy, with no wires. */
 function Comb() {
-  const rows = [ALL.slice(0, 5), ALL.slice(5, 9), ALL.slice(9, 14)]
+  const bands = [ALL.slice(0, 7), ALL.slice(7, 14)]
   return (
     <ul
       aria-label={`Places you save from and tools you can save: ${ALL.map((n) => n.name).join(', ')}`}
-      className="mt-12 flex flex-col items-center xl:hidden"
+      className="mt-12 flex flex-col items-center gap-[5px] pb-7 xl:hidden"
     >
-      {rows.map((row, r) => (
-        <li key={r} className={r ? '-mt-3' : ''}>
-          <ul className="flex gap-1.5">
-            {row.map((n) => (
+      {bands.map((band, b) => (
+        <li key={b}>
+          <ul className="flex">
+            {band.map((n, i) => (
               <li
                 key={n.id}
-                className="grid h-[66px] w-[58px] place-items-center bg-white [clip-path:polygon(50%_0,100%_25%,100%_75%,50%_100%,0_75%,0_25%)]"
+                className={`grid h-[46px] w-[53px] place-items-center bg-white [clip-path:polygon(25%_0,75%_0,100%_50%,75%_100%,25%_100%,0_50%)] ${
+                  i ? '-ml-[9px]' : ''
+                } ${i % 2 ? 'translate-y-[25.5px]' : ''}`}
               >
-                <img src={`/icons/${n.id}.svg`} alt="" className="size-6 object-contain" />
+                <img src={`/icons/${n.id}.svg`} alt="" className="size-[22px] object-contain" />
               </li>
             ))}
           </ul>
