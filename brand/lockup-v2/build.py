@@ -78,6 +78,7 @@ out['icon'] = icon
 for k in [k for k in out if not k.endswith('-on-cream') and k != 'icon']:
     out[k + '-transparent'] = re.sub(r'<rect[^>]*/>', '', out[k], count=1)
 out['mark-transparent'] = svg(mark(), [MARK], 60, None)
+out['mark-pink-transparent'] = svg(mark(MAUVE, PINK), [MARK], 60, None)   # for mauve backgrounds
 
 for k, v in out.items():
     open(os.path.join(here, f'scoop-lockup-{k}.svg'), 'w').write(v)
