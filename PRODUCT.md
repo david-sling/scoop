@@ -36,7 +36,7 @@ Bookmarking and read-later apps are built for a person to browse. In Scoop the m
 
 - Every source produces one item shape: source, sender, time, original content, tags and notes.
 - Scoop runs no AI of its own. It does not tag, summarise, transcribe or search by meaning. Confirmed by David on Nov 26, 2026.
-- Every save arrives untagged. It stays that way until an agent or the person tags it. A save can carry several tags. Agents and the person can both create tags, and the person can rename, merge, reorder and delete them in the dashboard. Scoop records who added each tag. The word is "tags", never "categories" or "classes". Confirmed by David on Nov 26, 2026.
+- Every save arrives untagged. It stays that way until an agent or the person tags it. A save can carry several tags. Agents and the person can both create, rename, merge, reorder and delete tags. An agent is instructed to ask the person for permission before it renames, merges, reorders or deletes. Scoop cannot enforce that, so every tag change by an agent can be undone in the dashboard. Confirmed by David on Nov 26, 2026. Scoop records who added each tag. The word is "tags", never "categories" or "classes". Confirmed by David on Nov 26, 2026.
 - Originals never change. Extracted text, existing captions and agent-written fields are added beside the original.
 - Each agent has a cursor that records where it stopped reading. This matters less for a library than it did for an inbox.
 - Tags and notes written by an agent or the person persist between sessions.

@@ -55,7 +55,10 @@
 .review .r1 { display: flex; align-items: center; gap: 8px; }
 .review .r1 img.b { width: 16px; height: 16px; margin-left: auto; }
 .review .r1 span.w { font-size: 13px; color: var(--ink-3); }
-.review p { margin: 6px 0 0; color: var(--ink-2); }
+.review b { font-weight: 600; }
+.review .r2 { display: flex; align-items: center; justify-content: space-between; min-height: 36px; padding-left: 24px; }
+.review .r2 .w { font-size: 13px; color: var(--ink-3); }
+.review .r2 .btn { min-height: 32px; margin-right: -12px; color: var(--mauve-deep); font-weight: 500; }
 @media (max-width: 900px) { .taglist li { grid-template-columns: 24px 24px minmax(0, 1fr) auto auto; } .taglist .by, .taglist .last { display: none; } .phd { flex-direction: column; align-items: flex-start; } .phd h1 { font-size: 40px; } .bar { flex-wrap: wrap; border-radius: 22px; } }
 </style>
 </head>
@@ -109,7 +112,7 @@
   <div class="phd">
     <div>
       <h1>Tags</h1>
-      <p>Tags are how your library is organised. A save can carry as many as you like. You and your agents can both create them, and only you can rename, merge, reorder or delete them.</p>
+      <p>Tags are how your library is organised. A save can carry as many as you like. You and your agents can both create and arrange them. An agent asks you before it renames, merges, reorders or deletes one.</p>
     </div>
     <form class="newtagform" onsubmit="return false">
       <label class="sr" for="nt">New tag</label>
@@ -253,12 +256,12 @@
       </section>
 
       <section class="tile cream">
-        <div class="hd"><h2>New from your agents</h2></div>
-        <p class="sub" style="margin-bottom:0">Tags an agent created this week. Keep them, rename them, or merge them into yours.</p>
+        <div class="hd"><h2>Changed by your agents</h2></div>
+        <p class="sub" style="margin-bottom:0">Agents ask you before they change a tag. Every change is kept here, so you can undo one that went wrong.</p>
         <ul class="review">
-          <li><div class="r1"><span class="chip">Motion</span><span class="w">6 saves</span><img class="b" src="icons/claude.svg" alt=""><span class="w">Wed</span></div></li>
-          <li><div class="r1"><span class="chip">Agents</span><span class="w">8 saves</span><img class="b" src="icons/claude.svg" alt=""><span class="w">Wed</span></div></li>
-          <li><div class="r1"><span class="chip">Layout</span><span class="w">9 saves</span><img class="b" src="icons/claude.svg" alt=""><span class="w">Tue</span></div></li>
+          <li><div class="r1"><img class="b" src="icons/claude.svg" alt="" style="margin-left:0"><span>Renamed <b>Fonts</b> to <b>Typography</b></span></div><div class="r2"><span class="w">Claude Code · Wed</span><button class="btn text" type="button">Undo</button></div></li>
+          <li><div class="r1"><img class="b" src="icons/openai.svg" alt="" style="margin-left:0"><span>Merged <b>UI kits</b> into <b>Components</b></span></div><div class="r2"><span class="w">Codex · Tue</span><button class="btn text" type="button">Undo</button></div></li>
+          <li><div class="r1"><img class="b" src="icons/claude.svg" alt="" style="margin-left:0"><span>Created <b>Motion</b>, <b>Agents</b> and <b>Layout</b></span></div><div class="r2"><span class="w">Claude Code · this week</span></div></li>
         </ul>
       </section>
       </div>

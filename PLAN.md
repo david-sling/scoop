@@ -111,6 +111,7 @@ All the thinking happens in the agent. Scoop only stores what the agent writes b
 | List untagged saves | Everything arrives untagged. This is how an agent finds what still needs tagging. |
 | List the existing tags | So it reuses your tags before inventing new ones. |
 | Add or remove tags on a save, and create a new tag | A save can carry several tags. Scoop records who added each one and when. |
+| Rename, merge, reorder or delete a tag | Only after asking the person. The tool's own description tells the agent to ask first, and Scoop records the change so it can be undone. |
 | Set a kind and a short description on a save | Scoop records which agent wrote them. |
 | Search by text, tag, kind, source and date | The main call when a project starts. Search runs over titles, extracted text, your notes and what agents wrote. |
 | Read one save with everything attached | The original, extracted text, your note, and agent-written fields, each marked with where it came from. |
@@ -139,7 +140,8 @@ Tags are how the library is organised. They are called tags, not categories, bec
 - **Many tags per save.** A post about a drag animation in a component library can be tagged both "animation" and "components".
 - **Anyone can create a tag.** An agent creates one over MCP when no existing tag fits. The person creates one in the dashboard at any time, including before anything uses it.
 - **The person can tag by hand.** They can add or remove tags on any save without an agent.
-- **The person arranges the tags.** They can rename, merge, reorder and delete tags in the dashboard. An agent can add and remove tags on saves, but it cannot rename, merge or delete a tag.
+- **The person and their agents arrange the tags.** Both can rename, merge, reorder and delete tags. The person does it in the dashboard. An agent does it over MCP, and is instructed to ask the person for permission first. Changed by David on Nov 26, 2026.
+- **The instruction is not a lock.** Scoop cannot check that an agent really asked. So every tag change an agent makes is recorded with what it was before, and the person can undo it from the Tags page. Undo in the dashboard is the safeguard, and David confirmed it is enough on Nov 26, 2026.
 - **Every tag on a save shows who added it:** the person, or a named agent.
 - **Scoop never tags anything itself.** A save stays untagged until an agent or the person tags it.
 
@@ -286,6 +288,7 @@ Five phases, each usable on its own. No dates are set yet.
 - [ ] Whether the person chooses the kind (reference, MCP or skill) when saving, or an agent sets it later.
 - [ ] Whether an agent may remove a save from a project that the person added.
 - [ ] Whether finished projects are archived or kept in the main list.
+- [ ] Whether agents may also rename and merge projects after asking, as they now can with tags.
 - [ ] Whether tags can be nested, or stay as one flat list.
 - [ ] Whether a person can lock a tag on a save so agents cannot remove it.
 - [ ] Whether third-party processors may use AI, given that Scoop's own do not.
