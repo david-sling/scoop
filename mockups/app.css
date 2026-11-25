@@ -327,3 +327,18 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
   .copy svg { position: absolute; right: 14px; top: 14px; }
   .wrap { padding: 0 28px; }
 }
+
+/* Signed-in person and log out */
+.me { display: flex; align-items: center; gap: 10px; margin-left: 8px; }
+.me .av { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--pink); color: var(--ink); font-weight: 600; flex: none; }
+.me .who { display: none; min-width: 0; flex: 1; line-height: 1.3; }
+.me .nm { display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.me .em { display: block; font-size: 11.5px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.me .out { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 -6px 0 -8px; border-radius: 50%; color: var(--ink-2); flex: none; transition: background-color 120ms var(--ease), color 120ms var(--ease); }
+.me .out:hover { background: var(--cream); color: var(--ink); }
+.me .out:active { background: #F6E9DC; }
+.me .out svg.i { width: 18px; height: 18px; }
+@media (min-width: 1101px) {
+  .me { margin: auto 0 0; padding: 14px 0 2px 4px; gap: 8px; border-top: 1px solid var(--rule); }
+  .me .who { display: block; }
+}

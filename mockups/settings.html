@@ -35,7 +35,8 @@
 .sw input:checked + span { background: var(--mauve); }
 .sw input:checked + span::after { transform: translateX(18px); }
 .sw input:focus-visible + span { outline: 2px solid var(--mauve); outline-offset: 2px; }
-.sel { height: 38px; padding: 0 14px; font: inherit; color: var(--ink); background: #fff; border: 1px solid var(--rule); border-radius: 999px; transition: border-color 120ms var(--ease); }
+.sel { -webkit-appearance: none; appearance: none; width: 232px; height: 44px; padding: 0 42px 0 18px; font: inherit; font-weight: 500; color: var(--ink); cursor: pointer; border: 1px solid var(--rule); border-radius: 999px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%232B1721' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 16px center / 14px; transition: border-color 120ms var(--ease), background-color 120ms var(--ease); }
+.sel:active { background-color: var(--cream); }
 .sel:hover { border-color: var(--ink); }
 .cream { background: var(--cream); border-color: transparent; }
 .cream .opt { border-top-color: #F0E0D2; }
@@ -85,7 +86,7 @@
     <a href="sources.html"><svg class="i"><use href="#i-plug"/></svg>Sources <span class="n">3<span class="sr"> in quarantine</span></span></a>
     <a href="settings.html" aria-current="page"><svg class="i"><use href="#i-gear"/></svg>Settings</a>
   </nav>
-  <button class="copy" type="button"><span class="lbl">Inbox address</span><span class="ad">david@scoop.davidsling.in</span><svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+  <div class="me"><span class="av" aria-hidden="true">D</span><span class="who"><span class="nm">David Sling</span><span class="em">david@example.com</span></span><a class="out" href="signup.html" title="Log out"><svg class="i" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg><span class="sr">Log out</span></a></div>
 </div></header>
 
 <main><div class="wrap">
@@ -103,8 +104,8 @@
       <section class="tile" id="account">
         <h2>Account</h2>
         <div class="opts">
-          <div class="opt"><div class="l"><div class="t">Name</div></div><div class="r"><span class="v">David</span><button class="btn text" type="button">Change</button></div></div>
-          <div class="opt"><div class="l"><div class="t">Sign-in email</div><div class="d">Used to sign in and to tell you about your account. It is not your agent's address.</div></div><div class="r"><span class="v">you@example.com</span><button class="btn text" type="button">Change</button></div></div>
+          <div class="opt"><div class="l"><div class="t">Name</div></div><div class="r"><span class="v">David Sling</span><button class="btn text" type="button">Change</button></div></div>
+          <div class="opt"><div class="l"><div class="t">Sign-in email</div><div class="d">Used to sign in and to tell you about your account. It is not your agent's address.</div></div><div class="r"><span class="v">david@example.com</span><button class="btn text" type="button">Change</button></div></div>
           <div class="opt"><div class="l"><div class="t">Your agent's address</div><div class="d">Changing it stops mail sent to the old one.</div></div><div class="r"><span class="v" style="font:400 13px var(--mono)">david@scoop.davidsling.in</span><button class="btn text" type="button">Change</button></div></div>
         </div>
       </section>
