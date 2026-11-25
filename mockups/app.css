@@ -283,7 +283,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .su summary::-webkit-details-marker { display: none; }
 .su summary:hover { background: var(--cream); color: var(--ink); }
 .su summary:active { background: #F6E9DC; }
-.su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: #1FA855; color: #fff; flex: none; }
+.su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #1FA855; color: #fff; flex: none; }
 .su .tk svg.i { width: 13px; height: 13px; }
 .su .t { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); }
 .su .lb { flex: 1; min-width: 0; }
@@ -295,6 +295,9 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .su .more { padding: 2px 0 14px 32px; }
 .su .more p { margin: 0; color: var(--ink-2); }
 .su .more .mono { font: 500 13px var(--mono); color: var(--ink); }
-.su .more a { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: -10px; font-weight: 500; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
-.su .more a:hover { color: var(--ink); }
+.su .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.su .btn.sm { min-height: 40px; padding: 0 14px; font-size: 13px; gap: 6px; }
+.su .btn.sm svg.i { width: 14px; height: 14px; }
+.su .btn.text.sm { padding: 0 6px; color: var(--mauve-deep); text-decoration: underline; text-underline-offset: 3px; }
+.su .btn.text.sm:hover { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .su .chev { transition: none; } }
