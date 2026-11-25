@@ -38,7 +38,18 @@ Judged by eye from `sheet.png`, not tested on real devices.
 | Solid lockup | 160px |
 | Solid row | 160px |
 | Solid wordmark | 80px |
-| Icon | 32px. At 16px the eyes close up, so a favicon needs its own drawing. |
+| Icon | 48px with eyes. Below that, use the version without eyes. |
+
+## The character at small sizes
+
+When the character is shown smaller than 48px wide, use the version without eyes. The eyes close up at small sizes and turn into a smudge. David set this rule on Nov 26, 2026. The 48px limit is judged by eye.
+
+| File | Use it for |
+| --- | --- |
+| `scoop-lockup-mark-transparent.svg` | The character with eyes, 48px and larger |
+| `scoop-lockup-mark-small-transparent.svg` | The character without eyes, in mauve, below 48px |
+| `scoop-lockup-mark-small-pink-transparent.svg` | The same in pink, for mauve backgrounds |
+| `scoop-lockup-icon-small.svg` | The app icon without eyes, for favicons and other icons below 48px |
 
 ## Colours
 

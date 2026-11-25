@@ -79,6 +79,11 @@ for k in [k for k in out if not k.endswith('-on-cream') and k != 'icon']:
     out[k + '-transparent'] = re.sub(r'<rect[^>]*/>', '', out[k], count=1)
 out['mark-transparent'] = svg(mark(), [MARK], 60, None)
 out['mark-pink-transparent'] = svg(mark(MAUVE, PINK), [MARK], 60, None)   # for mauve backgrounds
+# Small sizes: the character without eyes
+plain = lambda c: f'<path d="{body}" fill="{c}"/>'
+out['mark-small-transparent'] = svg(plain(MAUVE), [MARK], 60, None)
+out['mark-small-pink-transparent'] = svg(plain(PINK), [MARK], 60, None)
+out['icon-small'] = out['icon'].replace(mark(), plain(MAUVE))
 
 for k, v in out.items():
     open(os.path.join(here, f'scoop-lockup-{k}.svg'), 'w').write(v)
