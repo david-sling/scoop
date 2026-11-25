@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agents · Scoop</title>
+<!-- Mockup with invented sample data. Nothing here is real mail or real activity. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+.phd { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 6px 4px 26px; }
+.phd h1 { margin: 0; font-size: 56px; line-height: 1; font-weight: 300; letter-spacing: -0.035em; }
+.phd p { margin: 10px 0 0; color: var(--ink-2); max-width: 62ch; }
+.agents { list-style: none; margin: 14px 0 0; padding: 0; }
+.agents li { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-top: 1px solid var(--rule); }
+.agents li:last-child { padding-bottom: 0; }
+.agents img.b { width: 32px; height: 32px; }
+.an { flex: 1; min-width: 0; }
+.nm { font-size: 18px; font-weight: 500; letter-spacing: -0.005em; }
+.sm { font-size: 13px; color: var(--ink-3); }
+.nums { display: flex; gap: 28px; margin: 0 8px 0 0; }
+.nums div { min-width: 64px; }
+.nums dt { font-size: 12px; color: var(--ink-3); }
+.nums dd { margin: 0; font-size: 22px; font-weight: 300; letter-spacing: -0.02em; }
+.feed { list-style: none; margin: 14px 0 0; padding: 0; }
+.feed li { display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule); }
+.feed img.b { width: 20px; height: 20px; }
+.feed b { font-weight: 500; }
+.feed time { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); white-space: nowrap; }
+.connect { background: var(--mauve); color: #fff; border-color: transparent; }
+.connect h2 { font-size: 26px; font-weight: 300; }
+.connect .lead { margin: 8px 0 18px; color: var(--on-mauve-2); }
+.addr { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 48px; padding: 0 8px 0 18px; background: #fff; color: var(--ink); border-radius: 999px; font: 400 13px var(--mono); transition: background-color 120ms var(--ease); }
+.addr:hover { background: var(--pink-wash); }
+.addr:active { transform: scale(0.99); }
+.addr span.c { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; background: var(--pink); font: 500 13px var(--sans); }
+.steps { margin: 20px 0 0; padding: 0; list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; display: flex; gap: 12px; padding: 10px 0; color: var(--on-mauve-2); }
+.steps li::before { content: counter(s); flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--pink); color: var(--ink); font: 500 12px var(--mono); }
+.steps b { color: #fff; font-weight: 500; }
+.rules { list-style: none; margin: 12px 0 0; padding: 0; }
+.rules li { display: flex; gap: 10px; padding: 7px 0; color: var(--ink-2); }
+.rules svg.i { margin-top: 3px; }
+.rules .yes svg.i { color: var(--ok); }
+.rules .no svg.i { color: var(--ink-3); }
+.rules h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.split { display: grid; gap: 4px; }
+.split + .split { margin-top: 16px; padding-top: 16px; border-top: 1px solid #F0E0D2; }
+@media (max-width: 900px) { .agents li { flex-wrap: wrap; } .nums { order: 3; width: 100%; padding-left: 48px; } .phd h1 { font-size: 40px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.500v13M5.500 12h13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 7h8v8M17 7 7 17"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="m5 19 1-4L16.500 4.500l3 3L9 18z"/></symbol>
+  <symbol id="i-skill" viewBox="0 0 24 24"><path d="m12 4-8 4 8 4 8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4.5l7.5 6v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1z"/><path d="M9.5 19.500v-5.500h5v5.500"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5 6 5.5h12l2.5 8v4a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 13.5h4.7l1 2.5h5.6l1-2.5h4.7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.400 7 9 4.100-1.600 7-4.800 7-9V6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.500 12.300 2.400 2.400 4.600-5"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3.500v4M15 3.500v4M6.500 7.500h11v3.500a5.500 5.500 0 0 1-11 0zM12 16.500v4"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="4.500" y="8" width="15" height="11" rx="3"/><path d="M12 8V4.500M9.500 13v1.500M14.500 13v1.500"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8.500 6.500h11M8.500 12h11M8.500 17.500h11M4.500 6.500h.01M4.500 12h.01M4.500 17.500h.01"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4.500 7.500h9M17.500 7.500h2M4.500 16.500h2M10.500 16.500h9"/><circle cx="15.500" cy="7.500" r="2"/><circle cx="8.500" cy="16.500" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 9h17M6.500 6.800h.01M9 6.800h.01"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.500 4.500 8 19.500M16 4.500l-1.500 15M5 9.500h14.500M4.500 14.500H19"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.500" y="5.500" width="17" height="13" rx="3"/><path d="m10.500 9.500 4 2.500-4 2.500z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="8" r="2"/><path d="M7 8v8M17 10c0 3-3 3.500-10 4"/></symbol>
+  <symbol id="i-hook" viewBox="0 0 24 24"><path d="M13 3.500 6 13.500h5.500l-1 7 7-10H12z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.500" y="8.500" width="11" height="11" rx="2"/><path d="M5.500 15.500h-.5a1.500 1.500 0 0 1-1.500-1.500V6A1.500 1.500 0 0 1 5 4.500h8A1.500 1.500 0 0 1 14.500 6v.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4.500 5.500v6l8 8 6.500-6.500-8-8z"/><path d="M8.500 9.500h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l1 12.500h9l1-12.500"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500v-16M6 5.500h11l-2.500 4 2.500 4H6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+</svg>
+
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="dashboard.html"><img src="../brand/lockup-v2/scoop-lockup-tidy-wordmark-transparent.svg" alt="Scoop"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="dashboard.html">Library</a>
+    <a href="projects.html">Projects</a>
+    <a href="#">Tags</a>
+    <a href="agents.html" aria-current="page">Agents</a>
+    <a href="#">Sources</a>
+    <a href="#">Quarantine <span class="n">3</span></a>
+    <a href="#">Settings</a>
+  </nav>
+  <button class="copy" type="button">david@scoop.davidsling.in<svg class="i"><use href="#i-copy"/></svg><span class="sr">Copy your agent's address</span></button>
+</div></header>
+
+<main><div class="wrap">
+  <div class="phd">
+    <div>
+      <h1>Agents</h1>
+      <p>The agents that can reach your library. They do the tagging and report how saves were used. Scoop does none of that itself.</p>
+    </div>
+  </div>
+
+  <div class="tiles">
+    <div class="left">
+      <section class="tile">
+        <div class="hd"><h2>Connected</h2><span class="chip">4</span></div>
+        <ul class="agents">
+        <li>
+          <img class="b" src="icons/claude.svg" alt="">
+          <div class="an"><div class="nm">Claude Code</div><div class="sm">Connected 2 Nov · Last here today 10:14</div></div>
+          <dl class="nums"><div><dt>Tags added</dt><dd>186</dd></div><div><dt>Uses reported</dt><dd>31</dd></div><div><dt>Projects</dt><dd>4</dd></div></dl>
+          <button class="btn text" type="button">Disconnect</button>
+        </li>
+        <li>
+          <img class="b" src="icons/openai.svg" alt="">
+          <div class="an"><div class="nm">Codex</div><div class="sm">Connected 9 Nov · Last here Wed 18:31</div></div>
+          <dl class="nums"><div><dt>Tags added</dt><dd>74</dd></div><div><dt>Uses reported</dt><dd>9</dd></div><div><dt>Projects</dt><dd>2</dd></div></dl>
+          <button class="btn text" type="button">Disconnect</button>
+        </li>
+        <li>
+          <img class="b" src="icons/cursor.svg" alt="">
+          <div class="an"><div class="nm">Cursor</div><div class="sm">Connected 14 Nov · Last here Mon 16:45</div></div>
+          <dl class="nums"><div><dt>Tags added</dt><dd>22</dd></div><div><dt>Uses reported</dt><dd>3</dd></div><div><dt>Projects</dt><dd>1</dd></div></dl>
+          <button class="btn text" type="button">Disconnect</button>
+        </li>
+        <li>
+          <img class="b" src="icons/gemini.svg" alt="">
+          <div class="an"><div class="nm">Gemini CLI</div><div class="sm">Connected 19 Nov · Last here 20 Nov</div></div>
+          <dl class="nums"><div><dt>Tags added</dt><dd>12</dd></div><div><dt>Uses reported</dt><dd>9</dd></div><div><dt>Projects</dt><dd>1</dd></div></dl>
+          <button class="btn text" type="button">Disconnect</button>
+        </li>
+        </ul>
+      </section>
+
+      <section class="tile">
+        <div class="hd"><h2>What they did lately</h2></div>
+        <ul class="feed">
+          <li><img class="b" src="icons/claude.svg" alt=""><span><b>Claude Code</b> reported 2 uses on davidsling.in redesign</span><time>Today 10:14</time></li>
+          <li><img class="b" src="icons/claude.svg" alt=""><span><b>Claude Code</b> tagged 12 saves</span><time>Today 09:12</time></li>
+          <li><img class="b" src="icons/openai.svg" alt=""><span><b>Codex</b> suggested the Motion review skill for davidsling.in redesign</span><time>Wed 18:40</time></li>
+          <li><img class="b" src="icons/openai.svg" alt=""><span><b>Codex</b> reported 1 use on offlyn.love onboarding</span><time>Wed 18:31</time></li>
+          <li><img class="b" src="icons/cursor.svg" alt=""><span><b>Cursor</b> added 2 saves to Wave settings page</span><time>Mon 16:45</time></li>
+          <li><img class="b" src="icons/gemini.svg" alt=""><span><b>Gemini CLI</b> created the project Scoop landing page</span><time>20 Nov</time></li>
+        </ul>
+        <a class="more" href="#" style="display:inline-flex;align-items:center;gap:4px;min-height:36px;margin-top:8px;font-weight:500">Full history<svg class="i"><use href="#i-chev"/></svg></a>
+      </section>
+    </div>
+
+    <aside class="right">
+      <div class="stick" style="grid-row: 1 / -1; top: 14px">
+      <section class="tile connect">
+        <h2>Connect an agent</h2>
+        <p class="lead">Any agent that speaks MCP can use your library.</p>
+        <button class="addr" type="button">scoop.davidsling.in/mcp<span class="c"><svg class="i"><use href="#i-copy"/></svg>Copy</span></button>
+        <ol class="steps">
+          <li><span><b>Copy the address</b> above.</span></li>
+          <li><span><b>Add it as an MCP server</b> in your agent's settings.</span></li>
+          <li><span><b>Sign in when your browser opens.</b> Each agent gets its own access, which you can end here at any time.</span></li>
+        </ol>
+      </section>
+
+      <section class="tile cream">
+        <div class="hd"><h2>What an agent can do</h2></div>
+        <div class="split">
+          <ul class="rules">
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Search and read your saves</li>
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Add and remove tags, and create new ones</li>
+            <li class="yes"><svg class="i"><use href="#i-check"/></svg>Add saves to a project, and report how it used them</li>
+          </ul>
+        </div>
+        <div class="split">
+          <ul class="rules">
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Delete anything, or rename and merge tags or projects</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Use a tool you did not add to the project yourself</li>
+            <li class="no"><svg class="i"><use href="#i-x"/></svg>Send, post or pay for anything</li>
+          </ul>
+        </div>
+      </section>
+      </div>
+    </aside>
+  </div>
+</div></main>
+</body>
+</html>
