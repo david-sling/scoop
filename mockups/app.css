@@ -273,8 +273,8 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 /* Setup progress on the library home */
 .su-hd { display: flex; align-items: center; gap: 14px; }
 .su-hd .ring { width: 44px; height: 44px; flex: none; }
-.su-hd .ring circle { fill: none; stroke: #E3EEE6; stroke-width: 4; }
-.su-hd .ring .on { stroke: var(--ok); stroke-linecap: round; }
+.su-hd .ring circle { fill: none; stroke: #DDF3E5; stroke-width: 4; }
+.su-hd .ring .on { stroke: #1FA855; stroke-linecap: round; }
 .su-hd p { margin: 0; color: var(--ink-2); }
 .su-hd .btn { margin-left: auto; }
 .su { list-style: none; margin: 16px 0 0; padding: 0; }
@@ -283,7 +283,7 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .su summary::-webkit-details-marker { display: none; }
 .su summary:hover { background: var(--cream); color: var(--ink); }
 .su summary:active { background: #F6E9DC; }
-.su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: var(--ok); color: #fff; flex: none; }
+.su .tk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: #1FA855; color: #fff; flex: none; }
 .su .tk svg.i { width: 13px; height: 13px; }
 .su .t { margin-left: auto; font: 400 12px var(--mono); color: var(--ink-3); }
 .su .lb { flex: 1; min-width: 0; }
