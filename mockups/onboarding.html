@@ -57,11 +57,6 @@
       <h2>Create your library</h2>
       <p class="lead">It takes about three minutes to save your first thing and connect an agent.</p>
       <div class="field">
-        <label for="u">Pick a name</label>
-        <div class="pick" id="pick"><input id="u" type="text" value="david" autocomplete="off" spellcheck="false" aria-describedby="uh"><span>@scoop.davidsling.in</span></div>
-        <div class="okline" id="uh" aria-live="polite"><svg class="i"><use href="#i-tick"/></svg><span>Available. This becomes your agent's address, for newsletters.</span></div>
-      </div>
-      <div class="field">
         <label for="e">Your email</label>
         <input id="e" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="eh">
         <div class="hint" id="eh">We send a link to sign in. There is no password.</div>
@@ -138,7 +133,7 @@
       <section class="tile">
         <div class="hd"><h2>When you are ready</h2></div>
         <ul class="next">
-          <li><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><div><div class="t">Subscribe to a newsletter</div><p>Use <span id="addr"></span> and every issue lands in your library.</p></div><button class="btn outline" type="button" id="copy3"><span>Copy address</span></button></li>
+          <li id="inbox"></li>
           <li><span class="ic"><svg class="i"><use href="#i-page"/></svg></span><div><div class="t">Start a project</div><p>Put the saves you want used in one place, then point your agent at it.</p></div><a class="btn outline" href="projects.html">New project</a></li>
           <li><span class="ic"><svg class="i"><use href="#i-agent"/></svg></span><div><div class="t">Connect another agent</div><p>They all work from the same library, tags and projects.</p></div><a class="btn outline" href="agents.html">Connect</a></li>
         </ul>
@@ -165,7 +160,7 @@
   };
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
-  var fresh = function () { return { screen: 'join', agent: 'claude', saved: false, connected: false, tagged: false, pend: [false, false, false] }; };
+  var fresh = function () { return { screen: 'join', addr: '', agent: 'claude', saved: false, connected: false, tagged: false, pend: [false, false, false] }; };
   var st = fresh(), timers = [], shown = '', lastStep = -1;
   var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
   var cap = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
@@ -209,7 +204,6 @@
     w[1].textContent = (st.pend[1] ? 'Copied. ' : '') + 'Waiting for ' + a.name + ' to connect';
     w[2].textContent = st.pend[2] ? 'Copied. Waiting for the first tag' : 'Waiting for the first tag';
     $('#add').disabled = st.pend[0];
-    $('#addr').textContent = name() + '@scoop.davidsling.in';
     paintLive($('#live'), false, popSel); paintLive($('#live2'), true);
     if (st.screen === 'setup' && step !== lastStep && step < 3) {
       var h = $('.step.now h2'); if (h && shown === 'setup') h.focus({ preventScroll: true });
@@ -219,7 +213,6 @@
     lastStep = step; shown = st.screen;
   }
 
-  function name() { return $('#u').value.trim().toLowerCase() || 'you'; }
   function copied(btn, text) {
     try { if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {}); } catch (e) {}
     var s = btn.querySelector('span'), was = s.textContent; s.textContent = 'Copied';
@@ -228,15 +221,8 @@
   function saveArrives() { st.pend[0] = true; render(); later(function () { st.saved = true; render('.save'); }, 1500); }
 
   // Sign up
-  $('#u').addEventListener('input', function () {
-    var v = this.value.trim(), ok = /^[a-z0-9][a-z0-9-]{1,29}$/.test(v);
-    $('#pick').classList.toggle('bad', !ok);
-    $('#uh').className = ok ? 'okline' : 'err';
-    $('#uh').innerHTML = ok ? '<svg class="i"><use href="#i-tick"/></svg><span>Available. This becomes your agent\'s address, for newsletters.</span>' : 'Use 2 to 30 lowercase letters, numbers or dashes.';
-  });
   $('#f').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    if ($('#pick').classList.contains('bad')) { $('#u').focus(); return; }
     var e = $('#e'), ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim());
     e.setAttribute('aria-invalid', !ok);
     $('#eh').className = ok ? 'hint' : 'err';
@@ -247,7 +233,7 @@
   });
   $('#change').addEventListener('click', function (ev) { ev.preventDefault(); $('#check').hidden = true; $('#f').hidden = false; $('#e').focus(); });
   $('#again').addEventListener('click', function (ev) { ev.preventDefault(); this.textContent = 'Sent again'; var t = this; setTimeout(function () { t.textContent = 'Send it again'; }, 1600); });
-  var enter = function () { if ($('#pick').classList.contains('bad')) { $('#u').focus(); return; } st.screen = 'setup'; render(); };
+  var enter = function () { st.screen = 'setup'; render(); };
   $('#open').addEventListener('click', enter);
   $('#gh').addEventListener('click', enter);
 
@@ -272,24 +258,53 @@
     st.pend[2] = true; render();
     later(function () { st.tagged = true; render('#tg'); later(function () { st.screen = 'done'; render(); }, 1500); }, 1800);
   });
-  $('#copy3').addEventListener('click', function () { copied(this, $('#addr').textContent); });
+
+  // The inbox address is optional: it is made here, after setup, not at sign-up.
+  var MAIL = '<span class="ic"><svg class="i"><use href="#i-mail"/></svg></span>', D = '@scoop.davidsling.in';
+  function paintInbox(edit) {
+    var li = $('#inbox');
+    if (st.addr && !edit) {
+      li.innerHTML = MAIL + '<div><div class="t">Your inbox address</div><p><span class="mono" id="addr">' + st.addr + D + '</span><br>Subscribe to newsletters with it and every issue lands in your library.</p></div>' +
+        '<span class="acts"><button class="btn text" type="button" data-do="change">Change</button><button class="btn outline" type="button" data-do="copy"><span>Copy address</span></button></span>';
+      return;
+    }
+    var guess = st.addr || ($('#e').value.split('@')[0] || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+    li.innerHTML = MAIL + '<div><div class="t">Create your inbox address</div><p>You need one before you can subscribe to newsletters. Every issue sent to it lands in your library.</p>' +
+      '<form class="mk" novalidate><div class="pick"><input id="u" type="text" aria-label="Name for your address" aria-describedby="uh" placeholder="yourname" autocomplete="off" spellcheck="false" value="' + guess + '"><span>' + D + '</span></div><button class="btn solid" type="submit">Create</button></form>' +
+      '<div class="err" id="uh" aria-live="polite"></div></div>';
+  }
+  $('#inbox').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var u = $('#u'), v = u.value.trim().toLowerCase(), ok = /^[a-z0-9][a-z0-9-]{1,29}$/.test(v);
+    u.parentNode.classList.toggle('bad', !ok);
+    $('#uh').textContent = ok ? '' : 'Use 2 to 30 lowercase letters, numbers or dashes.';
+    if (!ok) { u.focus(); return; }
+    st.addr = v; paintInbox(); $('#inbox [data-do="copy"]').focus();
+  });
+  $('#inbox').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-do]'); if (!b) return;
+    if (b.dataset.do === 'copy') copied(b, st.addr + D);
+    else { paintInbox(true); $('#u').focus(); }
+  });
 
   $('#restart').addEventListener('click', function (ev) {
     ev.preventDefault(); timers.forEach(clearTimeout); timers = []; st = fresh();
     $('#f').hidden = false; $('#check').hidden = true; $('#paste').hidden = true; $('#alt').setAttribute('aria-expanded', false);
-    render(); window.scrollTo(0, 0);
+    paintInbox(); render(); window.scrollTo(0, 0);
   });
 
   // Jump straight to a state with #at=check, 1, 2, 3 or done. #auto clicks the whole path (used to test it).
   var m = /at=(\w+)/.exec(location.hash), at = m && m[1];
   if (at === 'check') { $('#e').value = 'you@example.com'; $('#f').requestSubmit(); }
   if (at && at !== 'check') { st.screen = at === 'done' ? 'done' : 'setup'; st.saved = at !== '1'; st.connected = at === '3' || at === 'done'; st.tagged = at === 'done'; }
-  render();
+  if (/addr/.test(location.hash)) st.addr = 'david';
+  paintInbox(); render();
   if (location.hash === '#auto') {
     $('#e').value = 'you@example.com'; $('#f').requestSubmit(); $('#open').click();
     setTimeout(function () { $('#add').click(); }, 300);
     setTimeout(function () { document.querySelector('[data-a="codex"]').click(); $('#copy1').click(); }, 2200);
     setTimeout(function () { $('#copy2').click(); }, 4500);
+    setTimeout(function () { $('#u').value = 'Bad Name'; $('#inbox form').requestSubmit(); document.title = $('#uh').textContent ? 'err-ok' : 'err-missing'; $('#u').value = 'david'; $('#inbox form').requestSubmit(); }, 9000);
   }
 })();
 </script>

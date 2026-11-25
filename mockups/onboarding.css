@@ -130,3 +130,15 @@
 @keyframes pop { from { opacity: 0; transform: scale(0.96); } }
 @media (prefers-reduced-motion: reduce) { .enter, .pop { animation-duration: 120ms; } @keyframes enter { from { opacity: 0; } } @keyframes pop { from { opacity: 0; } } }
 @media (max-width: 720px) { .paste { flex-direction: column; } }
+
+/* Inbox address, made after setup */
+.next li > div { flex: 1; min-width: 0; }
+.next .mono { font: 500 14px var(--mono); color: var(--ink); }
+.next .acts { display: flex; align-items: center; gap: 6px; flex: none; margin-left: auto; }
+.next .acts .btn { margin-left: 0; }
+.mk { display: flex; gap: 8px; margin-top: 12px; max-width: 520px; }
+.mk .pick { flex: 1; min-width: 0; }
+.mk .btn { min-height: 48px; padding: 0 22px; margin-left: 0; flex: none; }
+.next .err { margin-top: 6px; font-size: 13px; color: var(--warn); }
+.next li#inbox { align-items: flex-start; }
+@media (max-width: 720px) { .mk { flex-direction: column; } .next li { flex-wrap: wrap; } }
