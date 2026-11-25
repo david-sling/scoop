@@ -134,7 +134,7 @@ A messy library is not treated as a risk. It can always be put back.
 
 **The few things an agent cannot do**
 
-These are kept back because undo does not help with them, or because hostile content in a save could use them. This list is a proposal and is not yet confirmed.
+These are kept back because undo does not help with them, or because hostile content in a save could use them. Confirmed by David on Nov 26, 2026.
 
 | An agent cannot | Why |
 | --- | --- |
