@@ -145,13 +145,14 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
 .act .do { display: flex; gap: 4px; flex: none; }
 
 /* Session and sources */
-.session { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #F0E0D2; }
-.session li { padding: 14px 0 12px; border-bottom: 1px solid #F0E0D2; }
-.session li:nth-child(odd) { border-right: 1px solid #F0E0D2; }
-.session li:nth-child(even) { padding-left: 18px; }
-.session li:nth-last-child(-n+2) { border-bottom: 0; padding-bottom: 0; }
-.session b { display: block; font-size: 36px; line-height: 1; font-weight: 300; letter-spacing: -0.03em; }
-.session span { color: var(--ink-2); }
+.sessions { list-style: none; margin: 14px 0 0; padding: 0; }
+.sessions li { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #F0E0D2; }
+.sessions li:last-child { padding-bottom: 0; }
+.sessions img.b { width: 24px; height: 24px; }
+.sessions li > div { flex: 1; min-width: 0; }
+.s-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-weight: 500; }
+.s-top time { font: 400 12px var(--mono); color: var(--ink-3); }
+.sessions p { margin: 0; color: var(--ink-2); }
 .health { list-style: none; margin: 16px 0 0; padding: 0; }
 .health img.b, .health svg.i { width: 18px; height: 18px; }
 .health li { display: flex; align-items: center; gap: 10px; min-height: 44px; border-top: 1px solid var(--rule); }
@@ -274,13 +275,13 @@ h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 400; letter-spac
     </section>
 
     <section class="tile r cream">
-      <div class="hd"><h2>Last session</h2><a href="#">Activity<svg class="i"><use href="#i-chev"/></svg></a></div>
-      <p class="sub" style="margin-bottom:0">Claude Code, today 08:50 to 09:12</p>
-      <ul class="session">
-        <li><b>12</b><span>items read</span></li>
-        <li><b>9</b><span>labelled</span></li>
-        <li><b>3</b><span>notes left</span></li>
-        <li><b>4</b><span>marked done</span></li>
+      <div class="hd"><h2>Recent sessions</h2><a href="#">Activity<svg class="i"><use href="#i-chev"/></svg></a></div>
+      <ul class="sessions">
+        <li><img class="b" src="icons/claude.svg" alt=""><div><div class="s-top"><span>Claude Code</span><time>09:12</time></div><p>Read 12, labelled 9, left 3 notes</p></div></li>
+        <li><img class="b" src="icons/openai.svg" alt=""><div><div class="s-top"><span>Codex</span><time>Wed 18:20</time></div><p>Read 5, left 1 note</p></div></li>
+        <li><img class="b" src="icons/gemini.svg" alt=""><div><div class="s-top"><span>Gemini CLI</span><time>Wed 11:02</time></div><p>Read 8, labelled 6</p></div></li>
+        <li><img class="b" src="icons/cursor.svg" alt=""><div><div class="s-top"><span>Cursor</span><time>Tue 16:45</time></div><p>Read 3, marked 2 done</p></div></li>
+        <li><img class="b" src="icons/claude.svg" alt=""><div><div class="s-top"><span>Claude Code</span><time>Tue 09:10</time></div><p>Read 21, labelled 15, left 4 notes</p></div></li>
       </ul>
     </section>
 
