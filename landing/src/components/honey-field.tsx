@@ -25,7 +25,7 @@ void main() {
  * Every pixel finds the honeycomb cell it is in. Each cell is a flat plate with its own small
  * fixed lean, so it catches the one shared light a little differently from its neighbours.
  * The cursor and the travelling signal push the plates near them to lean further, which is
- * what makes the light sweep across them. Everything stays in the one cream hue of the page;
+ * what makes the light sweep across them. Everything stays white and near-white, like the page;
  * only lightness changes. Nothing is drawn as an outline: cells show only
  * because their surfaces answer the light differently.
  */
@@ -91,9 +91,9 @@ void main() {
   vec3 Hv = normalize(L + V);
   float ndh = max(dot(N, Hv), 0.0);
 
-  // Cream, lighter where the plate faces the light.
-  vec3 shade = vec3(0.982, 0.928, 0.878);
-  vec3 bright = vec3(1.0, 0.988, 0.972);
+  // White, a touch greyer where the plate turns away, lighter where the plate faces the light.
+  vec3 shade = vec3(0.95, 0.942, 0.946);
+  vec3 bright = vec3(1.0, 1.0, 1.0);
   vec3 col = mix(shade, bright, smoothstep(0.93, 1.0, ndh));
 
   // One hue only. Near the signal the plates swing further between shade
@@ -104,13 +104,13 @@ void main() {
   col += pow(ndh, 220.0) * 0.05;
 
   // Plates near the cursor shrink about their own centres, the closest ones the most. The
-  // gaps that open between them show a slightly deeper cream, like the board underneath.
+  // gaps that open between them show a slightly deeper grey, like the board underneath.
   vec2 v = abs(p - centre);
   float reach = max(v.y, 0.5 * v.y + 0.8660254 * v.x) / HH;
   float size = 1.0 - 0.09 * hw * hw;
   float edge = 1.5 / (uScale * HH);
   float plate = 1.0 - smoothstep(size - edge, size + edge, reach);
-  col = mix(col, shade * vec3(0.975, 0.965, 0.955), (1.0 - plate) * smoothstep(0.03, 0.25, hw));
+  col = mix(col, shade * 0.97, (1.0 - plate) * smoothstep(0.03, 0.25, hw));
 
   // Behind the copy the honeycomb goes out of focus: the cells melt into the smooth light
   // they would average to. The change is very gradual, so there is no edge to see.
@@ -134,7 +134,7 @@ function compile(gl: WebGLRenderingContext, type: number, source: string) {
 /**
  * The honeycomb behind the whole hero, drawn by the graphics card. It lines up with the
  * drawing that holds the logos (found by `sceneId`). Where that drawing is not shown, on
- * narrow screens, the honeycomb is simply centred. Without WebGL the hero stays plain cream.
+ * narrow screens, the honeycomb is simply centred. Without WebGL the hero stays plain white.
  */
 export function HoneyField({
   sceneId,

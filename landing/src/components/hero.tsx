@@ -149,7 +149,7 @@ export function Hero() {
   const signal = useRef<Light>({ x: 0, y: 0, on: 0 });
 
   return (
-    <header className="relative isolate flex min-h-svh flex-col overflow-hidden rounded-b-[28px] bg-cream sm:rounded-b-[36px]">
+    <header className="relative isolate flex min-h-svh flex-col overflow-hidden rounded-b-[28px] bg-white sm:rounded-b-[36px]">
       <HoneyField sceneId={SCENE_ID} geometry={GEOMETRY} signal={signal} />
       <nav
         aria-label="Main"
@@ -164,7 +164,7 @@ export function Hero() {
         </a>
         <a
           href={APP_URL}
-          className="inline-flex min-h-11 items-center rounded-full px-4 font-medium text-ink transition-colors duration-150 ease-[var(--ease-out-expo)] hover:bg-white active:bg-pink-wash"
+          className="inline-flex min-h-11 items-center rounded-full px-4 font-medium text-ink transition-colors duration-150 ease-[var(--ease-out-expo)] hover:bg-ink/5 active:bg-pink-wash"
         >
           Sign in
         </a>
@@ -427,7 +427,7 @@ function Honeycomb({
 
         <linearGradient id="logo-fill" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#fff" />
-          <stop offset="1" stopColor="#fff1e4" />
+          <stop offset="1" stopColor="#f1edef" />
         </linearGradient>
         <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
           <feGaussianBlur stdDeviation="14" />
