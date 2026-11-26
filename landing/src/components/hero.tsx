@@ -47,7 +47,7 @@ export function Hero() {
         </a>
         <a
           href={APP_URL}
-          className="inline-flex min-h-11 items-center rounded-full px-4 font-medium text-ink transition-colors duration-150 ease-[var(--ease-out-expo)] hover:bg-white/40 active:bg-white/60"
+          className="inline-flex min-h-11 items-center rounded-full bg-white/75 px-5 text-[0.9375rem] font-semibold text-[#5e2a47] shadow-[0_1px_2px_rgba(94,42,71,0.08),0_6px_18px_-8px_rgba(94,42,71,0.35)] backdrop-blur-sm transition-[background-color,transform] duration-150 ease-[var(--ease-out-expo)] hover:bg-white active:translate-y-px active:scale-[0.98]"
         >
           Sign in
         </a>
