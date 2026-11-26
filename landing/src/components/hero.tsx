@@ -36,7 +36,7 @@ export function Hero() {
 
       <nav
         aria-label="Main"
-        className={`${FRAME} flex items-center justify-between px-5 pt-5 sm:px-9 sm:pt-7`}
+        className={`${FRAME} flex items-center justify-between px-5 pt-5 sm:px-9 sm:pt-7 lg:px-[min(7vw,100.8px)]`}
       >
         <a href="/" className="rounded-full" aria-label="Scoop, home">
           <img
