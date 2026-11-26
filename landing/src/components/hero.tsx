@@ -5,28 +5,38 @@ export const APP_URL = "https://app.scoop.davidsling.in";
 const SCENE = { src: "/hero/scene.webp", w: 1376, h: 768 };
 
 /**
- * The hero: copy on the left, an ice-cream scene on the right. On wide screens the scene
- * is pushed right so its far edge (and the generator's corner mark) bleeds off the page,
- * and its empty left third sits under the copy. The scene grows with the screen's height,
- * so on tall screens it is pushed further right: its first sweet, about 21.5% in, always
- * starts after "re-explaining", the longest line (about 5.9 times the headline size).
+ * The hero: copy on the left, an ice-cream scene on the right, together in one centred
+ * frame up to 1440px wide. The scene is sized to the frame, not the screen, and fades out
+ * on every side into the pink, so wider screens get more pink rather than a hard image edge.
+ * The fade also hides the generator's mark in the scene's bottom-right corner. The page's
+ * pinks are sampled from the scene's own edges so the fade leaves no visible box.
+ *
+ * Everything in the frame scales with its width, so the copy and scene keep the same
+ * relation at every size: the scene's first sweet, about 21.5% into the image, starts
+ * just after "re-explaining", the longest line (about 5.9 times the headline size).
  * On narrow screens the scene sits under the copy instead.
  */
+const FRAME = "mx-auto w-full max-w-[1440px]";
+
 export function Hero() {
   return (
-    <header className="relative isolate flex min-h-svh flex-col overflow-hidden bg-[radial-gradient(120%_90%_at_20%_30%,#ffc5d9,#f6b0cc)]">
-      <img
-        src={SCENE.src}
-        width={SCENE.w}
-        height={SCENE.h}
-        alt=""
-        fetchPriority="high"
-        className="pointer-events-none absolute left-[max(9vw,calc(clamp(2.5rem,7vw,7.5rem)+5.9*clamp(2.75rem,5.2vw,5.25rem)-38.5svh))] top-0 -z-10 hidden h-full w-auto max-w-none [mask-image:linear-gradient(to_right,transparent,#000_10%)] lg:block"
-      />
+    <header className="relative isolate flex min-h-svh flex-col overflow-hidden bg-[radial-gradient(120%_90%_at_35%_40%,#fbbdd2,#f3b2c6)]">
+      <div
+        className={`${FRAME} pointer-events-none absolute inset-y-0 left-1/2 -z-10 hidden -translate-x-1/2 lg:block`}
+      >
+        <img
+          src={SCENE.src}
+          width={SCENE.w}
+          height={SCENE.h}
+          alt=""
+          fetchPriority="high"
+          className="absolute left-[17%] top-1/2 h-auto w-[110%] max-w-none -translate-y-1/2 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_72%,transparent_90%),linear-gradient(to_bottom,transparent,#000_10%,#000_90%,transparent)]"
+        />
+      </div>
 
       <nav
         aria-label="Main"
-        className="flex items-center justify-between px-5 pt-5 sm:px-9 sm:pt-7"
+        className={`${FRAME} flex items-center justify-between px-5 pt-5 sm:px-9 sm:pt-7`}
       >
         <a href="/" className="rounded-full" aria-label="Scoop, home">
           <img
@@ -43,8 +53,10 @@ export function Hero() {
         </a>
       </nav>
 
-      <div className="flex flex-1 flex-col justify-center px-5 pb-10 pt-12 sm:px-9 lg:max-w-[46rem] lg:pb-20 lg:pl-[clamp(2.5rem,7vw,7.5rem)] lg:pt-0">
-        <h1 className="text-[clamp(2.75rem,11vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.045em] text-[#5e2a47] lg:text-[clamp(2.75rem,5.2vw,5.25rem)]">
+      <div
+        className={`${FRAME} flex flex-1 flex-col justify-center px-5 pb-10 pt-12 sm:px-9 lg:pb-20 lg:pl-[min(7vw,100.8px)] lg:pt-0`}
+      >
+        <h1 className="text-[clamp(2.75rem,11vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.045em] text-[#5e2a47] lg:text-[min(5.2vw,74.9px)]">
           Stop
           <br />
           re&#8209;explaining
@@ -69,7 +81,7 @@ export function Hero() {
         width={SCENE.w}
         height={SCENE.h}
         alt=""
-        className="pointer-events-none -mt-4 aspect-[4/3] w-full object-cover object-[48%_50%] lg:hidden"
+        className="pointer-events-none -mt-4 aspect-[4/3] w-full object-cover object-[48%_50%] [mask-image:linear-gradient(to_bottom,transparent,#000_15%)] lg:hidden"
       />
     </header>
   );
