@@ -9,8 +9,11 @@ function Home() {
   return (
     <main id="main">
       <Hero />
-      <AgentScene />
-      <HowItWorks />
+      {/* Sits above the hero, which stays put on wide screens while this slides over it. */}
+      <div className="relative z-10 bg-white">
+        <AgentScene />
+        <HowItWorks />
+      </div>
     </main>
   )
 }
