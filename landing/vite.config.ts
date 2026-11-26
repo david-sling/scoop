@@ -7,5 +7,6 @@ import { nitro } from 'nitro/vite'
 export default defineConfig({
   resolve: { tsconfigPaths: true, dedupe: ['react', 'react-dom'] },
   optimizeDeps: { include: ['motion/react'] },
+  server: { allowedHosts: ['.ngrok-free.dev'] },
   plugins: [nitro(), tailwindcss(), tanstackStart(), viteReact()],
 })

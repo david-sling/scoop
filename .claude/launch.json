@@ -1,0 +1,31 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "landing",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "landing",
+        "run",
+        "dev"
+      ],
+      "port": 3100
+    },
+    {
+      "name": "landing-3101",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "landing",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3101",
+        "--strictPort"
+      ],
+      "port": 3101
+    }
+  ]
+}

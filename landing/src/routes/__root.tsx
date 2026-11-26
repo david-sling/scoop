@@ -1,4 +1,5 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { Analytics } from '@vercel/analytics/react'
 import appCss from '../styles.css?url'
 
 const title = 'Scoop — Stop re-explaining your taste'
@@ -36,6 +37,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
         {children}
+        <Analytics />
         <Scripts />
       </body>
     </html>
