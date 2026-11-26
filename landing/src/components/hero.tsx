@@ -1,3 +1,5 @@
+import SpecularButton from "./react-bits/SpecularButton";
+
 /** Where the product lives. The landing page only links to it. */
 export const APP_URL = "https://app.scoop.davidsling.in";
 
@@ -30,7 +32,7 @@ export function Hero() {
           height={SCENE.h}
           alt=""
           fetchPriority="high"
-          className="absolute left-[17%] top-1/2 h-auto w-[110%] max-w-none -translate-y-1/2 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_72%,transparent_90%),linear-gradient(to_bottom,transparent,#000_10%,#000_90%,transparent)]"
+          className="absolute left-[23%] top-1/2 h-auto w-[110%] max-w-none -translate-y-1/2 [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_72%,transparent_90%),linear-gradient(to_bottom,transparent,#000_10%,#000_90%,transparent)]"
         />
       </div>
 
@@ -67,12 +69,26 @@ export function Hero() {
           Scoop collects what you save from everywhere into one library,
           organised for your agent.
         </p>
-        <a
+        {/* A plum pill whose rim catches a pink light that follows the cursor.
+            Its stylesheet is not in a Tailwind layer, so spacing and weight go in `style`. */}
+        <SpecularButton
           href={APP_URL}
-          className="mt-8 inline-flex min-h-[56px] items-center self-start rounded-full bg-[#5e2a47] px-7 text-[1.0625rem] font-semibold text-white transition-[background-color,transform] duration-150 ease-[var(--ease-out-expo)] hover:bg-ink active:translate-y-px active:scale-[0.98]"
+          size="lg"
+          radius={999}
+          tint="#5e2a47"
+          tintOpacity={1}
+          textColor="#ffffff"
+          lineColor="#ffabda"
+          baseColor="#9f527c"
+          idleIntensity={0.6}
+          thickness={2}
+          shineSize={16}
+          glow={1.6}
+          className="self-start"
+          style={{ marginTop: 32, fontWeight: 600, boxShadow: "none" }}
         >
           Create your library
-        </a>
+        </SpecularButton>
       </div>
 
       {/* Narrow screens: the scene under the copy, cropped to where the sweets are. */}
