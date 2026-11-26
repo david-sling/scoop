@@ -2,7 +2,7 @@
 export const APP_URL = "https://app.scoop.davidsling.in";
 
 /** The scene's own size, so the page can keep its shape while it loads. */
-const SCENE = { src: "/hero/scene.webp", w: 1376, h: 768 };
+const SCENE = { src: "/hero/scene.webp", w: 2000, h: 1116 };
 
 /**
  * The hero: copy on the left, an ice-cream scene on the right, together in one centred
